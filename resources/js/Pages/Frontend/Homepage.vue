@@ -1,15 +1,20 @@
 <script setup>
 
 import { Head } from '@inertiajs/vue3';
+import SearchForm from '../../Components/Frontend/SearchForm.vue';
 
 const props = defineProps({
     translations: {
         type: Object,
     },
+    locale: {
+        type: String,
+    },
 });
 
 document.body.classList.remove(...document.body.classList);
 document.body.classList.add("frontend.home");
+
 
 </script>
 
@@ -24,74 +29,21 @@ document.body.classList.add("frontend.home");
                 <div class="od-top-bg-content">
 
                     <div class="od-top-bg-text">
-                        <h1>{{ translations.homepage.main_heading_1 }}<span> {{ translations.homepage.main_heading_2 }}</span>
+                        <h1>{{ translations.homepage.main_heading_1 }}<span> {{ translations.homepage.main_heading_2
+                                }}</span>
                         </h1>
                         <h2>{{ translations.homepage.main_sub_heading_1 }}</h2>
                         <div class="od-home-hadith-sec">
-                            <p>{{ translations.homepage.quran_qoute_1 }}। -</p>
+                            <p>{{ translations.homepage.quran_qoute_1 }} -</p>
                             <span>({{ translations.homepage.quran_qoute_1_source }})</span>
                         </div>
                     </div>
 
-                    <div class="od-search-option">
-                        <div class="od-search-fields">
-                            <div class="od-search-option-label">আমি খুঁজছি</div>
-                            <div class="od-search-option-input">
-                                <select name="search_gender">
-                                    <option value="no_selected" data-select2-id="3">সকল</option>
-                                    <option value="3">পাত্রের বায়োডাটা</option>
-                                    <option value="4">পাত্রীর বায়োডাটা</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="od-search-fields">
-                            <div class="od-search-option-label">বৈবাহিক অবস্থা</div>
-                            <div class="od-search-option-input">
-                                <select name="search_marriage_status">
-                                    <option value="no_selected" data-select2-id="6">সকল</option>
-                                    <option value="5">অবিবাহিত</option>
-                                    <option value="6">বিবাহিত</option>
-                                    <option value="7">ডিভোর্সড</option>
-                                    <option value="8">বিধবা</option>
-                                    <option value="9">বিপত্নীক</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="od-search-fields">
-                            <div class="od-search-option-label">স্থায়ী ঠিকানা</div>
-                            <div class="od-search-option-input">
-                                <div class="od-location-dropdown od-field-type__location od-biodata-search-control"
-                                    data-field_id="10">
-                                    <a href="#" class="od-location-dropdown-trigger">
-                                        ঠিকানা নির্বাচন করুন
-                                    </a>
-                                    <div class="odl-wrap od-location-panel-wrap">
-                                        <div class="odl-head">
-                                            <h3>দেশ নির্বাচন করুন</h3>
-                                            <a href="#" class="od-close-panel"><i class="fa fa-times"></i></a>
-                                        </div>
-                                        <div class="od-form-group-input">
-                                            <input class="location-search" data-target="country" type="search"
-                                                placeholder="দেশ খুঁজুন">
-                                        </div>
-                                        <ul class="odl-nav">
-                                            <li><a href="#" data-handle="bangladesh" data-name="বাংলাদেশ"
-                                                    data-country_name="bangladesh" data-total_index="3"
-                                                    data-current_index="" data-has_index="yes">বাংলাদেশ</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
-                        <div class="od-search-fields odsf-submit">
-                            <div class="od-submit-btn">
-                                <button type="button" class="od-button"><i class="fa fa-search"></i>&nbsp;
-                                    খুঁজুন</button>
-                            </div>
-                        </div>
-                    </div>
+                    <SearchForm :translations :locale />
+
+
 
                 </div>
             </div>
@@ -216,7 +168,7 @@ document.body.classList.add("frontend.home");
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
 </section> -->
         <input type="hidden" id="current_page_name" value="search_page">
         <input type="hidden" id="page_type" value="home">

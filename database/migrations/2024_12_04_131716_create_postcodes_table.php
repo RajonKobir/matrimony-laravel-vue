@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('postcodes', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('name', 100);
-            $table->string('email', 100)->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 500);
-            $table->string('admin_role', 20)->default('admin');
-            $table->rememberToken();
+            $table->unsignedSmallInteger('division_id')->nullable();
+            $table->unsignedSmallInteger('district_id')->nullable();
+            $table->string('upazila_name', 50);
+            $table->string('post_office_name', 50);
+            $table->string('post_code', 50);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('postcodes');
     }
 };

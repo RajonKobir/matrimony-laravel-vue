@@ -27,7 +27,7 @@ defineProps({
 <template>
 
     <GuestLayout :translations :locale :locales :canLogin :canRegister>
-        <Homepage :translations />
+        <Homepage :translations :locale />
     </GuestLayout>
 
 </template>

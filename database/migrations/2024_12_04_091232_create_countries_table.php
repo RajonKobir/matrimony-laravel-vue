@@ -12,10 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('countries', function (Blueprint $table) {
-            $table->increments('id');
+            $table->smallIncrements('id');
+            $table->unsignedSmallInteger('region_id')->default(142);
             $table->unsignedSmallInteger('country_id')->nullable();
-            $table->unsignedSmallInteger('country_code')->nullable();
-            $table->string('country_name');
+            $table->unsignedSmallInteger('country_phone_code');
+            $table->string('country_name', 50);
+            $table->string('country_bn_name', 50);
+            $table->string('country_short_name', 3);
             $table->unsignedInteger('country_population')->nullable();
             $table->timestamps();
         });

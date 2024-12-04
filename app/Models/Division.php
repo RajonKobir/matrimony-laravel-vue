@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Country extends Model
+class Division extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'region_id',
         'country_id',
-        'country_phone_code',
-        'country_name',
-        'country_bn_name',
-        'country_short_name',
-        'country_population',
+        'division_id',
+        'division_name',
+        'division_bn_name',
+        'division_lat',
+        'division_long',
+        'division_population',
     ];
 }

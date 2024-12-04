@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // to add google auth to users table
-            $table->string('google_id')->nullable()->after('password');
+            $table->string('google_id', 1000)->nullable()->after('password');
         });
     }
 

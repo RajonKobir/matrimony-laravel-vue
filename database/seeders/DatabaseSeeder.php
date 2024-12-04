@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-use App\Models\Country;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,6 +18,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             CountrySeeder::class,
+            DivisonSeeder::class,
+            DistrictSeeder::class,
+            UpazilaSeeder::class,
+            PostcodeSeeder::class,
         ]);
 
         // User::factory(10)->create();

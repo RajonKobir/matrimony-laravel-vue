@@ -30,13 +30,42 @@ header{
   z-index: -999;
 }
 @keyframes raj_the_dev {
-  0% { 
-    top: -100px; 
+  0% {
+    top: -100px;
   }
-  100% { 
-    top: 0; 
+  100% {
+    top: 0;
   }
 }
+
+.od-location-dropdown-trigger {
+    transition: .2s;
+    text-decoration: none;
+    width: 100%;
+    border: 1px solid #522b79 !important;
+}
+
+.dropdown_popup_amimation {
+    animation-name: raj_the_dev_2;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-in-out;
+}
+@keyframes raj_the_dev_2 {
+    0% {
+      top: -50px;
+    }
+    100% {
+      top: 0;
+    }
+}
+
+
+
+
+
+
+
+
 .select2-container {
   box-sizing:border-box;
   display:inline-block;
@@ -1425,14 +1454,14 @@ a:hover {
   animation-timing-function: ease-in-out;
 }
 @keyframes try_this {
-  0% { 
+  0% {
     position: absolute !important;
-    top: -100px; 
+    top: -100px;
     display: none;
   }
-  100% { 
+  100% {
     position: absolute !important;
-    top: 0; 
+    top: 0;
     display: block;
   }
 }
@@ -1718,9 +1747,7 @@ a:hover {
   color:#fff;
   top:0px
 }
-.od-location-dropdown a {
-  text-decoration:none
-}
+
 .irs--flat .irs-bar,
 .irs--flat .irs-handle>i:first-child,
 .irs--flat .irs-from,
@@ -4261,7 +4288,7 @@ button.od-bio-create-btn {
   top:calc(50% - 2.5px)
 }
 .od-location-dropdown .odl-wrap {
-  display:none;
+  /* display:none; */
   position:absolute;
   background:#fff;
   z-index:100;
@@ -4315,25 +4342,26 @@ button.od-bio-create-btn {
 .od-location-dropdown .odl-nav::-webkit-scrollbar-thumb:hover {
   background:#5b5b5b
 }
-.od-location-dropdown .odl-nav li:last-child a {
+.od-location-dropdown .odl-nav li:last-child button {
   border-bottom:0
 }
-.od-location-dropdown .odl-nav a {
+.od-location-dropdown .odl-nav button {
+  text-decoration: underline;
   border-bottom:1px solid #faf9fb;
   position:relative;
   display:block;
   padding:5px 15px;
   color:#8a8a8a
 }
-.od-location-dropdown .odl-nav a:after {
+.od-location-dropdown .odl-nav button:after {
   position:absolute;
-  right:10px;
+  right: 0;
   content:"";
   font-family:"FontAwesome";
   top:calc(50% - 10px)
 }
-.od-location-dropdown .odl-nav a:hover,
-.od-location-dropdown .odl-nav a:focus {
+.od-location-dropdown .odl-nav button:hover,
+.od-location-dropdown .odl-nav button:focus {
   background:#faf9fb
 }
 .od-location-dropdown .od-selected-location {

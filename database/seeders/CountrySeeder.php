@@ -14,8 +14,11 @@ class CountrySeeder extends Seeder
     public function run(): void
     {
         DB::table('countries')->insert([
+            'country_id' => 880,
+            'country_phone_code' => 880,
             'country_name' => 'Bangladesh',
-            'country_code' => 880,
+            'country_bn_name' => 'বাংলাদেশ',
+            'country_short_name' => 'BD',
         ]);
     }
 }

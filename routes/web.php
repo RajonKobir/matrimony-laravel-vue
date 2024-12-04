@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Auth\Admin\AdminAuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,11 @@ Route::get('/localization/{locale}', LocalizationController::class)->name('local
 
 
 Route::middleware(Localization::class)->group(function(){
+
+    // Address Controllers
+    Route::prefix('/address')->controller(AddressController::class)->name('address.')->group(function () {
+        Route::post('/address/{country_id}', 'getDivision')->name('getDivisionsByCountryId');
+    });
 
     Route::get('/', function () {
         return Inertia::render('Welcome', [
@@ -69,6 +75,7 @@ Route::middleware(Localization::class)->group(function(){
         // Route::post('/sendSelected', 'sendSelectedMail')->name('sendSelectedMail');
         // Route::get('/send-mail/{type?}', 'sendMailForm')->where(['type' => '^(facebook|twitter)$'])->name('send');
     });
+
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');

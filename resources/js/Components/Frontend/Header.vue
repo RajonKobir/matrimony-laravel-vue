@@ -15,19 +15,19 @@ const props = defineProps({
 
 onMounted(() => {
     // smooth sticky header
-    let element = document.querySelector('#main_header'); 
-    let element2 = document.querySelector('#main_header_inner'); 
+    let element = document.querySelector('#main_header');
+    let element2 = document.querySelector('#main_header_inner');
     let isPositionSticky = (element.style.position == 'sticky');
 
-    window.addEventListener("scroll", function(e){ 
+    window.addEventListener("scroll", function(e){
         e.preventDefault();
-        if (window.scrollY > 200 && !isPositionSticky){ 
+        if (window.scrollY > 200 && !isPositionSticky){
             element.classList.add("amimate_header");
             element2.classList.add("header_transparent_background");
         }else {
             element.classList.remove("amimate_header");
             element2.classList.remove("header_transparent_background");
-        } 
+        }
     });
 
     document.querySelector(".od-mobile-menu-trigger").addEventListener("click", function(e){
@@ -90,7 +90,7 @@ onMounted(() => {
                                         <div class="od-dropdown-menu-container od-animate od-slideIn">
                                             <div class="od-dropdown-menu-content">
                                                 <ul class="od-dropdown-menu-lists">
-                                                    <li v-for="lang in locales">
+                                                    <li v-for="lang in locales" :key="lang.id">
                                                             <Link v-if="lang != locale" :href="route('localization', lang)">
                                                                 {{ lang == 'en' ? 'English' : 'বাংলা' }}
                                                             </Link>
@@ -122,7 +122,7 @@ onMounted(() => {
                                             <div class="od-dropdown-menu-container od-animate od-slideIn">
                                                 <div class="od-dropdown-menu-content">
                                                     <ul class="od-dropdown-menu-lists">
-                                                        <li v-for="lang in locales">
+                                                        <li v-for="lang in locales" :key="lang.id">
                                                             <Link v-if="lang != locale" :href="route('localization', lang)">
                                                                 {{ lang == 'en' ? 'English' : 'বাংলা' }}
                                                             </Link>
