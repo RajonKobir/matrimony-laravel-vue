@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // to add google auth to users table
-            $table->string('password')->nullable()->change();
             $table->string('google_id')->nullable()->after('password');
         });
     }
@@ -23,12 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if ( !Schema::hasColumn('users', 'facebook_id')){
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('password')->change();
-            });
-        }
-
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('google_id');
         });

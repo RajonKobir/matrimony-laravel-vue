@@ -28,9 +28,8 @@ document.body.classList.add("frontend.home");
                         </h1>
                         <h2>{{ translations.homepage.main_sub_heading_1 }}</h2>
                         <div class="od-home-hadith-sec">
-                            <p>যে ব্যক্তি বিয়ে করলো সে তার অর্ধেক দ্বীন পূর্ণ করে ফেললো। বাকি অর্ধেকের জন্য সে আল্লাহকে
-                                ভয় করুক। -</p>
-                            <span>(বায়হাকী, শু’আবুল ঈমান –৫৪৮৬)</span>
+                            <p>{{ translations.homepage.quran_qoute_1 }}। -</p>
+                            <span>({{ translations.homepage.quran_qoute_1_source }})</span>
                         </div>
                     </div>
 
@@ -38,46 +37,24 @@ document.body.classList.add("frontend.home");
                         <div class="od-search-fields">
                             <div class="od-search-option-label">আমি খুঁজছি</div>
                             <div class="od-search-option-input">
-                                <select
-                                    class="select2 od-biodata-search-control dropdown-field select2-hidden-accessible"
-                                    data-field_id="2" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                                <select name="search_gender">
                                     <option value="no_selected" data-select2-id="3">সকল</option>
                                     <option value="3">পাত্রের বায়োডাটা</option>
                                     <option value="4">পাত্রীর বায়োডাটা</option>
-                                </select><span class="select2 select2-container select2-container--default" dir="ltr"
-                                    data-select2-id="2" style="width: 255px;"><span class="selection"><span
-                                            class="select2-selection select2-selection--single" role="combobox"
-                                            aria-haspopup="true" aria-expanded="false" tabindex="0"
-                                            aria-disabled="false" aria-labelledby="select2-9wza-container"><span
-                                                class="select2-selection__rendered" id="select2-9wza-container"
-                                                role="textbox" aria-readonly="true" title="সকল">সকল</span><span
-                                                class="select2-selection__arrow" role="presentation"><b
-                                                    role="presentation"></b></span></span></span><span
-                                        class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                </select>
                             </div>
                         </div>
                         <div class="od-search-fields">
                             <div class="od-search-option-label">বৈবাহিক অবস্থা</div>
                             <div class="od-search-option-input">
-                                <select
-                                    class="select2 od-biodata-search-control dropdown-field select2-hidden-accessible"
-                                    data-field_id="3" data-select2-id="4" tabindex="-1" aria-hidden="true">
+                                <select name="search_marriage_status">
                                     <option value="no_selected" data-select2-id="6">সকল</option>
                                     <option value="5">অবিবাহিত</option>
                                     <option value="6">বিবাহিত</option>
                                     <option value="7">ডিভোর্সড</option>
                                     <option value="8">বিধবা</option>
                                     <option value="9">বিপত্নীক</option>
-                                </select><span class="select2 select2-container select2-container--default" dir="ltr"
-                                    data-select2-id="5" style="width: 255px;"><span class="selection"><span
-                                            class="select2-selection select2-selection--single" role="combobox"
-                                            aria-haspopup="true" aria-expanded="false" tabindex="0"
-                                            aria-disabled="false" aria-labelledby="select2-rzf2-container"><span
-                                                class="select2-selection__rendered" id="select2-rzf2-container"
-                                                role="textbox" aria-readonly="true" title="সকল">সকল</span><span
-                                                class="select2-selection__arrow" role="presentation"><b
-                                                    role="presentation"></b></span></span></span><span
-                                        class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                </select>
                             </div>
                         </div>
                         <div class="od-search-fields">
