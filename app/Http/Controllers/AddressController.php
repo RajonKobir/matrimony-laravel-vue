@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Division;
+use App\Models\District;
+use App\Models\Upazila;
+use App\Models\Postcode;
 
 class AddressController extends Controller
 {
@@ -63,10 +66,28 @@ class AddressController extends Controller
         //
     }
 
-    public function getDivision(string $country_id)
+    public function getDivisions(string $country_id)
     {
         $divisions = Division::all();
         return $divisions;
+    }
+
+    public function getDistricts(string $division_id)
+    {
+        $districts = District::where('division_id', $division_id)->get();
+        return $districts;
+    }
+
+    public function getUpazilas(string $district_id)
+    {
+        $upazilas = Upazila::where('district_id', $district_id)->get();
+        return $upazilas;
+    }
+
+    public function getPostcodes(string $upazila_name)
+    {
+        $postcodes = Postcode::where('upazila_name', 'LIKE', '%' . $upazila_name . '%')->get();
+        return $postcodes;
     }
 
 }

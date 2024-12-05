@@ -19,7 +19,10 @@ Route::middleware(Localization::class)->group(function(){
 
     // Address Controllers
     Route::prefix('/address')->controller(AddressController::class)->name('address.')->group(function () {
-        Route::post('/address/{country_id}', 'getDivision')->name('getDivisionsByCountryId');
+        Route::post('/country_id/{country_id}', 'getDivisions')->name('getDivisionsByCountryId');
+        Route::post('/division_id/{division_id}', 'getDistricts')->name('getDistrictsByDivisionId');
+        Route::post('/district_id/{district_id}', 'getUpazilas')->name('getUpazilasByDistrictId');
+        Route::post('/upazila_name/{upazila_name}', 'getPostcodes')->name('getPostcodesByUpazilaName');
     });
 
     Route::get('/', function () {
