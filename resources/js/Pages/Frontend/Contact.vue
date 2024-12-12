@@ -69,11 +69,15 @@ document.body.classList.add("frontend.contact");
                     </div>
 
                     <div class="mt-1 od-contact-us-form-top od-text-align-center">
-                        <div v-if="$page.props.flash.success" class="alert alert-success alert-dismissible">
-                            {{ $page.props.flash.success }}
+                        <div v-if="$page.props.flash.success" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <div class="alert-body">
+                                {{ $page.props.flash.success }}
+                            </div>
                         </div>
-                        <div v-if="$page.props.flash.error" class="alert alert-danger alert-dismissible">
-                            {{ $page.props.flash.error }}
+                        <div v-if="$page.props.flash.error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <div class="alert-body">
+                                {{ $page.props.flash.error }}
+                            </div>
                         </div>
                     </div>
 
@@ -81,7 +85,7 @@ document.body.classList.add("frontend.contact");
                         <div class="od-contact-us-form-container">
                             <div class="od-card">
                                 <div class="od-card-body">
-                                    
+
                                     <form id="contactUSForm" @submit.prevent="submit">
 
                                         <div class="od-form-group-container">

@@ -22,49 +22,44 @@ document.body.classList.add("frontend.about");
 
 <template>
 
-    <Head title="About" />
+    <Head :title="`${translations.about_page.page_header}`" />
 
     <GuestLayout :translations :locale :locales>
 
         <div class="od-content-main">
             <section id="od_page_container">
                 <div class="od-page-banner">
-                    <h1 class="od-banner-text">আমাদের সম্পর্কে</h1>
+                    <h1 class="od-banner-text">{{ translations.about_page.page_header }}</h1>
                 </div>
                 <div class="od-page-content-main">
                     <div class="od-container">
                         <div class="od-page-content">
-                            <div style="text-align: center;"><span
+                            <div style="text-align: center;">
+                                <span
                                     style="color: rgb(32, 33, 34); font-family: sans-serif; font-size: 24px; text-align: start;">بِسْمِ
-                                    ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</span><br><br></div>নিশ্চই সকল প্রশংসা আল্লাহর।
-                            আমরা তার কাছে আমাদের অন্তরের অনিষ্ট ও আমাদের কাজের অনিষ্ট থেকে আশ্রয় প্রার্থনা করি। দুরুদ ও
-                            সালাম বর্ষিত হোক রাসুল (ﷺ) এর উপর।<br><br>বিয়ে মহান আল্লাহপ্রদত্ত বিশেষ এক নিয়ামত ও রাসুল
-                            (ﷺ) এর একটি গুরুত্বপূর্ণ সুন্নাহ্। কুরআন ও হাদিসে বিয়েকে পবিত্রতার মাধ্যম, দ্বীনের অর্ধেক ও
-                            আর্থিক সচ্ছলতার উপায় হিসেবে উল্লেখ করেছেন। অপরদিকে পাশ্চাত্যবাদের তথাকথিত নারী-পুরুষের
-                            সমতাবিধানের এই অসুস্থ প্রতিযোগিতার পিছনে ছুটতে গিয়ে সমাজে নৈতিক অবক্ষয় ঘটছে। শিক্ষা,
-                            চাকরিতে, বিয়েতে পাশ্চাত্যের সভ্যতাবিবর্জিত অপসংস্কৃতির অনুপ্রবেশের মূল কারন ইসলামি শার'ঈ
-                            বিধান অনুযায়ী না চলা ও পরিপূর্ণ দ্বীনি শিক্ষার অভাব। এর ফলশ্রুতিতে বিয়ে হয়েছে কঠিন আর
-                            যিনা-ব্যভিচার, পরকীয়া, ধর্ষন, আত্মহত্যাসহ বিভিন্ন অবক্ষয়ে সমাজ ভারাক্রান্ত।<br><br>অন্যদিকে
-                            যারা এই ভয়াবহ ফিতনার যুগে স্রোতের প্রতিকূলে গিয়ে সুন্নাহ আঁকড়ে ধরার জন্য পরিবার ও সামাজিক
-                            তথাকথিত রীতিনীতির বিরুদ্ধে সংগ্রাম করছেন তাদের জন্য দ্বীনদার জীবনসঙ্গী খুঁজে পাওয়াটা যেন
-                            অনেক কঠিন হয়ে গিয়েছে। এ সমস্যা সমাধানের জন্যই আমরা ক'জন গুনাহগার বান্দা এমন একটা বাংলাদেশি
-                            ম্যাট্রিমনি প্লাটফর্মের স্বপ্ন দেখেছিলাম। ফলশ্রুতিতে ১ জানুয়ারি ২০২১ অর্ধেকদ্বীন ডটকম যাত্রা
-                            শুরু হয়। আল্লাহ'র বিশেষ বরকতে&nbsp; অর্ধেকদ্বীনের মাধ্যমে খোঁজ পেয়ে ইতিমধ্যে শত শত বিবাহ
-                            সম্পন্ন হয়েছে, আলহামদুলিল্লাহ।&nbsp;<br><br>আমাদের লক্ষ্য হচ্ছে, এ ওয়েবসাইটের মাধ্যমে বিয়ের
-                            জন্য শারীয়াসম্মত ইসলামিক ম্যাট্রিমনি প্লাটফর্ম গড়ে তোলা যার মাধ্যমে দ্বীনদার পাত্রপাত্রী
-                            সন্ধান সহজ করা। জাহেলী সমাজের সকল অপসংস্কৃতি ভেঙ্গে যিনা-ব্যভিচার বন্ধ করে বিবাহে উৎসাহিত
-                            করা, পাত্রীর পরিবারের জন্য চিরঅভিশাপ- যৌতুকের বিরুদ্ধে সবাইকে সচেতন করা এবং নগদ মোহরানায়
-                            সুন্নাহ সম্মত বিয়েকে প্রচলিত করা।<br><br>দ্বীনদার পাত্র-পাত্রী খুঁজে পাওয়া যেন আরও সহজ হয়
-                            এজন্য আমাদের সুদূরপ্রসারী পরিকল্পনা রয়েছে যা নিয়ে আমরা প্রতিনিয়ত গবেষণা করছি। সকল মুসলিম
-                            ভাইবোনদের কাছে এ খেদমত দক্ষতার সাথে অতি শীঘ্রই পৌঁছে দিতে চেষ্টা চালিয়ে যাচ্ছি। আল্লাহ
-                            আমাদের নিয়্যত পবিত্র রাখুন, আমাদের সকল নেককাজ সহজ করুন এবং বারকাহ দান করুন।
-                            আমিন।<br><br><br>
-                            <h3>যোগাযোগ তথ্য</h3><br>
-                            অর্ধেক দ্বীন ম্যারেজ মিডিয়া<br>
-                            ঠিকানাঃ ৫/২৫/গ আউটার স্টেডিয়াম, ময়মনসিংহ, বাংলাদেশ<br>
-                            ট্রেড লাইসেন্স নংঃ ২০২১-০২৬৯৩<br>
-                            যোগাযোগ নাম্বারঃ +৮৮০ ৯৬১৩-৮২০৩০৩<br>
-                            ইমেইলঃ <a href="mailto:support@shadibari.com">support@shadibari.com</a><br><br><br>
+                                    ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+                                </span>
+                                <br><br>
+                            </div>
+                            {{ translations.about_page.quran_quote_1 }}
+                            <br><br>
+                            {{ translations.about_page.quran_explanation_1 }}
+                            <br><br>
+                            {{ translations.about_page.quran_explanation_2 }}
+                            <br><br>
+                            {{ translations.about_page.quran_explanation_3 }}
+                            <br><br>
+                            {{ translations.about_page.quran_explanation_4 }}
+                            <br><br><br>
+                            <h3>
+                                {{ translations.about_page.contact_section_heading }}
+                            </h3>
+                            <br>
+                            {{ translations.company_info.company_title }}<br>
+                            {{ translations.company_info.company_address_text }}<br>
+                            {{ translations.company_info.company_trade_license_text }} <br>
+                            {{ translations.company_info.company_contact_number_text }} <br>
+                            {{ translations.company_info.company_email_text }} <a href="mailto:contact@shadibari.com">contact@shadibari.com</a><br><br><br>
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,7 @@ class GoogleAuthController extends Controller
     public function googleCallback()
     {
         try {
-            
+
             $google_user = Socialite::driver('google')->user();
 
             $user = User::where( 'google_id', $google_user->getId() )->first();
@@ -27,7 +27,7 @@ class GoogleAuthController extends Controller
             // dd($google_user->getId());
 
             if (!$user) {
-               
+
                 $new_user = User::create([
                     'name' => strval($google_user->getName()),
                     'email' => strval($google_user->getEmail()),
@@ -42,12 +42,14 @@ class GoogleAuthController extends Controller
 
             }
 
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('user.dashboard', absolute: false));
 
         } catch (\Throwable $th) {
             //throw $th;
             // dd($th->getMessage());
-            return redirect()->intended(route('login', absolute: false));
+            // return redirect()->intended(route('login', absolute: false));
+            // return redirect()->intended(route('login', absolute: false))->with('error', 'An error occured!');
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 }

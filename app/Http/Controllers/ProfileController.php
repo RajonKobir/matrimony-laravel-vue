@@ -10,18 +10,36 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Route;
 
 class ProfileController extends Controller
 {
+
+    private $pageProps;
+
+    public function __construct(){
+        //initializing
+        $this->pageProps = [
+            'status' => session('status'),
+            'translations' => __('frontend'),
+            'locale' => session('localization', config('app.locale')),
+            'locales' => config('localization.locales'),
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+        ];
+    }
+
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Profile/Edit', [
+        $mustVerifyEmail = [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
+        ];
+        $pageProps = $mustVerifyEmail + $this->pageProps;
+        // return $pageProps;
+        return Inertia::render('Profile/Edit', $pageProps);
     }
 
     /**
@@ -37,7 +55,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('user.profile.edit', $this->pageProps);
     }
 
     /**

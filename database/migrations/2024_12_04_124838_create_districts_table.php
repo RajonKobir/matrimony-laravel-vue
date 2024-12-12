@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('districts', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->unsignedSmallInteger('division_id')->nullable();
-            $table->unsignedSmallInteger('district_id')->nullable();
-            $table->string('district_name', 50);
-            $table->string('district_bn_name', 50);
+            $table->unsignedSmallInteger('district_id')->nullable()->unique();
+            $table->string('district_name', 50)->unique();
+            $table->string('district_bn_name', 50)->unique();
             $table->float('district_lat')->nullable();
             $table->float('district_long')->nullable();
             $table->unsignedInteger('district_population')->nullable();

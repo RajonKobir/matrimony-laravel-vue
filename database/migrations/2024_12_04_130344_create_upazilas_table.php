@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('upazilas', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->unsignedSmallInteger('district_id')->nullable();
-            $table->unsignedSmallInteger('upazila_id')->nullable();
+            $table->unsignedSmallInteger('upazila_id')->nullable()->unique();
             $table->string('upazila_name', 50);
             $table->string('upazila_bn_name', 50);
             $table->unsignedInteger('upazila_population')->nullable();

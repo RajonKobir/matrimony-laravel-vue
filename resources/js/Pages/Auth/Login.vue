@@ -65,6 +65,10 @@ document.body.classList.add("frontend.login");
                     {{ status }}
                 </div>
 
+                <div v-if="$page.props.flash.error" class="alert alert-danger alert-dismissible">
+                    {{ $page.props.flash.error }}
+                </div>
+
                 <div class="mt-4 flex items-center justify-center">
                     <button @click="loginWithGoogle"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"

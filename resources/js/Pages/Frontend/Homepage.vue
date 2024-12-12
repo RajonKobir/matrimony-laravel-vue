@@ -49,13 +49,12 @@ document.body.classList.add("frontend.home");
             </div>
         </section>
         <section class="od-section od-home-call-to-action">
-            <h2> <span>অর্ধেকদ্বীনে</span> সম্পূর্ণ বিনামূল্যে বায়োডাটা তৈরি করা যায়</h2>
+            <h2> <span>Shadibari</span> {{ translations.homepage.biodata_section_heading }}</h2>
             <div class="cta-btn-group">
                 <a href="https://ordhekdeen.com/user/account/edit-biodata" class="od-button"><img
-                        src="https://ordhekdeen.com/images/plus-ico.svg" alt="Plus-icon"> বায়োডাটা তৈরি করুন</a>
+                        src="https://ordhekdeen.com/images/plus-ico.svg" alt="Plus-icon">{{ translations.homepage.biodata_button_text }}</a>
                 <a href="https://youtu.be/1NFkBACLdJU" target="_blank" class="od-button second-btn"><img
-                        src="https://ordhekdeen.com/images/youtube-ico.svg" alt="YouTube-icon"> যেভাবে বায়োডাটা তৈরি
-                    করবেন</a>
+                        src="https://ordhekdeen.com/images/youtube-ico.svg" alt="YouTube-icon">{{ translations.homepage.biodata_instructions_button_text }}</a>
             </div>
         </section>
 
@@ -65,12 +64,12 @@ document.body.classList.add("frontend.home");
                 <div class="od-section-widget-container">
                     <div class="od-section-widget-items od-row">
                         <div class="od-col-12">
-                            <h2> <span>অর্ধেকদ্বীন</span> সেবা গ্রহীতার পরিসংখ্যান</h2>
+                            <h2> <span>Shadibari</span> {{ translations.homepage.user_count_section_heading }}</h2>
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/couple.svg" alt="Couple Icon">
-                                <h4>সর্বমোট পাত্র-পাত্রীর বায়োডাটা</h4>
+                                <h4>{{ translations.homepage.user_count_box_1_title }}</h4>
                                 <h3><span class="od-count od-total-profiles">6,940</span></h3>
 
                             </div>
@@ -78,7 +77,7 @@ document.body.classList.add("frontend.home");
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/male.svg" alt="Male Icon">
-                                <h4>সর্বমোট পাত্রের বায়োডাটা</h4>
+                                <h4>{{ translations.homepage.user_count_box_2_title }}</h4>
                                 <h3><span class="od-count od-total-men-profiles">2,830</span></h3>
 
                             </div>
@@ -86,7 +85,7 @@ document.body.classList.add("frontend.home");
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/female.svg" alt="Female Icon">
-                                <h4>সর্বমোট পাত্রীর বায়োডাটা</h4>
+                                <h4>{{ translations.homepage.user_count_box_3_title }}</h4>
                                 <h3><span class="od-count od-total-female-profiles">4,099</span></h3>
 
                             </div>
@@ -94,7 +93,7 @@ document.body.classList.add("frontend.home");
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/married.svg" alt="Success Icon">
-                                <h4>সর্বমোট সফল বিবাহ</h4>
+                                <h4>{{ translations.homepage.user_count_box_4_title }}</h4>
                                 <h3><span class="od-count od-total-success-stories">2,099</span><span>+</span></h3>
                             </div>
                         </div>
@@ -109,38 +108,35 @@ document.body.classList.add("frontend.home");
                 <div class="od-section-widget-container">
                     <div class="od-section-widget-items od-row">
                         <div class="od-col-12">
-                            <h2> <span>অর্ধেকদ্বীন</span> যেভাবে কাজ করে</h2>
+                            <h2> <span>Shadibari</span> {{ translations.homepage.how_to_section_title }}</h2>
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/hiw-create-biodata.svg"
                                     alt="Create Biodata Icon">
-                                <h3>বায়োডাটা তৈরি করুন</h3>
-                                <p>খুব সহজেই বিনামূল্যে অর্ধেকদ্বীনে বায়োডাটা তৈরি করতে পারবেন।</p>
+                                <h3>{{ translations.homepage.how_to_box_1_title }}</h3>
+                                <p>{{ translations.homepage.how_to_box_1_text }}</p>
                             </div>
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/hiw-search.svg" alt="Search Icon">
-                                <h3>বায়োডাটা খুঁজুন</h3>
-                                <p>বয়স, উপজেলা, পেশা, শিক্ষাগত যোগ্যতা সহ অনেক ফিল্টার ব্যবহার করে সহজেই বায়োডাটা খুঁজতে
-                                    পারবেন।</p>
+                                <h3>{{ translations.homepage.how_to_box_2_title }}</h3>
+                                <p>{{ translations.homepage.how_to_box_2_text }}</p>
                             </div>
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/hiw-contact.svg" alt="Contact Icon">
-                                <h3>যোগাযোগ করুন</h3>
-                                <p>আপনার বায়োডাটা কেউ পছন্দ করলে অথবা আপনি কারো বায়োডাটা পছন্দ করলে সরাসরি অভিভাবকের
-                                    সাথে যোগাযোগ করতে পারবেন।</p>
+                                <h3>{{ translations.homepage.how_to_box_3_title }}</h3>
+                                <p>{{ translations.homepage.how_to_box_3_text }}</p>
                             </div>
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
                                 <img src="https://ordhekdeen.com/images/hiw-success.svg" alt="Success Icon">
-                                <h3>বিবাহ সম্পন্ন করুন</h3>
-                                <p>বায়োডাটা ও কথাবার্তা পছন্দ হলে নিজ দায়িত্বে ভালভাবে খোঁজ নিয়ে সুন্নতি বিবাহ সম্পন্ন
-                                    করুন।</p>
+                                <h3>{{ translations.homepage.how_to_box_4_title }}</h3>
+                                <p>{{ translations.homepage.how_to_box_4_text }}</p>
                             </div>
                         </div>
                     </div>
@@ -154,7 +150,7 @@ document.body.classList.add("frontend.home");
         <div class="od-section-fbreview">
             <div class="od-section-fbreview-items od-row">
             	<div class="od-col-12">
-            		<h2> <span>অর্ধেকদ্বীনের</span> সেবা গ্রহীতাদের মন্তব্য</h2>
+            		<h2> <span>Shadibari তের</span> সেবা গ্রহীতাদের মন্তব্য</h2>
             	</div>
                 <div class="od-section-fbreview-item od-col-12 od-col-sm-6">
                     <div class="od-section-fbreview-item-content">

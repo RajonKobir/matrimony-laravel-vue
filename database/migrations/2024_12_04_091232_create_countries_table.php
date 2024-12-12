@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->unsignedSmallInteger('region_id')->default(142);
-            $table->unsignedSmallInteger('country_id')->nullable();
+            $table->unsignedSmallInteger('country_id')->nullable()->unique();
             $table->unsignedSmallInteger('country_phone_code');
-            $table->string('country_name', 50);
-            $table->string('country_bn_name', 50);
-            $table->string('country_short_name', 3);
+            $table->string('country_name', 50)->unique();
+            $table->string('country_bn_name', 50)->unique();
+            $table->string('country_short_name', 3)->unique();
             $table->unsignedInteger('country_population')->nullable();
             $table->timestamps();
         });

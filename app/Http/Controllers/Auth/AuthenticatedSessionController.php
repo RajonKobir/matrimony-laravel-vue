@@ -13,18 +13,28 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+
+    private $pageProps;
+
+    public function __construct(){
+        //initializing
+        $this->pageProps = [
+            'translations' => __('frontend'),
+            'locale' => session('localization', config('app.locale')),
+            'locales' => config('localization.locales'),
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+        ];
+    }
+
     /**
      * Display the login view.
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
-            'translations' => __('frontend'),
-            'locale' => session('localization', config('app.locale')),
-            'locales' => config('localization.locales'),
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
-        ]);
+        return Inertia::render('Auth/Login', $this->pageProps);
     }
 
     /**
@@ -36,7 +46,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('user.dashboard', absolute: false));
     }
 
     /**

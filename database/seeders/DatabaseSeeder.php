@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             DistrictSeeder::class,
             UpazilaSeeder::class,
             PostcodeSeeder::class,
+            BiodataSeeder::class,
         ]);
 
         // User::factory(10)->create();

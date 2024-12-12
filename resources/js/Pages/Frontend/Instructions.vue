@@ -53,7 +53,7 @@ document.body.classList.add("frontend.instructions");
                             <div class="od-faq-item-list-content">
                                 <div class="od-accordion">
                                     <div class="od-group">
-                                        <a class="od-accordion-link" href="#">অর্ধেকদ্বীন ডটকমে কিভাবে একাউন্ট তৈরি
+                                        <a class="od-accordion-link" href="#">Shadibari ডটকমে কিভাবে একাউন্ট তৈরি
                                             করবো?</a>
                                         <div class="od-body-part">
                                             <p>১) প্রথমে shadibari.com প্রবেশ করুন এবং হোম পেজের উপরের ডান কোণে থাকা
@@ -66,7 +66,7 @@ document.body.classList.add("frontend.instructions");
                                                 করুন। আপনার মোবাইল নাম্বার সঠিক হলে সেখানে একটি ভেরিফিকেশন কোড যাবে।
                                                 নির্ধারিত স্থানে ভেরিফিকেশন কোড প্রবেশ করিয়ে Confirm বাটনে ক্লিক করে
                                                 মোবাইল নাম্বার ভেরিফিকেশন সম্পন্ন করুন।<br> <br>৬) একটি পাসওয়ার্ড
-                                                নির্বাচন করুন।<br> <br>৭) অর্ধেকদ্বীনের <a href="/terms-and-conditions"
+                                                নির্বাচন করুন।<br> <br>৭) Shadibari -র <a href="/terms-and-conditions"
                                                     target="_blank">Terms and Condition</a> এবং <a href="
                                                     /privacy-policy" target="_blank">Privacy Policy</a> এর সাথে একমত
                                                 হলে চেকবক্স চেক করুন। <br><br>৮) Create account বাটনে ক্লিক করে
@@ -77,21 +77,21 @@ document.body.classList.add("frontend.instructions");
                                 </div>
                                 <div class=" od-accordion">
                                     <div class="od-group">
-                                        <a class="od-accordion-link" href="#">অর্ধেকদ্বীন ডটকমে কিভাবে
+                                        <a class="od-accordion-link" href="#">Shadibari ডটকমে কিভাবে
                                             বায়োডাটা জমা দিবো ?</a>
                                         <div class="od-body-part">
-                                            <p>১. প্রথমে অর্ধেকদ্বীনে লগইন করুন। অর্ধেকদ্বীনে অ্যাকাউন্ট
+                                            <p>১. প্রথমে Shadibari তে লগইন করুন। Shadibari তে অ্যাকাউন্ট
                                                 না থাকলে অ্যাকাউন্ট তৈরি করুন।<br><br> ২. লগইন করার পর
                                                 হোম পেজ বা ড্যাশবোর্ড থেকে বায়োডাটা তৈরি করুন বাটনে
                                                 ক্লিক করুন। <br><br>৩. বায়োডাটা তৈরির পূর্বে
-                                                অর্ধেকদ্বীনের শর্ত সমূহ পড়ুন এবং সম্মত হলে চেকবক্স চেক
+                                                Shadibari তের শর্ত সমূহ পড়ুন এবং সম্মত হলে চেকবক্স চেক
                                                 করে বায়োডাটা তৈরি করুন বাটনে ক্লিক করুন। <br><br>৪.
                                                 বায়োডাটা ফর্ম প্রদর্শিত হবে। ফর্মে সকল তথ্য সঠিকভাবে
                                                 দেয়া শেষ হলে বায়োডাটা রিভিউ পেজে প্রবেশ করবেন এবং সব
                                                 তথ্য ভালভাবে পরিদর্শন করে Submit বাটনে ক্লিক করে
-                                                বায়োডাটা জমা দিন। <br><br>৫. কয়েকদিনের মাঝে অর্ধেকদ্বীন
+                                                বায়োডাটা জমা দিন। <br><br>৫. কয়েকদিনের মাঝে Shadibari
                                                 কাস্টমার কেয়ার থেকে আপনার অভিভাবক এবং আপনাকে কল করে
-                                                ভেরিফাই করা হতে পারে।<br><br>৬. অর্ধেকদ্বীন কাস্টমার
+                                                ভেরিফাই করা হতে পারে।<br><br>৬. Shadibari কাস্টমার
                                                 কেয়ার কর্তৃক আপনার বায়োডাটা রিভিউ শেষে একটি মেইল দিয়ে
                                                 এপ্রুভ অথবা নট-এপ্রুভ স্ট্যাটাস জানানো হবে ইন শা আল্লাহ
                                                 । <br><br><br><b> লক্ষণীয়ঃ বায়াডাটায় সকল তথ্য স্পষ্ট করে
@@ -101,15 +101,15 @@ document.body.classList.add("frontend.instructions");
                                 </div>
                                 <div class="od-accordion">
                                     <div class="od-group">
-                                        <a class="od-accordion-link" href="#">অর্ধেকদ্বীনে বায়োডাটা এডিট করবো
+                                        <a class="od-accordion-link" href="#">Shadibari তে বায়োডাটা এডিট করবো
                                             কিভাবে?</a>
                                         <div class="od-body-part">
-                                            <p>১. প্রথমে অর্ধেকদ্বীন একাউন্টে লগইন করুন।<br><br>২. লগইন করার
+                                            <p>১. প্রথমে Shadibari একাউন্টে লগইন করুন।<br><br>২. লগইন করার
                                                 উপরের ডান কোণে থাকা ইউজার আইকনে ক্লিক করুন।<br><br>৩. বায়োডাটা
                                                 এডিট করুন বাটনে ক্লিক করুন।<br><br>৪. বায়োডাটা ফর্মটি প্রদর্শিত
                                                 হবে, আপনি যে তথ্যটি এডিট করতে চান সেখানে প্রবেশ করে এডিট শেষে
                                                 বায়োডাটা রিভিউ করুন এবং Submit বাটনে ক্লিক করুন।<br><br>৫.
-                                                অর্ধেকদ্বীন কাস্টমার কেয়ার থেকে আপনার এডিট করা তথ্য রিভিউ করা
+                                                Shadibari কাস্টমার কেয়ার থেকে আপনার এডিট করা তথ্য রিভিউ করা
                                                 হবে।<br><br>৬. রিভিউ শেষে একটি মেইল দিয়ে এপ্রুভ অথবা নট-এপ্রুভ
                                                 স্ট্যাটাস জানানো হবে ইন শা আল্লাহ। </p>
                                         </div>
@@ -117,14 +117,14 @@ document.body.classList.add("frontend.instructions");
                                 </div>
                                 <div class="od-accordion">
                                     <div class="od-group">
-                                        <a class="od-accordion-link" href="#">অর্ধেকদ্বীনে বায়োডাটা সাময়িক সময়ের
+                                        <a class="od-accordion-link" href="#">Shadibari তে বায়োডাটা সাময়িক সময়ের
                                             জন্য হাইড করবো কিভাবে?</a>
                                         <div class="od-body-part">
                                             <p><b>পাত্র/পাত্রী পক্ষের সাথে বিয়ের কথা চলা অবস্থায় আপনার বায়োডাটা
                                                     হাইড করে রাখুন।</b> এছাড়াও আপনি যে কোনো কারণে যে কোনো
                                                 সময়কালের জন্য এক ক্লিকে বায়োডাটা হাইড করে রাখতে পারবেন। অর্থাৎ
                                                 আপনার বায়োডাটা সার্চ রেজাল্টে দেখানো হবে না।<br><br><br>১.
-                                                প্রথমে অর্ধেকদ্বীন একাউন্টে লগইন করুন।<br><br>২. লগইন করার পর
+                                                প্রথমে Shadibari একাউন্টে লগইন করুন।<br><br>২. লগইন করার পর
                                                 ড্যাশবোর্ডে যান অথবা উপরের ডান কোণে থাকা ইউজার আইকনে ক্লিক
                                                 করুন।<br><br>৩. Biodata Status এর নিচে স্লাইড বাটনে ক্লিক
                                                 করুন।<br><br>৪. আপনাকে একটি কনফার্মেশন পপআপ দেখাবে।<br><br>৫. Ok
@@ -136,11 +136,11 @@ document.body.classList.add("frontend.instructions");
                                 </div>
                                 <div class="od-accordion">
                                     <div class="od-group">
-                                        <a class="od-accordion-link" href="#">অর্ধেকদ্বীনে বায়োডাটা ডিলিট করবো
+                                        <a class="od-accordion-link" href="#">Shadibari তে বায়োডাটা ডিলিট করবো
                                             কিভাবে?</a>
                                         <div class="od-body-part">
                                             <p>আপনি যে কোনো সময় আপনার বায়োডাটা নিজেই ডিলিট করতে
-                                                পারবেন।<br><br><br>১. প্রথমে অর্ধেকদ্বীন একাউন্টে লগইন
+                                                পারবেন।<br><br><br>১. প্রথমে Shadibari একাউন্টে লগইন
                                                 করুন।<br><br>২. লগইন করার পর ড্যাশবোর্ডে যান অথবা উপরের ডান কোণে
                                                 থাকা ইউজার আইকনে ক্লিক করুন।<br><br>৩. সেটিংস এ ক্লিক
                                                 করুন।<br><br>৪. বায়োডাটা ডিলিট বাটনে ক্লিক করে ডিলিট সম্পন্ন
@@ -169,9 +169,9 @@ document.body.classList.add("frontend.instructions");
                                     <div class="od-group">
                                         <a class="od-accordion-link" href="#">কিভাবে কানেকশন ক্রয় করবো?</a>
                                         <div class="od-body-part">
-                                            <p>অর্ধেকদ্বীন ডটকমে একজন পাত্র বা পাত্রীর অভিভাবকের যোগাযোগের
+                                            <p>Shadibari ডটকমে একজন পাত্র বা পাত্রীর অভিভাবকের যোগাযোগের
                                                 নাম্বার দেখতে একটি কানেকশন ব্যবহার করতে হয়। নিম্নবর্ণিত উপায়ে
-                                                কানেকশন ক্রয় করতে পারবেন- <br><br><br>১. প্রথমে অর্ধেকদ্বীন
+                                                কানেকশন ক্রয় করতে পারবেন- <br><br><br>১. প্রথমে Shadibari
                                                 ড্যাসবোর্ডে প্রবেশ করুন। <br><br>২. “কানেকশন কিনুন” এই বাটনটিতে
                                                 ক্লিক করুন। <br><br>৩. এই পেজে ৩ টি কানেকশন প্যাকেজ দেখতে পাবেন।
                                                 আপনার প্রয়োজন অনুযায়ী একটি প্যাকেজ নির্বাচন করুন এবং Purchage
@@ -204,7 +204,7 @@ document.body.classList.add("frontend.instructions");
                                                 বাটনে ক্লিক করুন। <br><br>২) নির্ধারিত ফর্ম পূরণ করে আপনার
                                                 অভিযোগ দাখিল করুন। কাস্টমার কেয়ার থেকে আপনার অভিযোগ যাচাই করা
                                                 হবে এবং খুব দ্রুত আপনাকে জানানো হবে ইন শা আল্লাহ।
-                                                <br><br><br>বিস্তারিত জানতে অর্ধেকদ্বীনের <a href="/refund-policy"
+                                                <br><br><br>বিস্তারিত জানতে Shadibari তের <a href="/refund-policy"
                                                     target="_blank">Refund Policy</a><a href="/refund-policy"
                                                     target="_blank"></a> দেখুন।
                                             </p>
@@ -213,7 +213,7 @@ document.body.classList.add("frontend.instructions");
                                 </div>
                                 <div class="od-accordion">
                                     <div class="od-group">
-                                        <a class="od-accordion-link" href="#">আমি অর্ধেকদ্বীন একাউন্ট ডিলিট করতে
+                                        <a class="od-accordion-link" href="#">আমি Shadibari একাউন্ট ডিলিট করতে
                                             চাই। আমার অবশিষ্ট কানেক্ট কাজে লাগছেনা, কিভাবে টাকা রিফান্ড পেতে
                                             পারি?</a>
                                         <div class="od-body-part">

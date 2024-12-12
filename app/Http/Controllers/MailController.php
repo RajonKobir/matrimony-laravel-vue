@@ -24,6 +24,8 @@ class MailController extends Controller
             'message' => 'required|string',
         ]);
 
+        return redirect()->back()->with('error', 'tdgddbd');
+
         // $subscribers = Subscriber::all();
         // foreach ($subscribers as $subscriber) {
         //     Mail::to($subscriber->email)->send(new CampaignEmail($mailData));
@@ -59,12 +61,12 @@ class MailController extends Controller
     //     // Get emails from request and split them into an array
     //     // $emails = explode(',', $emails);
     //     $emails = preg_split('/[\s,;]+/', $emails);
-    
+
     //     $emails = $this->filterValidEmails($emails);
 
     //     // var_dump($emails);
     //     // return;
-        
+
     //     if (count($emails) > 0) {
     //         foreach($emails as $email) {
     //             if( $emailservers !== null ){
@@ -89,7 +91,7 @@ class MailController extends Controller
     //                     }
     //                 }
     //             }
-                
+
     //             Mail::to($email)->send(new CampaignEmail($mailData));
     //         }
     //     }else {
@@ -98,7 +100,7 @@ class MailController extends Controller
 
     //     return redirect()->route('admin.mails.selectedMail')->with('success', 'Emails has been sent successfully!');
     // }
-    
+
 
     public function filterValidEmails($emails) {
         $filteredEmails = [];

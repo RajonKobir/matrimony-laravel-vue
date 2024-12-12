@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('divisions', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->unsignedSmallInteger('country_id')->default(880);
-            $table->unsignedSmallInteger('division_id')->nullable();
-            $table->string('division_name', 50);
-            $table->string('division_bn_name', 50);
+            $table->unsignedSmallInteger('division_id')->nullable()->unique();
+            $table->string('division_name', 50)->unique();
+            $table->string('division_bn_name', 50)->unique();
             $table->float('division_lat')->nullable();
             $table->float('division_long')->nullable();
             $table->unsignedInteger('division_population')->nullable();

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('district_id')->nullable();
             $table->string('upazila_name', 50);
             $table->string('post_office_name', 50);
-            $table->string('post_code', 50);
+            $table->string('post_code', 50)->unique();
             $table->timestamps();
         });
     }

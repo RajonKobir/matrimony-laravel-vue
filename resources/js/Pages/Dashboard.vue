@@ -1,36 +1,37 @@
 <script setup>
 import AuthenticatedLayout from '../Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import Biodata from './User/Biodata.vue';
 
-
+defineProps({
+    translations: {
+        type: Object,
+    },
+    locale: {
+        type: String,
+    },
+    locales: {
+        type: Array,
+    },
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
+});
 
 document.body.classList.remove(...document.body.classList);
-document.body.classList.add("frontend.user_dashboard");
+document.body.classList.add("user.biodata");
 
 </script>
 
 <template>
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
-            >
-                Dashboard
-            </h2>
-        </template>
+    <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
-                >
-                    <div class="p-6 text-gray-900">
-                        You're logged in!
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Biodata :translations :locale :locales />
+
     </AuthenticatedLayout>
 </template>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // to add facebook auth to users table
-            $table->string('facebook_id', 1000)->nullable()->after('password');
+            $table->string('facebook_id', 500)->nullable()->after('password')->unique();
         });
     }
 

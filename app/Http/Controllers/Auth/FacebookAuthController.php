@@ -19,7 +19,7 @@ class FacebookAuthController extends Controller
     public function facebookCallback()
     {
         try {
-            
+
             $facebook_user = Socialite::driver('facebook')->user();
 
             $user = User::where( 'facebook_id', $facebook_user->getId() )->first();
@@ -27,7 +27,7 @@ class FacebookAuthController extends Controller
             dd($facebook_user);
 
             if (!$user) {
-               
+
                 $new_user = User::create([
                     'name' => strval($facebook_user->getName()),
                     'email' => strval($facebook_user->getEmail()),
@@ -42,11 +42,12 @@ class FacebookAuthController extends Controller
 
             }
 
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('user.dashboard', absolute: false));
 
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage());
+            // dd($th->getMessage());
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 }

@@ -12,6 +12,21 @@ defineProps({
     status: {
         type: String,
     },
+    translations: {
+        type: Object,
+    },
+    locale: {
+        type: String,
+    },
+    locales: {
+        type: Array,
+    },
+    canLogin: {
+        type: Boolean,
+    },
+    canRegister: {
+        type: Boolean,
+    },
 });
 
 document.body.classList.remove(...document.body.classList);
@@ -22,7 +37,7 @@ document.body.classList.add("frontend.edit_profile");
 <template>
     <Head title="Profile" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
