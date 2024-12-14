@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
+
 class FrontEndController extends Controller
 {
 

@@ -27,7 +27,7 @@ document.body.classList.add("user.biodata");
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Biodata"/>
 
     <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister>
 

@@ -24,36 +24,44 @@ services:
       - laravel
 
   db:
-    image: mysql:8.0
-    container_name: shadibari-db
+    image: mysql:latest
+    container_name: shadibari-mysql
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+    #   MYSQL_HOST: 127.0.0.1
+    #   MYSQL_ROOT_HOST: 127.0.0.1
+    #   MYSQL_UNIX_PORT: 3306
+    #   MYSQLX_UNIX_PORT: 3306
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_ROOT_PASSWORD:
       MYSQL_DATABASE: shadibari
       MYSQL_USER: shadibari
-      MYSQL_PASSWORD: shadibari
+      MYSQL_PASSWORD:
     volumes:
-      - db-data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     ports:
       - "3306:3306" # db port
+    # extra_hosts:
+    #   - localhost:127.0.0.1
     networks:
       - laravel
 
   phpmyadmin:
     depends_on:
       - db
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin/phpmyadmin:latest
     container_name: shadibari-phpmyadmin
     restart: always
     ports:
       - "8080:80"
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD:
     networks:
       - laravel
 
 volumes:
-  db-data:
+  db_data:
 
 networks:
   laravel:

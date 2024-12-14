@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Biodata;
 
 class BiodataController extends Controller
 {
@@ -17,9 +18,9 @@ class BiodataController extends Controller
     /**
      * Store the newly created resource in storage.
      */
-    public function store(Request $request): never
+    public function store(Request $request)
     {
-        abort(404);
+
     }
 
     /**
@@ -27,7 +28,7 @@ class BiodataController extends Controller
      */
     public function show()
     {
-        //
+
     }
 
     /**
@@ -53,4 +54,39 @@ class BiodataController extends Controller
     {
         abort(404);
     }
+
+
+    public function getSingleBiodata(string $user_id){
+        $biodata = Biodata::where('user_id', $user_id)->get();
+        return $biodata;
+    }
+
+
+    public function partialCreateOrUpdate(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|string',
+            'media_agreement' => 'boolean',
+        ]);
+        $biodata = Biodata::where('user_id', $request->user_id)->get();
+        if ($request->media_agreement){
+            if( count($biodata) == 1 ){
+                $biodata = Biodata::where('user_id', $request->user_id)->update([
+                    'media_agreement' => $request->media_agreement,
+                ]);
+            }
+            elseif( count($biodata) > 1 ){
+                return redirect()->back()->with('error', 'Error!');
+            }
+            else{
+                $biodata = new Biodata();
+                $biodata->user_id = $request->user_id;
+                $biodata->media_agreement = $request->media_agreement;
+                $biodata->save();
+            }
+        }
+        return $biodata;
+    }
+
+
 }

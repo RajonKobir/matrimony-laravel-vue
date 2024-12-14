@@ -6,6 +6,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\Auth\Admin\AdminAuthController;
+use App\Http\Controllers\BiodataController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,16 +15,6 @@ use App\Http\Middleware\Localization;
 
 
 require __DIR__.'/auth.php';
-
-
-//initializing
-$pageProps = [
-    'translations' => __('frontend'),
-    'locale' => session('localization', config('app.locale')),
-    'locales' => config('localization.locales'),
-    'canLogin' => Route::has('login'),
-    'canRegister' => Route::has('register'),
-];
 
 
 Route::get('/localization/{locale}', LocalizationController::class)->name('localization');
@@ -56,6 +47,15 @@ Route::middleware(Localization::class)->group(function(){
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+        //biodata controllers
+        Route::prefix('/biodata')->controller(BiodataController::class)->name('biodata.')->group(function () {
+            Route::get('/{user_id}', 'getSingleBiodata')->middleware('verified')->name('get');
+            Route::post('/', 'partialCreateOrUpdate')->middleware('verified')->name('post');
+        });
+
+
     });
 
 

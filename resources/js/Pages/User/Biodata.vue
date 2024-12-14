@@ -36,6 +36,8 @@ function changeTab(index) {
 <template>
     <div class="w-full min-h-screen">
         <TabGroup :selectedIndex="selectedTab" @change="changeTab">
+
+
             <TabList class="flex justify-center space-x-1 rounded-xl bg-blue-900/20 p-1">
                 <Tab v-slot="{ selected }" :class="['mx-2']">
                     <button
@@ -68,6 +70,8 @@ function changeTab(index) {
                     </button>
                 </Tab>
             </TabList>
+
+
 
             <TabPanels class="mt-2">
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
