@@ -3,8 +3,8 @@
 return [
 
     'locales' => [
-        'en',
         'bn',
+        'en',
     ],
 
 ];

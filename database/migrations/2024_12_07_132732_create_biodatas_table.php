@@ -17,13 +17,15 @@ return new class extends Migration
             $table->bigInteger('user_id')->unique();
             $table->boolean('is_approved')->nullable();
             $table->string('biodata_code', length: 10)->unique()->nullable();
+            $table->string('biodata_completion', length: 5)->nullable();
+            $table->boolean('pending_approve')->nullable();
 
             //personal data starts here
             $table->boolean('media_agreement')->nullable();
             $table->string('gender', length: 10)->nullable();
             $table->date('birth_date')->nullable();
             $table->string('skin_color', length: 20)->nullable();
-            $table->string('height', length: 10)->nullable();
+            $table->string('height', length: 20)->nullable();
             $table->string('weight', length: 20)->nullable();
             $table->string('blood_group', length: 10)->nullable();
             $table->string('maritial_status', length: 20)->nullable();
@@ -107,7 +109,7 @@ return new class extends Migration
             $table->string('deserved_district', length: 20)->nullable();
             $table->tinyInteger('deserved_age')->nullable();
             $table->string('deserved_skin_color', length: 20)->nullable();
-            $table->string('deserved_height', length: 10)->nullable();
+            $table->string('deserved_height', length: 20)->nullable();
             $table->string('deserved_akida_majhhab', length: 20)->nullable();
             $table->string('deserved_family_condition', length: 20)->nullable();
             $table->string('deserved_job_title', length: 20)->nullable();

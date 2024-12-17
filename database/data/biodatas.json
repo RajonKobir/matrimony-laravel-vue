@@ -3,7 +3,9 @@
     {
       "user_id": 1,
       "biodata_code": "1234",
-      "is_approved": true,
+      "biodata_completion": "0%",
+      "is_approved": false,
+      "pending_approve": true,
       "media_agreement": true,
       "gender": "male",
       "birth_date": "1991-06-15",

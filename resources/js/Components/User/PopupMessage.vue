@@ -17,11 +17,14 @@ const emits = defineEmits([
 
 
 const props = defineProps({
+    translations: {
+        type: Object,
+    },
     isModalOpen: {
         type: Boolean,
     },
     modalMessage: {
-        type: String,
+        type: Object,
     },
 });
 
@@ -74,11 +77,11 @@ function closeModal() {
                 as="h3"
                 class="text-lg font-medium leading-6 text-gray-900"
               >
-                Something went wrong!
+                {{ modalMessage.modalHeading }}
               </DialogTitle>
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  {{ modalMessage }}
+                  {{ modalMessage.modalDescription }}
                 </p>
               </div>
 
@@ -88,7 +91,7 @@ function closeModal() {
                   class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   @click="closeModal"
                 >
-                  Got it, thanks!
+                    {{ translations.modal_messages.button_text }}
                 </button>
               </div>
             </DialogPanel>

@@ -46,9 +46,9 @@ const current_domain = window.location.host;
     <div class="od-container-main">
 
         <Header :translations :locale :locales :canLogin :canRegister />
-
+        <div class="container mx-auto">
             <slot />
-
+        </div>
         <Footer />
 
     </div>

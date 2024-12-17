@@ -22,7 +22,9 @@ class BiodataSeeder extends Seeder
             DB::table('biodatas')->insert([
                 'user_id' => $biodata_value->user_id,
                 'biodata_code' => $biodata_value->biodata_code,
+                'biodata_completion' => $biodata_value->biodata_completion,
                 'is_approved' => $biodata_value->is_approved,
+                'pending_approve' => $biodata_value->pending_approve,
                 'media_agreement' => $biodata_value->media_agreement,
                 'gender' => $biodata_value->gender,
                 'birth_date' => $biodata_value->birth_date,

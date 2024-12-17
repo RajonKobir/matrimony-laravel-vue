@@ -19,7 +19,6 @@ class LocalizationController extends Controller
         ]);
 
         return redirect()->back();
-        // return $locale;
 
     }
 }

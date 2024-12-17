@@ -52,7 +52,9 @@ Route::middleware(Localization::class)->group(function(){
         //biodata controllers
         Route::prefix('/biodata')->controller(BiodataController::class)->name('biodata.')->group(function () {
             Route::get('/{user_id}', 'getSingleBiodata')->middleware('verified')->name('get');
-            Route::post('/', 'partialCreateOrUpdate')->middleware('verified')->name('post');
+            Route::post('/update_media_agreement', 'updateMediaAgreement')->middleware('verified')->name('post.update_media_agreement');
+            Route::post('/update_gender', 'updateGender')->middleware('verified')->name('post.update_gender');
+            Route::post('/update_personal_biodata', 'updatePersonalBiodata')->middleware('verified')->name('post.update_personal_biodata');
         });
 
 
