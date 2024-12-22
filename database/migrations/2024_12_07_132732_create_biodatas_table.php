@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('biodata_code', length: 10)->unique()->nullable();
             $table->string('biodata_completion', length: 5)->nullable();
             $table->boolean('pending_approve')->nullable();
+            $table->tinyInteger('running_tab')->default(0);
 
             //personal data starts here
             $table->boolean('media_agreement')->nullable();
@@ -44,11 +45,11 @@ return new class extends Migration
             $table->string('temporary_post_office', length: 40)->nullable();
             $table->string('temporary_post_code', length: 6)->nullable();
             $table->boolean('address_hide')->nullable();
-            $table->string('job_title', length: 50 )->nullable();
+            $table->string('job_title', length: 100 )->nullable();
             $table->string('job_details', length: 200)->nullable();
             $table->string('job_location', length: 50)->nullable();
             $table->string('monthly_income', length: 20)->nullable();
-            $table->string('medium_of_study', length: 60)->nullable();
+            $table->string('medium_of_study', length: 100)->nullable();
             $table->boolean('general_selected')->nullable();
             $table->string('general_highest_degree', length: 50)->nullable();
             $table->boolean('general_running')->nullable();

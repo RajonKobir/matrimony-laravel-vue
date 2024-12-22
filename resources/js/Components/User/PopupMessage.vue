@@ -6,7 +6,6 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/vue';
-import { defineEmits } from 'vue';
 
 
 

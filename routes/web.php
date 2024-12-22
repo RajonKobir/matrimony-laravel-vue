@@ -5,7 +5,6 @@ use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FrontEndController;
-use App\Http\Controllers\Auth\Admin\AdminAuthController;
 use App\Http\Controllers\BiodataController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -76,22 +75,5 @@ Route::middleware(Localization::class)->group(function(){
         Route::post('/contact', 'sendMail')->name('frontend.contact.post');
     });
 
-
-
-    // Admin Controller
-    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
-        Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('adminLogin');
-        Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
-
-        Route::group(['middleware' => 'is_admin'], function () {
-            Route::get('/', function () {
-                return view('admin.welcome');
-            })->name('adminDashboard');
-
-        });
-
-        Route::post('logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
-
-    });
 
 });

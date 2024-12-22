@@ -26,6 +26,7 @@ class BiodataSeeder extends Seeder
                 'is_approved' => $biodata_value->is_approved,
                 'pending_approve' => $biodata_value->pending_approve,
                 'media_agreement' => $biodata_value->media_agreement,
+                'running_tab' => $biodata_value->running_tab,
                 'gender' => $biodata_value->gender,
                 'birth_date' => $biodata_value->birth_date,
                 'skin_color' => $biodata_value->skin_color,

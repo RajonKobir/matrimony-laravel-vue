@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, defineEmits, onMounted, onUpdated } from 'vue';
+import { ref, onMounted, onUpdated } from 'vue';
 import axios from 'axios';
 
 const emits = defineEmits([
@@ -36,7 +36,7 @@ let selectCountryInnerHTML = ref(`<div class="odl-head">
     </div>
     <ul class="odl-nav">
         <li>
-            <button action="countryClick" country_id="880" class="selected">
+            <button action="countryClick" country_id="880" country_name="${ props.translations.searchForm.initial_country }" class="selected">
                 ${ props.translations.searchForm.initial_country }
             </button>
         </li>
@@ -49,6 +49,12 @@ let isHidden = ref(true);
 let isSearchAble = ref(false);
 let currentLayer = ref('');
 let selected_country_id = ref('');
+let selectedCountry = ref('');
+let selectedDivision = ref('');
+let selectedDistrict = ref('');
+let selectedUpazila = ref('');
+let selectedPostOffice = ref('');
+let selectedPostCode = ref('');
 
 
 
@@ -114,7 +120,9 @@ const handleLineClicks = (e) => {
 
     else if ( clickedAction === 'countryClick' ) {
         let country_id = e.target.getAttribute('country_id');
+        let country_name = e.target.getAttribute('country_name');
         selected_country_id.value = country_id;
+        selectedCountry.value = country_name;
         axios.post(route('address.getDivisionsByCountryId', country_id))
         .then((response) => {
             selectDivisionInnerHTML.value = `<div class="odl-head">
@@ -136,7 +144,7 @@ const handleLineClicks = (e) => {
                 division_id = item["division_id"];
                 division_name = props.locale == 'en' ? item["division_name"] : item["division_bn_name"];
                 selectDivisionInnerHTML.value += '<li>';
-                selectDivisionInnerHTML.value += '<button action="divisionClick" division_id="'+division_id+'" >';
+                selectDivisionInnerHTML.value += '<button action="divisionClick" division_id="'+division_id+'" division_name="'+division_name+'" >';
                 selectDivisionInnerHTML.value += division_name;
                 selectDivisionInnerHTML.value += '</button>';
                 selectDivisionInnerHTML.value += '</li>';
@@ -154,6 +162,8 @@ const handleLineClicks = (e) => {
 
     else if( clickedAction === 'divisionClick') {
         let division_id = e.target.getAttribute('division_id');
+        let division_name = e.target.getAttribute('division_name');
+        selectedDivision.value = division_name;
         axios.post(route('address.getDistrictsByDivisionId', division_id))
         .then((response) => {
             selectDistrictInnerHTML.value = `<div class="odl-head">
@@ -175,7 +185,7 @@ const handleLineClicks = (e) => {
                 district_id = item["district_id"];
                 district_name = props.locale == 'en' ? item["district_name"] : item["district_bn_name"];
                 selectDistrictInnerHTML.value += '<li>';
-                selectDistrictInnerHTML.value += '<button action="districtClick" district_id="'+district_id+'" >';
+                selectDistrictInnerHTML.value += '<button action="districtClick" district_id="'+district_id+'" district_name="'+district_name+'" >';
                 selectDistrictInnerHTML.value += district_name;
                 selectDistrictInnerHTML.value += '</button>';
                 selectDistrictInnerHTML.value += '</li>';
@@ -193,6 +203,8 @@ const handleLineClicks = (e) => {
 
     else if( clickedAction === 'districtClick') {
         let district_id = e.target.getAttribute('district_id');
+        let district_name = e.target.getAttribute('district_name');
+        selectedDistrict.value = district_name;
         axios.post(route('address.getUpazilasByDistrictId', district_id))
         .then((response) => {
             selectUpazilaInnerHTML.value = `<div class="odl-head">
@@ -216,7 +228,7 @@ const handleLineClicks = (e) => {
                 upazila_name = props.locale == 'en' ? item["upazila_name"] : item["upazila_bn_name"];
                 upazila_en_name = item["upazila_name"];
                 selectUpazilaInnerHTML.value += '<li>';
-                selectUpazilaInnerHTML.value += '<button action="upazilaClick" upazila_name="'+upazila_en_name+'" >';
+                selectUpazilaInnerHTML.value += '<button action="upazilaClick" upazila_en_name="'+upazila_en_name+'" upazila_name="'+upazila_name+'" >';
                 selectUpazilaInnerHTML.value += upazila_name;
                 selectUpazilaInnerHTML.value += '</button>';
                 selectUpazilaInnerHTML.value += '</li>';
@@ -233,8 +245,10 @@ const handleLineClicks = (e) => {
     }
 
     else if( clickedAction === 'upazilaClick') {
+        let upazila_en_name = e.target.getAttribute('upazila_en_name');
         let upazila_name = e.target.getAttribute('upazila_name');
-        axios.post(route('address.getPostcodesByUpazilaName', upazila_name))
+        selectedUpazila.value = upazila_name;
+        axios.post(route('address.getPostcodesByUpazilaName', upazila_en_name))
         .then((response) => {
             selectPostCodeInnerHTML.value = `<div class="odl-head">
                     <button action="goBackHandler" class="od-location-picker-previous">
@@ -274,6 +288,9 @@ const handleLineClicks = (e) => {
     else if( clickedAction === 'postcodeClick') {
         let post_office_name = e.target.getAttribute('post_office_name');
         let post_code = e.target.getAttribute('post_code');
+        selectedPostOffice.value = post_office_name;
+        selectedPostCode.value = post_code;
+
         searchAblePostOffice.value = post_office_name + ' - ' +post_code;
         isHidden.value = true;
         e.target.classList.remove('dropdown_popup_amimation');

@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import PersonalBiodata from '../../Components/User/PersonalBiodata.vue';
 import PopupMessage from '../../Components/User/PopupMessage.vue';
 import { usePage } from '@inertiajs/vue3';
+import axios from 'axios';
 
 
 defineProps({
@@ -21,6 +22,9 @@ defineProps({
 
 // initializing
 const page = usePage();
+const csrf_token = page.props.csrf_token;
+const user_id = page.props.auth.user["id"];
+const single_biodata = ref([]);
 const selectedTab = ref(0);
 const disableTab1 = ref(true);
 const disableTab2 = ref(true);
@@ -29,6 +33,7 @@ const disableTab4 = ref(true);
 const modalMessage = ref({});
 const isModalOpen = ref(false);
 const runningTab = ref(0);
+const selectedGender = ref('');
 
 
 const closeModal = (value) => {
@@ -41,6 +46,11 @@ function changeTab(index) {
 }
 
 
+const onUpdateGender = (gender) => {
+    selectedGender.value = gender;
+}
+
+
 const onCompleteTab = (nextIndex) => {
     switch(nextIndex) {
     case 1:
@@ -48,14 +58,20 @@ const onCompleteTab = (nextIndex) => {
         runningTab.value = 1;
         break;
     case 2:
+        disableTab1.value = false;
         disableTab2.value = false;
         runningTab.value = 2;
         break;
     case 3:
+        disableTab1.value = false;
+        disableTab2.value = false;
         disableTab3.value = false;
         runningTab.value = 3;
         break;
     case 4:
+        disableTab1.value = false;
+        disableTab2.value = false;
+        disableTab3.value = false;
         disableTab4.value = false;
         runningTab.value = 4;
         break;
@@ -74,10 +90,40 @@ const onCompleteTab = (nextIndex) => {
 }
 
 
+
+onMounted(() => {
+
+    axios.get(route('user.biodata.get', {
+        csrf_token,
+        user_id
+    }))
+    .then(function (response) {
+        if( response.data.length == 0){
+            return;
+        }
+        single_biodata.value = response.data[0];
+        onCompleteTab(single_biodata.value.running_tab);
+        selectedGender.value = single_biodata.value.gender;
+
+    })
+    .catch(function (error) {
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.error_description,
+        }
+        isModalOpen.value = true;
+    });
+
+});
+
+
+
 </script>
 
 
 <template>
+
+
     <div class="w-full min-h-screen">
         <TabGroup :selectedIndex="selectedTab" @change="changeTab">
 
@@ -119,7 +165,7 @@ const onCompleteTab = (nextIndex) => {
             <TabPanels class="mt-2">
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
-                    <PersonalBiodata :translations :locale :locales @onCompleteTab="onCompleteTab" />
+                    <PersonalBiodata :translations :locale :locales :single_biodata @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender"/>
                 </TabPanel>
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
@@ -142,5 +188,6 @@ const onCompleteTab = (nextIndex) => {
     </div>
 
     <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
+
 
 </template>

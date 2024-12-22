@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
 
         // calling all the available seeders together
         $this->call([
-            AdminSeeder::class,
             CountrySeeder::class,
             DivisonSeeder::class,
             DistrictSeeder::class,

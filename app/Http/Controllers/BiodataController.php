@@ -117,22 +117,63 @@ class BiodataController extends Controller
 
         $request->validate([
             'user_id' => 'required|int',
+            'running_tab' => 'required|int|max:6',
             'birth_date' => 'required|date',
             'skin_color' => 'required|string|max:20',
             'height' => 'required|string|max:20',
             'weight' => 'required|string|max:20',
             'blood_group' => 'required|string|max:10',
+            'maritial_status' => 'required|string|max:20',
+            'permanent_country' => 'required|string|max:20',
+            'permanent_division' => 'required|string|max:20',
+            'permanent_district' => 'required|string|max:20',
+            'permanent_upazila' => 'required|string|max:30',
+            'permanent_post_office' => 'required|string|max:40',
+            'permanent_post_code' => 'required|string|max:6',
+            'address_same' => 'boolean',
+            'temporary_country' => 'required|string|max:20',
+            'temporary_division' => 'required|string|max:20',
+            'temporary_district' => 'required|string|max:20',
+            'temporary_upazila' => 'required|string|max:30',
+            'temporary_post_office' => 'required|string|max:40',
+            'temporary_post_code' => 'required|string|max:6',
+            'job_title' => 'required|string|max:100',
+            'job_details' => 'required|string|min:10|max:200',
+            'medium_of_study' => 'required|string|min:10|max:100',
         ]);
-        $biodata = Biodata::where('user_id', $request->user_id)->get();
-        if( count($biodata) == 1 ){
-            $biodata = Biodata::where('user_id', $request->user_id)->update([
+        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+        if( count($retrieved_biodata) == 1 ){
+            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
                 'birth_date' => $request->birth_date,
                 'skin_color' => $request->skin_color,
                 'height' => $request->height,
                 'weight' => $request->weight,
                 'blood_group' => $request->blood_group,
+                'maritial_status' => $request->maritial_status,
+                'permanent_country' => $request->permanent_country,
+                'permanent_division' => $request->permanent_division,
+                'permanent_district' => $request->permanent_district,
+                'permanent_upazila' => $request->permanent_upazila,
+                'permanent_post_office' => $request->permanent_post_office,
+                'permanent_post_code' => $request->permanent_post_code,
+                'address_same' => $request->address_same,
+                'temporary_country' => $request->temporary_country,
+                'temporary_division' => $request->temporary_division,
+                'temporary_district' => $request->temporary_district,
+                'temporary_upazila' => $request->temporary_upazila,
+                'temporary_post_office' => $request->temporary_post_office,
+                'temporary_post_code' => $request->temporary_post_code,
+                'job_title' => $request->job_title,
+                'job_details' => $request->job_details,
+                'medium_of_study' => $request->medium_of_study,
             ]);
-            if($biodata){
+            if($biodata_update){
+                $retrieved_biodata = $retrieved_biodata[0];
+                if( $retrieved_biodata->running_tab < $request->running_tab ){
+                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                        'running_tab' => $request->running_tab,
+                    ]);
+                }
                 return redirect()->back()->with('success', __('frontend.flush_messages.personal_biodata_onsave'));
             }
         }

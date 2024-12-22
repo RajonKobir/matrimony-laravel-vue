@@ -12,5 +12,11 @@ class Biodata extends Model
     protected $fillable = [
         'user_id',
         'media_agreement',
+        'running_tab',
+        'birth_date',
+        'skin_color',
+        'height',
+        'weight',
+        'blood_group',
     ];
 }

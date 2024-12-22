@@ -92,7 +92,7 @@ document.body.classList.add("frontend.login");
                     </button>
                 </div>
 
-                <!-- <div class="mt-4 flex items-center justify-center">
+                <div class="mt-4 flex items-center justify-center">
                     <button @click="loginWithFacebook"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
                         :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -109,7 +109,7 @@ document.body.classList.add("frontend.login");
                         </svg>
                         <span class="ml-1">Login With Facebook</span>
                     </button>
-                </div> -->
+                </div>
 
                 <form @submit.prevent="submit" class="mt-4">
                     <div>
