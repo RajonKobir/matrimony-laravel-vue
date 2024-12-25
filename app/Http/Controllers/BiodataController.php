@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Biodata;
+use Illuminate\Validation\Rule;
 
 class BiodataController extends Controller
 {
@@ -138,8 +139,25 @@ class BiodataController extends Controller
             'temporary_post_office' => 'required|string|max:40',
             'temporary_post_code' => 'required|string|max:6',
             'job_title' => 'required|string|max:100',
-            'job_details' => 'required|string|min:10|max:200',
+            'job_details' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:10|max:200' : 'required|string|min:10|max:200',
+            'job_location' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:2|max:50' : 'required|string|min:2|max:50',
+            'monthly_income' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:2|max:20' : 'required|string|min:2|max:20',
             'medium_of_study' => 'required|string|min:10|max:100',
+            'general_selected' => 'required|boolean',
+            'general_highest_degree' => $request->general_selected ? 'required|string|min:2|max:50' : 'nullable|string|min:2|max:50',
+            'is_general_honorable_selected' => 'nullable|boolean',
+            'aliya_selected' => 'required|boolean',
+            'aliya_highest_degree' => $request->aliya_selected ? 'required|string|min:2|max:50' : 'nullable|string|min:2|max:50',
+            'is_aliya_honorable_selected' => 'nullable|boolean',
+            'kowmi_selected' => 'required|boolean',
+            'kowmi_highest_degree' => $request->kowmi_selected ? 'required|string|min:2|max:50' : 'nullable|string|min:2|max:50',
+            'is_kowmi_honorable_selected' => 'nullable|boolean',
+            'study_others_selected' => 'required|boolean',
+            'study_others_highest_degree' => $request->study_others_selected ? 'required|string|min:2|max:50' : 'nullable|string|min:2|max:50',
+            'study_in_details' => 'required|string|min:10|max:300',
+            'is_honorable_selected' => 'nullable|boolean',
+            'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:200' : 'nullable|string|min:10|max:200',
+            'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:10|max:100' : 'nullable|string|min:10|max:100',
         ]);
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
@@ -165,11 +183,28 @@ class BiodataController extends Controller
                 'temporary_post_code' => $request->temporary_post_code,
                 'job_title' => $request->job_title,
                 'job_details' => $request->job_details,
+                'job_location' => $request->job_location,
+                'monthly_income' => $request->monthly_income,
                 'medium_of_study' => $request->medium_of_study,
+                'general_selected' => $request->general_selected,
+                'general_highest_degree' => $request->general_highest_degree,
+                'is_general_honorable_selected' => $request->is_general_honorable_selected,
+                'aliya_selected' => $request->aliya_selected,
+                'aliya_highest_degree' => $request->aliya_highest_degree,
+                'is_aliya_honorable_selected' => $request->is_aliya_honorable_selected,
+                'kowmi_selected' => $request->kowmi_selected,
+                'kowmi_highest_degree' => $request->kowmi_highest_degree,
+                'is_kowmi_honorable_selected' => $request->is_kowmi_honorable_selected,
+                'study_others_selected' => $request->study_others_selected,
+                'study_others_highest_degree' => $request->study_others_highest_degree,
+                'study_in_details' => $request->study_in_details,
+                'is_honorable_selected' => $request->is_honorable_selected,
+                'honorable_degree_details' => $request->honorable_degree_details,
+                'honorable_degree_place' => $request->honorable_degree_place,
             ]);
             if($biodata_update){
                 $retrieved_biodata = $retrieved_biodata[0];
-                if( $retrieved_biodata->running_tab < $request->running_tab ){
+                if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
                     $biodata_update = Biodata::where('user_id', $request->user_id)->update([
                         'running_tab' => $request->running_tab,
                     ]);
@@ -177,7 +212,109 @@ class BiodataController extends Controller
                 return redirect()->back()->with('success', __('frontend.flush_messages.personal_biodata_onsave'));
             }
         }
-        return redirect()->back()->with('error',  __('frontend.flush_messages.personal_biodata_onerror'));
+        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
+    }
+
+
+    public function updateReligiousBiodata(Request $request){
+
+        $request->validate([
+            'user_id' => 'required|int',
+            'running_tab' => 'required|int|max:6',
+            'five_waqt_salat' => 'required|string|max:20',
+            'beard_quantity' => $request->gender == 'male' ? 'required|string|max:20' : 'nullable|string|max:20',
+            'pants_worn_style' => $request->gender == 'male' ? 'required|string|max:20' : 'nullable|string|max:20',
+            'veiling_style' => 'required|string|max:20',
+            'islamic_studies' => 'required|string|max:50',
+            'drugs_taken' => 'required|string|max:50',
+            'dowry_deserve_male' => $request->gender == 'male' ? 'required|string|max:30' : 'nullable|string|max:30',
+            'dowry_deserve_female' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
+            'akida_majhhab' => 'required|string|max:20',
+            'family_islam_maintain' => 'required|string|max:20',
+            'three_choosen_alems' => 'required|string|min:10|max:100',
+            'physical_weakness' => 'required|boolean',
+            'physical_weakness_desc' => $request->physical_weakness ? 'required|string|min:10|max:255' : 'nullable|string|min:10|max:255',
+            'good_affairs' => 'required|string|min:10|max:255',
+            'religious_future_plan' => 'required|string|min:10|max:255',
+            'borka_wearing' => $request->gender == 'female' ? 'required|string|max:20' : 'nullable|string|max:20',
+            'nikab_with_borka' => $request->gender == 'female' ? 'required|string|max:20' : 'nullable|string|max:20',
+        ]);
+        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+        if( count($retrieved_biodata) == 1 ){
+            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                'five_waqt_salat' => $request->five_waqt_salat,
+                'beard_quantity' => $request->beard_quantity,
+                'pants_worn_style' => $request->pants_worn_style,
+                'veiling_style' => $request->veiling_style,
+                'islamic_studies' => $request->islamic_studies,
+                'drugs_taken' => $request->drugs_taken,
+                'dowry_deserve_male' => $request->dowry_deserve_male,
+                'dowry_deserve_female' => $request->dowry_deserve_female,
+                'akida_majhhab' => $request->akida_majhhab,
+                'family_islam_maintain' => $request->family_islam_maintain,
+                'three_choosen_alems' => $request->three_choosen_alems,
+                'physical_weakness' => $request->physical_weakness,
+                'physical_weakness_desc' => $request->physical_weakness_desc,
+                'good_affairs' => $request->good_affairs,
+                'religious_future_plan' => $request->religious_future_plan,
+                'borka_wearing' => $request->borka_wearing,
+                'nikab_with_borka' => $request->nikab_with_borka,
+            ]);
+            if($biodata_update){
+                $retrieved_biodata = $retrieved_biodata[0];
+                if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
+                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                        'running_tab' => $request->running_tab,
+                    ]);
+                }
+                return redirect()->back()->with('success', __('frontend.flush_messages.religious_biodata_onsave'));
+            }
+        }
+        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
+    }
+
+
+    public function updateFamilyBiodata(Request $request){
+
+        $request->validate([
+            'user_id' => 'required|int',
+            'running_tab' => 'required|int|max:6',
+            'father_name' => 'required|string|min:2|max:30',
+            'father_desc' => 'required|string|min:10|max:255',
+            'mother_name' => 'required|string|min:2|max:30',
+            'mother_desc' => 'required|string|min:10|max:255',
+            'brother_sister_desc' => 'required|string|min:10|max:255',
+            'relative_desc' => 'required|string|min:10|max:255',
+            'family_condition' => 'required|string|min:10|max:30',
+            'property_and_income' => 'required|string|min:10|max:255',
+            'personal_maritial_agreement' => 'required|boolean',
+            'family_maritial_agreement' => 'required|boolean',
+        ]);
+        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+        if( count($retrieved_biodata) == 1 ){
+            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                'father_name' => $request->father_name,
+                'father_desc' => $request->father_desc,
+                'mother_name' => $request->mother_name,
+                'mother_desc' => $request->mother_desc,
+                'brother_sister_desc' => $request->brother_sister_desc,
+                'relative_desc' => $request->relative_desc,
+                'family_condition' => $request->family_condition,
+                'property_and_income' => $request->property_and_income,
+                'personal_maritial_agreement' => $request->personal_maritial_agreement,
+                'family_maritial_agreement' => $request->family_maritial_agreement,
+            ]);
+            if($biodata_update){
+                $retrieved_biodata = $retrieved_biodata[0];
+                if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
+                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                        'running_tab' => $request->running_tab,
+                    ]);
+                }
+                return redirect()->back()->with('success', __('frontend.flush_messages.family_biodata_onsave'));
+            }
+        }
+        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
     }
 
 

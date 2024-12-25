@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
-import PersonalBiodata from '../../Components/User/PersonalBiodata.vue';
-import PopupMessage from '../../Components/User/PopupMessage.vue';
+import PersonalBiodata from '../../Components/User/PersonalBiodata/PersonalBiodata.vue';
+import ReligiousBiodata from '../../Components/User/ReligiousBiodata/ReligiousBiodata.vue';
+import FamilyBiodata from '../../Components/User/FamilyBiodata/FamilyBiodata.vue';
+import PopupMessage from '../../Components/User/PersonalBiodata/PopupMessage.vue';
 import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 
@@ -16,6 +18,9 @@ defineProps({
     },
     locales: {
         type: Array,
+    },
+    districts: {
+        type: Object,
     },
 });
 
@@ -124,7 +129,7 @@ onMounted(() => {
 <template>
 
 
-    <div class="w-full min-h-screen">
+    <div class="biodata_main w-full min-h-screen">
         <TabGroup :selectedIndex="selectedTab" @change="changeTab">
 
             <TabList class="flex justify-center space-x-1 rounded-xl bg-blue-900/20 p-1">
@@ -163,18 +168,28 @@ onMounted(() => {
 
 
             <TabPanels class="mt-2">
+
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
-                    <PersonalBiodata :translations :locale :locales :single_biodata @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender"/>
+
+                    <PersonalBiodata :translations :locale :locales :single_biodata :districts @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender"/>
+
                 </TabPanel>
+
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
-                    Content 2
+
+                    <ReligiousBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+
                 </TabPanel>
+
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
-                    Content 3
+
+                    <FamilyBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+
                 </TabPanel>
+
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
                     Content 4
@@ -191,3 +206,11 @@ onMounted(() => {
 
 
 </template>
+
+
+<style>
+.biodata_main, .biodata_main button{
+    color: #000;
+    font-weight: 500;
+}
+</style>

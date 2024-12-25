@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Models\District;
 
 
 class FrontEndController extends Controller
@@ -43,7 +44,14 @@ class FrontEndController extends Controller
     }
 
     public function userDashboard(){
-        return Inertia::render('Dashboard', $this->pageProps);
+
+        $districts = District::all();
+        $districts_array = [
+            'districts' => $districts,
+        ];
+        $pageProps = $districts_array + $this->pageProps;
+
+        return Inertia::render('Dashboard', $pageProps);
     }
 
 }

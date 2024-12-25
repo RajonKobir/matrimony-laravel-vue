@@ -19,6 +19,9 @@ defineProps({
     canRegister: {
         type: Boolean,
     },
+    districts: {
+        type: Object,
+    },
 });
 
 document.body.classList.remove(...document.body.classList);
@@ -31,7 +34,7 @@ document.body.classList.add("user.biodata");
 
     <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister>
 
-        <Biodata :translations :locale :locales />
+        <Biodata :translations :locale :locales :districts />
 
     </AuthenticatedLayout>
 </template>
