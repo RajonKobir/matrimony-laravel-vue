@@ -512,8 +512,10 @@ BUET-2012-2013-CSE',
                 '0' => 'না',
             ],
         ],
-        'targeted_biodata' => [
+        'deserved_biodata' => [
             'title' => 'প্রত্যাশিত জীবনসঙ্গী',
+            'deserved_district_title' => 'প্রত্যাশিত জেলা-',
+            'deserved_age_title' => 'প্রত্যাশিত জেলা-',
         ],
         'others_biodata' => [
             'title' => 'অন্যান্য তথ্য',

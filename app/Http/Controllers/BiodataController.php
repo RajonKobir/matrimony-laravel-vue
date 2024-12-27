@@ -285,7 +285,7 @@ class BiodataController extends Controller
             'mother_desc' => 'required|string|min:10|max:255',
             'brother_sister_desc' => 'required|string|min:10|max:255',
             'relative_desc' => 'required|string|min:10|max:255',
-            'family_condition' => 'required|string|min:10|max:30',
+            'family_condition' => 'required|string|min:4|max:30',
             'property_and_income' => 'required|string|min:10|max:255',
             'personal_maritial_agreement' => 'required|boolean',
             'family_maritial_agreement' => 'required|boolean',

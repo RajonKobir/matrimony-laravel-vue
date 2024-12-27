@@ -10,7 +10,7 @@ const props = defineProps({
     translations: {
         type: Object,
     },
-    selectedDate: {
+    birth_date: {
         type: String,
     },
 });
@@ -23,13 +23,13 @@ const emits = defineEmits([
 
 // initializing
 const page = usePage();
-// const birth_date = ref(new Date(props.selectedDate));
+// const birth_date = ref(new Date(props.birth_date));
 // const birth_date = ref(new Date());
 // const birth_date = ref('');
 // const birth_date = ref('0000-00-00');
 const birth_date = ref(null);
-if( props.selectedDate != null && props.selectedDate != '' ){
-    birth_date.value = new Date(props.selectedDate);
+if( props.birth_date != null && props.birth_date != '' ){
+    birth_date.value = new Date(props.birth_date);
 }
 
 const disabledDate = ref(add(new Date('2015-12-30'), { days: 1 }));

@@ -6,7 +6,6 @@ import InputError from '../../InputError.vue';
 import MultipleIslamicStudiesSelection from './MultipleIslamicStudiesSelection.vue';
 
 
-
 const props = defineProps({
     translations: {
         type: Object,
@@ -89,11 +88,9 @@ const closeModal = (value) => {
 }
 
 
-
 const onSelectIslamicStudies = (selectedIslamicStudiessArray) =>{
     props.single_biodata.islamic_studies = form.islamic_studies = selectedIslamicStudiessArray.map((islamic_study) => islamic_study).join(', ');
 }
-
 
 
 onMounted(() => {
@@ -167,6 +164,9 @@ onMounted(() => {
 
 
 <template>
+
+
+    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
 
     <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
@@ -297,12 +297,11 @@ onMounted(() => {
             <InputError class="mt-2" :message="form.errors.three_choosen_alems" />
         </div>
 
-
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.physical_weakness" @change="(e) => { single_biodata.physical_weakness = e.target.value }" id="physical_weakness" name="physical_weakness"
+            <select v-model="form.physical_weakness" @change="(e) => { single_biodata.physical_weakness = JSON.parse(e.target.value) }" id="physical_weakness" name="physical_weakness"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null" disabled selected >{{ translations.biodata_form.religious_biodata.physical_weakness_title }}</option>
-                <option v-for="(physical_weakness, physical_weakness_key) in translations.biodata_form.religious_biodata.physical_weakness_options" :key="physical_weakness.id" :value="physical_weakness_key" >{{ physical_weakness }}</option>
+                <option v-for="(physical_weakness, physical_weakness_key) in translations.biodata_form.religious_biodata.physical_weakness_options" :key="physical_weakness.id" :value="JSON.parse(physical_weakness_key)" >{{ physical_weakness }}</option>
             </select>
             <InputError class="mt-2" :message="form.errors.physical_weakness" />
         </div>
@@ -331,9 +330,6 @@ onMounted(() => {
         </div>
 
     </form>
-
-
-    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
 
 </template>

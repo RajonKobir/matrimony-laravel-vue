@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
@@ -41,11 +41,11 @@ Route::middleware(Localization::class)->group(function(){
     // authenticated frontend routes
     Route::controller(FrontEndController::class)->name('user.')->middleware('auth')->group(function () {
 
-        Route::get('/dashboard', 'userDashboard')->middleware('verified')->name('dashboard');
+        Route::get('/profile', 'userProfile')->middleware('verified')->name('profile');
 
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+        Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');
+        Route::delete('/settings', [SettingsController::class, 'destroy'])->name('settings.destroy');
 
 
         //biodata controllers

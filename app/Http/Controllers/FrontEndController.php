@@ -24,7 +24,7 @@ class FrontEndController extends Controller
     }
 
     public function homePage(){
-        return Inertia::render('Welcome', $this->pageProps);
+        return Inertia::render('Home', $this->pageProps);
     }
 
     public function aboutPage(){
@@ -43,7 +43,7 @@ class FrontEndController extends Controller
         return Inertia::render('Frontend/Contact', $this->pageProps);
     }
 
-    public function userDashboard(){
+    public function userProfile(){
 
         $districts = District::all();
         $districts_array = [
@@ -51,7 +51,7 @@ class FrontEndController extends Controller
         ];
         $pageProps = $districts_array + $this->pageProps;
 
-        return Inertia::render('Dashboard', $pageProps);
+        return Inertia::render('Profile', $pageProps);
     }
 
 }

@@ -42,7 +42,7 @@ class FacebookAuthController extends Controller
 
             }
 
-            return redirect()->intended(route('user.dashboard', absolute: false));
+            return redirect()->intended(route('user.profile', absolute: false));
 
         } catch (\Throwable $th) {
             //throw $th;

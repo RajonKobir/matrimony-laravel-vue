@@ -30,11 +30,13 @@ document.body.classList.add("user.biodata");
 </script>
 
 <template>
-    <Head title="Biodata"/>
+
+    <Head title="Profile"/>
 
     <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister>
 
         <Biodata :translations :locale :locales :districts />
 
     </AuthenticatedLayout>
+
 </template>

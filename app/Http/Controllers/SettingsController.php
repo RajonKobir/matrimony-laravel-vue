@@ -12,7 +12,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Route;
 
-class ProfileController extends Controller
+class SettingsController extends Controller
 {
 
     private $pageProps;
@@ -39,7 +39,7 @@ class ProfileController extends Controller
         ];
         $pageProps = $mustVerifyEmail + $this->pageProps;
         // return $pageProps;
-        return Inertia::render('Profile/Edit', $pageProps);
+        return Inertia::render('Settings/Edit', $pageProps);
     }
 
     /**
@@ -55,7 +55,8 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('user.profile.edit', $this->pageProps);
+        // return Redirect::route('user.settings.edit', $this->pageProps);
+        return redirect()->back()->with('success');
     }
 
     /**

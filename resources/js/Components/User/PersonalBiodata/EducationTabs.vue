@@ -61,6 +61,9 @@ onMounted(() => {
 <template>
 
 
+    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
+
+
     <div class="w-full">
 
         <h6 class="text-center">Education</h6>
@@ -126,8 +129,6 @@ onMounted(() => {
             </TabPanels>
         </TabGroup>
     </div>
-
-    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
 
 </template>

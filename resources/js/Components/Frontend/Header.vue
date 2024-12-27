@@ -172,7 +172,7 @@ onMounted(() => {
                                                 <nav class="odd-nav od-dropdown-menu-content">
                                                     <ul class="od-dropdown-menu-lists">
                                                         <li>
-                                                            <Link :href="route('user.dashboard')" as="button">
+                                                            <Link :href="route('user.profile')" as="button">
                                                                 <img src="https://ordhekdeen.com/images/editbiodata-ico.svg"
                                                                     alt="Edit biodata-icon">
                                                                     {{ translations.main_menu.biodata_settings }}
@@ -209,7 +209,7 @@ onMounted(() => {
                                                             </a>
                                                         </li> -->
                                                         <li>
-                                                            <Link :href="route('user.profile.edit')" as="button">
+                                                            <Link :href="route('user.settings.edit')" as="button">
                                                                 <img src="https://ordhekdeen.com/images/settings-ico.svg"
                                                                     alt="Setting-icon">
                                                                     {{ translations.main_menu.profile_settings }}</Link>

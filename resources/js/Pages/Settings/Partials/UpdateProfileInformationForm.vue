@@ -26,7 +26,7 @@ const form = useForm({
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">
-                Profile Information
+                Settings Information
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
@@ -35,7 +35,7 @@ const form = useForm({
         </header>
 
         <form
-            @submit.prevent="form.patch(route('user.profile.update'))"
+            @submit.prevent="form.patch(route('user.settings.update'))"
             class="mt-6 space-y-6"
         >
             <div>

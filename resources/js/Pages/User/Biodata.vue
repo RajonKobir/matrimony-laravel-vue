@@ -4,6 +4,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import PersonalBiodata from '../../Components/User/PersonalBiodata/PersonalBiodata.vue';
 import ReligiousBiodata from '../../Components/User/ReligiousBiodata/ReligiousBiodata.vue';
 import FamilyBiodata from '../../Components/User/FamilyBiodata/FamilyBiodata.vue';
+import DeservedBiodata from '../../Components/User/DeservedBiodata/DeservedBiodata.vue';
 import PopupMessage from '../../Components/User/PersonalBiodata/PopupMessage.vue';
 import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
@@ -129,6 +130,9 @@ onMounted(() => {
 <template>
 
 
+    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
+
+
     <div class="biodata_main w-full min-h-screen">
         <TabGroup :selectedIndex="selectedTab" @change="changeTab">
 
@@ -154,7 +158,7 @@ onMounted(() => {
                 <Tab v-slot="{ selected }" :disabled="disableTab3" >
                     <button
                         :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
-                        {{ translations.biodata_form.targeted_biodata.title }}
+                        {{ translations.biodata_form.deserved_biodata.title }}
                     </button>
                 </Tab>
                 <Tab v-slot="{ selected }" :disabled="disableTab4">
@@ -164,7 +168,6 @@ onMounted(() => {
                     </button>
                 </Tab>
             </TabList>
-
 
 
             <TabPanels class="mt-2">
@@ -192,17 +195,23 @@ onMounted(() => {
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
-                    Content 4
+
+                    <DeservedBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+
                 </TabPanel>
+
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
-                    Content 5
-                </TabPanel>
-            </TabPanels>
-        </TabGroup>
-    </div>
 
-    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
+                    Content 5
+
+                </TabPanel>
+
+            </TabPanels>
+
+        </TabGroup>
+
+    </div>
 
 
 </template>

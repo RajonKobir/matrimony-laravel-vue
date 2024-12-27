@@ -35,14 +35,14 @@ document.body.classList.add("frontend.edit_profile");
 </script>
 
 <template>
-    <Head title="Profile" />
+    <Head title="Settings" />
 
     <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
             >
-                Profile
+                Settings
             </h2>
         </template>
 

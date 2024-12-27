@@ -8,8 +8,6 @@ import PermanentDynamicAddress from './PermanentDynamicAddress.vue';
 import TemporaryDynamicAddress from './TemporaryDynamicAddress.vue';
 import MultipleJobSelection from './MultipleJobSelection.vue';
 import MultipleEducationMediumSelection from './MultipleEducationMediumSelection.vue';
-// import EducationTabs from './EducationTabs.vue';
-
 
 
 const props = defineProps({
@@ -42,8 +40,7 @@ const page = usePage();
 const csrf_token = page.props.csrf_token;
 const user_id = page.props.auth.user["id"];
 const media_agreement = ref(false);
-const gender = ref('');
-const selectedDate = ref(null);
+const gender = ref(null);
 const modalMessage = ref({});
 const isModalOpen = ref(false);
 const permanentAddress = ref({});
@@ -103,8 +100,6 @@ const submit = (e) => {
     form.post(route('user.biodata.post.update_personal_biodata'), {
         // onFinish: () => form.reset('password'),
         onSuccess: (response) => {
-
-
             if( page.props.flash.success ){
                 form.errors = false;
                 form.reset();
@@ -128,16 +123,13 @@ const closeModal = (value) => {
 
 const onUpdateDate = (date) => {
     form.birth_date = date;
-    selectedDate.value = date;
     props.single_biodata.birth_date = date;
 }
-
 
 
 const mediaAgreement = (e) => {
     e.preventDefault();
     let mediaAgreement = e.target.value;
-    console.log(mediaAgreement);
 
     if( mediaAgreement == 'null' || mediaAgreement == false){
         modalMessage.value = {
@@ -181,7 +173,6 @@ const mediaAgreement = (e) => {
     }
 }
 // media agreement ends
-
 
 
 const genderUpdate = (e) => {
@@ -309,12 +300,6 @@ const onSelectEducationMedium = (selectedEducationMediumArray) =>{
 }
 
 
-// const onUpdateEducationTab = () => {
-//     form.cancel();
-//     console.log(form);
-// }
-
-
 const onChangeGeneralItem = (e) => {
     let item_key = 0;
     let itemValue = e.target.value;
@@ -409,11 +394,9 @@ onMounted(() => {
                 break;
             case 'gender':
                 gender.value = props.single_biodata[item];
-                form.gender = props.single_biodata[item];
                 break;
             case 'birth_date':
-                selectedDate.value = props.single_biodata[item];
-                form.birth_date = selectedDate.value;
+                form.birth_date = props.single_biodata[item];
                 break;
             case 'skin_color':
                 form.skin_color = props.single_biodata[item];
@@ -552,7 +535,6 @@ onMounted(() => {
 
     }, 500);
 
-
 });
 
 
@@ -560,6 +542,9 @@ onMounted(() => {
 
 
 <template>
+
+
+    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
 
     <div v-if="!media_agreement" class="grid grid-cols-12 gap-0">
@@ -586,12 +571,12 @@ onMounted(() => {
     </div>
 
 
-    <form v-if="media_agreement && gender != ''" @submit.prevent="submit" class="grid grid-cols-12 gap-0">
+    <form v-if="media_agreement && gender != null" @submit.prevent="submit" class="grid grid-cols-12 gap-0">
         <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
         <input v-model="form.running_tab" type="hidden" name="running_tab" >
 
         <div class="form_item col-span-6 p-2">
-            <DatePicker :translations :selectedDate @onUpdateDate="onUpdateDate" />
+            <DatePicker :translations :birth_date="form.birth_date" @onUpdateDate="onUpdateDate" />
             <InputError class="mt-2" :message="form.errors.birth_date" />
         </div>
         <div class="form_item col-span-6 p-2">
@@ -674,10 +659,6 @@ onMounted(() => {
             <InputError class="mt-2" :message="form.errors.monthly_income" />
         </div>
 
-        <!-- <div class="form_item col-span-12 md:col-span-6 p-2">
-            <EducationTabs :translations :locale :locales @onUpdateEducationTab="onUpdateEducationTab" />
-        </div> -->
-
         <div class="form_item col-span-12 md:col-span-6 p-2">
             <MultipleEducationMediumSelection :translations :educationMediums="single_biodata.medium_of_study" @onSelectEducationMedium="onSelectEducationMedium"/>
             <InputError class="mt-2" :message="form.errors.medium_of_study" />
@@ -748,9 +729,6 @@ onMounted(() => {
     </form>
 
 
-    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
-
-
 </template>
 
 
@@ -758,11 +736,9 @@ onMounted(() => {
 .biodata_submit_button{
     color: #fff !important;
 }
-
 @media(max-width: 768px) {
     .maritial_status{
         padding-left: 5px !important;
     }
 }
-
 </style>
