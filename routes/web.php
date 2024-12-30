@@ -56,6 +56,7 @@ Route::middleware(Localization::class)->group(function(){
             Route::post('/update_personal_biodata', 'updatePersonalBiodata')->middleware('verified')->name('post.update_personal_biodata');
             Route::post('/update_religious_biodata', 'updateReligiousBiodata')->middleware('verified')->name('post.update_religious_biodata');
             Route::post('/update_family_biodata', 'updateFamilyBiodata')->middleware('verified')->name('post.update_family_biodata');
+            Route::post('/update_deserved_biodata', 'updateDeservedBiodata')->middleware('verified')->name('post.update_deserved_biodata');
         });
 
 

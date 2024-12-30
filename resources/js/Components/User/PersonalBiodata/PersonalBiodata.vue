@@ -611,6 +611,7 @@ onMounted(() => {
             </select>
             <InputError class="mt-2" :message="form.errors.blood_group" />
         </div>
+
         <div class="form_item col-span-6 p-2">
             <select v-model="form.maritial_status" @change="(e) => { single_biodata.maritial_status = e.target.value }" id="maritial_status" name="maritial_status"
                 class="maritial_status block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
@@ -623,6 +624,7 @@ onMounted(() => {
             </select>
             <InputError class="mt-2" :message="form.errors.maritial_status" />
         </div>
+
         <div class="form_item col-span-12 md:col-span-6 p-2">
             <PermanentDynamicAddress :translations :locale :permanentAddress @onUpdatePermanentAddress="onUpdatePermanentAddress" />
             <InputError v-if="form.errors.permanent_country || form.errors.permanent_division || form.errors.permanent_district || form.errors.permanent_upazila || form.errors.permanent_post_office || form.errors.permanent_post_code" class="mt-2" :message="translations.biodata_form.personal_biodata.permanent_address_error" />

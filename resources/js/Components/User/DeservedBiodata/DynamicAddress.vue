@@ -24,12 +24,12 @@ const props = defineProps({
 
 // initializing
 let innerHTML = ref('');
-let searchAblePostOffice = ref(props.dynamicAddress.deserved_division == null || props.dynamicAddress.deserved_district == null ? props.translations.biodata_form.personal_biodata.dynamic_address_title : props.dynamicAddress.deserved_division +' - '+ props.dynamicAddress.deserved_district);
+let searchAblePostOffice = ref(props.dynamicAddress.deserved_division == null || props.dynamicAddress.deserved_district == null ? props.translations.biodata_form.deserved_biodata.deserved_district_title : props.dynamicAddress.deserved_division +' - '+ props.dynamicAddress.deserved_district);
 let selectCountryInnerHTML = ref(`<div class="odl-head">
         <button action="goBackHandler" class="od-location-picker-previous">
             <i action="goBackHandler" class="fa fa-arrow-left"></i>
         </button>
-        <h3>${ props.translations.biodata_form.personal_biodata.dynamic_address_title }</h3>
+        <h3>${ props.translations.biodata_form.deserved_biodata.deserved_district_title }</h3>
         <h3>${ props.translations.searchForm.select_country_heading }</h3>
         <button action="onClickClose" class="od-close-panel">
             <i action="onClickClose" class="fa fa-times"></i>
@@ -115,7 +115,7 @@ const handleLineClicks = (e) => {
                     <button action="goBackHandler" class="od-location-picker-previous">
                         <i action="goBackHandler" class="fa fa-arrow-left"></i>
                     </button>
-                    <h3>${ props.translations.biodata_form.personal_biodata.dynamic_address_title }</h3>
+                    <h3>${ props.translations.biodata_form.deserved_biodata.deserved_district_title }</h3>
                     <h3>${ props.translations.searchForm.select_division_heading }</h3>
                     <button action="onClickClose" class="od-close-panel">
                         <i action="onClickClose" class="fa fa-times"></i>
@@ -154,7 +154,7 @@ const handleLineClicks = (e) => {
                     <button action="goBackHandler" class="od-location-picker-previous">
                         <i action="goBackHandler" class="fa fa-arrow-left"></i>
                     </button>
-                    <h3>${ props.translations.biodata_form.personal_biodata.dynamic_address_title }</h3>
+                    <h3>${ props.translations.biodata_form.deserved_biodata.deserved_district_title }</h3>
                     <h3>${ props.translations.searchForm.select_district_heading }</h3>
                     <button action="onClickClose" class="od-close-panel">
                         <i action="onClickClose" class="fa fa-times"></i>
@@ -187,89 +187,8 @@ const handleLineClicks = (e) => {
         let district_id = e.target.getAttribute('district_id');
         let district_name = e.target.getAttribute('district_name');
         selectedDistrict.value = district_name;
-        axios.post(route('address.getUpazilasByDistrictId', district_id))
-        .then((response) => {
-            selectUpazilaInnerHTML.value = `<div class="odl-head">
-                    <button action="goBackHandler" class="od-location-picker-previous">
-                        <i action="goBackHandler" class="fa fa-arrow-left"></i>
-                    </button>
-                    <h3>${ props.translations.biodata_form.personal_biodata.dynamic_address_title }</h3>
-                    <h3>${ props.translations.searchForm.select_upazila_heading }</h3>
-                    <button action="onClickClose" class="od-close-panel">
-                        <i action="onClickClose" class="fa fa-times"></i>
-                    </button>
-                </div>
-                <ul class="odl-nav">`;
-            let upazila_id = '';
-            let upazila_name = '';
-            let upazila_en_name = '';
-            response.data.forEach(function(item, index, arr){
-                upazila_id = item["upazila_id"];
-                upazila_name = props.locale == 'en' ? item["upazila_name"] : item["upazila_bn_name"];
-                upazila_en_name = item["upazila_name"];
-                selectUpazilaInnerHTML.value += '<li>';
-                selectUpazilaInnerHTML.value += '<button action="upazilaClick" upazila_en_name="'+upazila_en_name+'" upazila_name="'+upazila_name+'" >';
-                selectUpazilaInnerHTML.value += upazila_name;
-                selectUpazilaInnerHTML.value += '</button>';
-                selectUpazilaInnerHTML.value += '</li>';
-            });
 
-            selectUpazilaInnerHTML.value += `</ul>`;
-            innerHTML.value = selectUpazilaInnerHTML.value;
-            currentLayer.value = 'upazilaClick';
-
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }
-
-    else if( clickedAction === 'upazilaClick') {
-        let upazila_en_name = e.target.getAttribute('upazila_en_name');
-        let upazila_name = e.target.getAttribute('upazila_name');
-        selectedUpazila.value = upazila_name;
-        axios.post(route('address.getPostcodesByUpazilaName', upazila_en_name))
-        .then((response) => {
-            selectPostCodeInnerHTML.value = `<div class="odl-head">
-                    <button action="goBackHandler" class="od-location-picker-previous">
-                        <i action="goBackHandler" class="fa fa-arrow-left"></i>
-                    </button>
-                    <h3>${ props.translations.biodata_form.personal_biodata.dynamic_address_title }</h3>
-                    <h3>${ props.translations.searchForm.select_postoffice_heading }</h3>
-                    <button action="onClickClose" class="od-close-panel">
-                        <i action="onClickClose" class="fa fa-times"></i>
-                    </button>
-                </div>
-                <ul class="odl-nav">`;
-            let post_office_name = '';
-            let post_code = '';
-            response.data.forEach(function(item, index, arr){
-                post_office_name = item["post_office_name"];
-                post_code = item["post_code"];
-                selectPostCodeInnerHTML.value += '<li>';
-                selectPostCodeInnerHTML.value += '<button action="postcodeClick" post_office_name="'+post_office_name+'" post_code="'+post_code+'" >';
-                selectPostCodeInnerHTML.value += post_office_name + ' - ' +post_code;
-                selectPostCodeInnerHTML.value += '</button>';
-                selectPostCodeInnerHTML.value += '</li>';
-            });
-
-            selectPostCodeInnerHTML.value += `</ul>`;
-            innerHTML.value = selectPostCodeInnerHTML.value;
-            currentLayer.value = 'postcodeClick';
-
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }
-
-    else if( clickedAction === 'postcodeClick') {
-        let post_office_name = e.target.getAttribute('post_office_name');
-        let post_code = e.target.getAttribute('post_code');
-        selectedPostOffice.value = post_office_name;
-        selectedPostCode.value = post_code;
-
-        searchAblePostOffice.value = post_office_name + ' - ' +post_code;
+        searchAblePostOffice.value = selectedDivision.value + ' - ' + selectedDistrict.value;
         isHidden.value = true;
         e.target.classList.remove('dropdown_popup_amimation');
         isSearchAble.value = true;
@@ -277,9 +196,6 @@ const handleLineClicks = (e) => {
             selectedCountry : selectedCountry.value,
             selectedDivision : selectedDivision.value,
             selectedDistrict : selectedDistrict.value,
-            selectedUpazila : selectedUpazila.value,
-            selectedPostOffice : selectedPostOffice.value,
-            selectedPostCode : selectedPostCode.value,
         });
     }
 

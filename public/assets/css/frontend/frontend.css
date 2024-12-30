@@ -92,6 +92,12 @@ header{
   .od-dropdown-menu-container ul li button:hover {
     background-color:#faf9fb
   }
+
+/* .form_item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
 /* updated css ends here  */
 
 
@@ -2226,15 +2232,15 @@ nav.od-menu-lists-container .od-menu-list-item a {
 .od-my-account-container a {
   text-decoration:none
 }
-.od-my-account-container a.signin-button {
+.od-my-account-container .signin-button {
   color:#5b5b5b;
   background:rgba(0,0,0,0)
 }
-.od-my-account-container a.signin-button span {
+.od-my-account-container .signin-button span {
   display:none
 }
 
-.od-my-account-container a.signin-button {
+.od-my-account-container .signin-button {
     background:rgba(255,255,255,.5);
     border-radius:8px;
     border:2px solid #bc32ed;
@@ -2246,7 +2252,7 @@ nav.od-menu-lists-container .od-menu-list-item a {
     height:auto;
     line-height:1.45em
 }
-.od-my-account-container a.signin-button span {
+.od-my-account-container .signin-button span {
     display:block
 }
 

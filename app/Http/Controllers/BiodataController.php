@@ -318,4 +318,52 @@ class BiodataController extends Controller
     }
 
 
+    public function updateDeservedBiodata(Request $request){
+
+        $request->validate([
+            'user_id' => 'required|int',
+            'running_tab' => 'required|int|max:6',
+            'deserved_division' => 'required|string|min:2|max:20',
+            'deserved_district' => 'required|string|min:2|max:20',
+            'deserved_age' => 'required|string|min:2|max:20',
+            'deserved_skin_color' => 'required|string|min:2|max:20',
+            'deserved_height' => 'required|string|min:2|max:30',
+            'deserved_akida_majhhab' => 'required|string|min:2|max:20',
+            'deserved_family_condition' => 'required|string|min:2|max:20',
+            'deserved_job_title' => 'required|string|min:2|max:20',
+            'deserved_education' => 'required|string|min:2|max:20',
+            'deserved_maritial_status' => 'required|string|min:2|max:20',
+            'deserved_maritial_status_desc' => 'required|string|min:10|max:255',
+            'deserved_others_desc' => 'required|string|min:10|max:255',
+        ]);
+        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+        if( count($retrieved_biodata) == 1 ){
+            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                'deserved_division' => $request->deserved_division,
+                'deserved_district' => $request->deserved_district,
+                'deserved_age' => $request->deserved_age,
+                'deserved_skin_color' => $request->deserved_skin_color,
+                'deserved_height' => $request->deserved_height,
+                'deserved_akida_majhhab' => $request->deserved_akida_majhhab,
+                'deserved_family_condition' => $request->deserved_family_condition,
+                'deserved_job_title' => $request->deserved_job_title,
+                'deserved_education' => $request->deserved_education,
+                'deserved_maritial_status' => $request->deserved_maritial_status,
+                'deserved_maritial_status_desc' => $request->deserved_maritial_status_desc,
+                'deserved_others_desc' => $request->deserved_others_desc,
+            ]);
+            if($biodata_update){
+                $retrieved_biodata = $retrieved_biodata[0];
+                if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
+                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                        'running_tab' => $request->running_tab,
+                    ]);
+                }
+                return redirect()->back()->with('success', __('frontend.flush_messages.family_biodata_onsave'));
+            }
+        }
+        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
+    }
+
+
 }
