@@ -549,7 +549,7 @@ onMounted(() => {
 
     <div v-if="!media_agreement" class="grid grid-cols-12 gap-0">
         <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
-            <label for="media_agreement">{{ translations.biodata_form.personal_biodata.media_agreement }}</label>
+            <label for="media_agreement" class="text-base">{{ translations.biodata_form.personal_biodata.media_agreement }}</label>
             <select @change="mediaAgreement" id="media_agreement" name="media_agreement"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null">{{ translations.form_basics.select_text }}</option>
@@ -561,7 +561,7 @@ onMounted(() => {
 
     <div v-if="media_agreement" class="grid grid-cols-12 gap-0">
         <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
-            <label for="gender">{{ translations.biodata_form.personal_biodata.gender_title }}</label>
+            <label for="gender" class="text-base">{{ translations.biodata_form.personal_biodata.gender_title }}</label>
             <select @change="genderUpdate" id="gender" name="gender"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option  value="null">{{ translations.form_basics.select_text }}</option>

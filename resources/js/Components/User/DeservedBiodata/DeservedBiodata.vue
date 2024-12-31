@@ -38,7 +38,6 @@ const csrf_token = page.props.csrf_token;
 const user_id = page.props.auth.user["id"];
 const modalMessage = ref({});
 const isModalOpen = ref(false);
-const dynamicAddress = ref({});
 const deservedLowerAge = ref(16);
 const deservedHigherAge = ref(65);
 const deservedLowerHeight = ref(16);
@@ -59,7 +58,7 @@ const form = useForm({
     deserved_job_title: null,
     deserved_education: null,
     deserved_maritial_status: null,
-    deserved_maritial_status_desc: null,
+    deserved_condition: null,
     deserved_others_desc: null,
 });
 const submit = (e) => {
@@ -91,7 +90,7 @@ const closeModal = (value) => {
 
 const onUpdateDynamicAddress = (address) => {
     props.single_biodata.deserved_division = form.deserved_division = address.selectedDivision;
-    props.single_biodata.deserved_district = form.deserved_district = address.selectedDistrict;
+    props.single_biodata.deserved_district =  form.deserved_district = address.selectedDistrict;
 }
 
 
@@ -103,8 +102,6 @@ const onUpdateAgeSlider = (slider_state) => {
 
 
 const onUpdateHeightSlider = (slider_state) => {
-    // deservedLowerHeight.value = slider_state[0];
-    // deservedHigherHeight.value = slider_state[1];
     deservedLowerHeight.value = props.translations.biodata_form.personal_biodata.height_options[slider_state[0]];
     deservedHigherHeight.value = props.translations.biodata_form.personal_biodata.height_options[slider_state[1]];
     props.single_biodata.deserved_height = form.deserved_height = deservedLowerHeight.value + ' - ' + deservedHigherHeight.value;
@@ -120,11 +117,9 @@ onMounted(() => {
             switch(item) {
             case 'deserved_division':
                 form.deserved_division = props.single_biodata[item];
-                dynamicAddress.value.deserved_division = props.single_biodata[item];
                 break;
             case 'deserved_district':
                 form.deserved_district = props.single_biodata[item];
-                dynamicAddress.value.deserved_district = props.single_biodata[item];
                 break;
             case 'deserved_age':
                 form.deserved_age = props.single_biodata[item];
@@ -150,8 +145,8 @@ onMounted(() => {
             case 'deserved_maritial_status':
                 form.deserved_maritial_status = props.single_biodata[item];
                 break;
-            case 'deserved_maritial_status_desc':
-                form.deserved_maritial_status_desc = props.single_biodata[item];
+            case 'deserved_condition':
+                form.deserved_condition = props.single_biodata[item];
                 break;
             case 'deserved_others_desc':
                 form.deserved_others_desc = props.single_biodata[item];
@@ -180,25 +175,26 @@ onMounted(() => {
         <input v-model="form.running_tab" type="hidden" name="running_tab" >
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <DynamicAddress :translations :locale :dynamicAddress @onUpdateDynamicAddress="onUpdateDynamicAddress" />
+            <DynamicAddress :translations :locale :deserved_division="single_biodata.deserved_division" :deserved_district="single_biodata.deserved_district" @onUpdateDynamicAddress="onUpdateDynamicAddress" />
             <InputError v-if="form.errors.deserved_division || form.errors.deserved_district" class="mt-2" :message="translations.biodata_form.deserved_biodata.dynamic_address_error" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <AgeSlider :translations @onUpdateAgeSlider="onUpdateAgeSlider"/>
+            <AgeSlider :translations :deserved_age="single_biodata.deserved_age" @onUpdateAgeSlider="onUpdateAgeSlider"/>
             <InputError class="mt-2" :message="form.errors.deserved_age" />
         </div>
 
-        <div class="form_item col-span-6 p-2">
+        <div class="form_item col-span-12 md:col-span-6 p-2">
             <select v-model="form.deserved_skin_color" @change="(e) => { single_biodata.deserved_skin_color = e.target.value }" id="deserved_skin_color" name="deserved_skin_color"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_skin_color_title }}</option>
                 <option v-for="deserved_skin_color in translations.biodata_form.personal_biodata.skin_color_options" :key="deserved_skin_color.id" :value="deserved_skin_color">{{ deserved_skin_color }}</option>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
             </select>
             <InputError class="mt-2" :message="form.errors.deserved_skin_color" />
         </div>
 
-        <div class="form_item col-span-6 p-2">
+        <div class="form_item col-span-12 md:col-span-6 p-2">
             <select v-model="form.deserved_maritial_status" @change="(e) => { single_biodata.deserved_maritial_status = e.target.value }" id="deserved_maritial_status" name="deserved_maritial_status"
                 class="deserved_maritial_status block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                 <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_maritial_status_title }}</option>
@@ -207,12 +203,13 @@ onMounted(() => {
                             {{ deserved_maritial_status }}
                         </option>
                 </template>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
             </select>
             <InputError class="mt-2" :message="form.errors.deserved_maritial_status" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <HeightSlider :translations @onUpdateHeightSlider="onUpdateHeightSlider"/>
+            <HeightSlider :translations :deserved_height="single_biodata.deserved_height" @onUpdateHeightSlider="onUpdateHeightSlider"/>
             <InputError class="mt-2" :message="form.errors.deserved_height" />
         </div>
 
@@ -221,6 +218,7 @@ onMounted(() => {
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_akida_majhhab_title }}</option>
                 <option v-for="deserved_akida_majhhab in translations.biodata_form.religious_biodata.akida_majhhab_options" :key="deserved_akida_majhhab.id" :value="deserved_akida_majhhab">{{ deserved_akida_majhhab }}</option>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
             </select>
             <InputError class="mt-2" :message="form.errors.deserved_akida_majhhab" />
         </div>
@@ -230,6 +228,7 @@ onMounted(() => {
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_family_condition_title }}</option>
                 <option v-for="deserved_family_condition in translations.biodata_form.family_biodata.family_condition_options" :key="deserved_family_condition.id" :value="deserved_family_condition">{{ deserved_family_condition }}</option>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
             </select>
             <InputError class="mt-2" :message="form.errors.deserved_family_condition" />
         </div>
@@ -239,6 +238,7 @@ onMounted(() => {
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_job_title_title }}</option>
                 <option v-for="deserved_job_title in translations.biodata_form.personal_biodata.job_title_options" :key="deserved_job_title.id" :value="deserved_job_title">{{ deserved_job_title }}</option>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
             </select>
             <InputError class="mt-2" :message="form.errors.deserved_job_title" />
         </div>
@@ -248,8 +248,34 @@ onMounted(() => {
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_education_title }}</option>
                 <option v-for="deserved_education in translations.biodata_form.personal_biodata.education_medium_options" :key="deserved_education.id" :value="deserved_education">{{ deserved_education }}</option>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
             </select>
             <InputError class="mt-2" :message="form.errors.deserved_education" />
+        </div>
+
+        <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
+            <select v-model="form.deserved_condition" @change="(e) => { single_biodata.deserved_condition = e.target.value }" id="deserved_condition" name="deserved_condition"
+                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_condition_title_male }}</option>
+                <option v-for="deserved_condition in translations.biodata_form.deserved_biodata.deserved_condition_options_male" :key="deserved_condition.id" :value="deserved_condition">{{ deserved_condition }}</option>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
+            </select>
+            <InputError class="mt-2" :message="form.errors.deserved_condition" />
+        </div>
+
+        <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
+            <select v-model="form.deserved_condition" @change="(e) => { single_biodata.deserved_condition = e.target.value }" id="deserved_condition" name="deserved_condition"
+                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_condition_title_female }}</option>
+                <option v-for="deserved_condition in translations.biodata_form.deserved_biodata.deserved_condition_options_female" :key="deserved_condition.id" :value="deserved_condition">{{ deserved_condition }}</option>
+                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
+            </select>
+            <InputError class="mt-2" :message="form.errors.deserved_condition" />
+        </div>
+
+        <div class="form_item col-span-12 md:col-span-6 p-2">
+            <textarea v-model="form.deserved_others_desc" @input="(e) => { single_biodata.deserved_others_desc = e.target.value }" name="deserved_others_desc" rows="2" maxlength="255" :placeholder="translations.biodata_form.deserved_biodata.deserved_others_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            <InputError class="mt-2" :message="form.errors.deserved_others_desc" />
         </div>
 
 

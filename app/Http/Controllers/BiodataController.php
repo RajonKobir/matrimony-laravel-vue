@@ -209,10 +209,10 @@ class BiodataController extends Controller
                         'running_tab' => $request->running_tab,
                     ]);
                 }
-                return redirect()->back()->with('success', __('frontend.flush_messages.personal_biodata_onsave'));
+                return redirect()->back()->with('success', __('frontend.flash_messages.personal_biodata_onsave'));
             }
         }
-        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
+        return redirect()->back()->with('error',  __('frontend.flash_messages.biodata_onerror'));
     }
 
 
@@ -221,23 +221,23 @@ class BiodataController extends Controller
         $request->validate([
             'user_id' => 'required|int',
             'running_tab' => 'required|int|max:6',
-            'five_waqt_salat' => 'required|string|max:20',
-            'beard_quantity' => $request->gender == 'male' ? 'required|string|max:20' : 'nullable|string|max:20',
-            'pants_worn_style' => $request->gender == 'male' ? 'required|string|max:20' : 'nullable|string|max:20',
-            'veiling_style' => 'required|string|max:20',
+            'five_waqt_salat' => 'required|string|max:30',
+            'beard_quantity' => $request->gender == 'male' ? 'required|string|max:30' : 'nullable|string|max:30',
+            'pants_worn_style' => $request->gender == 'male' ? 'required|string|max:30' : 'nullable|string|max:30',
+            'veiling_style' => 'required|string|max:50',
             'islamic_studies' => 'required|string|max:50',
             'drugs_taken' => 'required|string|max:50',
             'dowry_deserve_male' => $request->gender == 'male' ? 'required|string|max:30' : 'nullable|string|max:30',
             'dowry_deserve_female' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
-            'akida_majhhab' => 'required|string|max:20',
+            'akida_majhhab' => 'required|string|max:30',
             'family_islam_maintain' => 'required|string|max:20',
             'three_choosen_alems' => 'required|string|min:10|max:100',
             'physical_weakness' => 'required|boolean',
             'physical_weakness_desc' => $request->physical_weakness ? 'required|string|min:10|max:255' : 'nullable|string|min:10|max:255',
             'good_affairs' => 'required|string|min:10|max:255',
             'religious_future_plan' => 'required|string|min:10|max:255',
-            'borka_wearing' => $request->gender == 'female' ? 'required|string|max:20' : 'nullable|string|max:20',
-            'nikab_with_borka' => $request->gender == 'female' ? 'required|string|max:20' : 'nullable|string|max:20',
+            'borka_wearing' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
+            'nikab_with_borka' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
         ]);
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
@@ -267,10 +267,10 @@ class BiodataController extends Controller
                         'running_tab' => $request->running_tab,
                     ]);
                 }
-                return redirect()->back()->with('success', __('frontend.flush_messages.religious_biodata_onsave'));
+                return redirect()->back()->with('success', __('frontend.flash_messages.religious_biodata_onsave'));
             }
         }
-        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
+        return redirect()->back()->with('error',  __('frontend.flash_messages.biodata_onerror'));
     }
 
 
@@ -311,10 +311,10 @@ class BiodataController extends Controller
                         'running_tab' => $request->running_tab,
                     ]);
                 }
-                return redirect()->back()->with('success', __('frontend.flush_messages.family_biodata_onsave'));
+                return redirect()->back()->with('success', __('frontend.flash_messages.family_biodata_onsave'));
             }
         }
-        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
+        return redirect()->back()->with('error',  __('frontend.flash_messages.biodata_onerror'));
     }
 
 
@@ -328,12 +328,12 @@ class BiodataController extends Controller
             'deserved_age' => 'required|string|min:2|max:20',
             'deserved_skin_color' => 'required|string|min:2|max:20',
             'deserved_height' => 'required|string|min:2|max:30',
-            'deserved_akida_majhhab' => 'required|string|min:2|max:20',
+            'deserved_akida_majhhab' => 'required|string|min:2|max:30',
             'deserved_family_condition' => 'required|string|min:2|max:20',
             'deserved_job_title' => 'required|string|min:2|max:20',
             'deserved_education' => 'required|string|min:2|max:20',
             'deserved_maritial_status' => 'required|string|min:2|max:20',
-            'deserved_maritial_status_desc' => 'required|string|min:10|max:255',
+            'deserved_condition' => 'required|string|min:2|max:30',
             'deserved_others_desc' => 'required|string|min:10|max:255',
         ]);
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
@@ -349,7 +349,7 @@ class BiodataController extends Controller
                 'deserved_job_title' => $request->deserved_job_title,
                 'deserved_education' => $request->deserved_education,
                 'deserved_maritial_status' => $request->deserved_maritial_status,
-                'deserved_maritial_status_desc' => $request->deserved_maritial_status_desc,
+                'deserved_condition' => $request->deserved_condition,
                 'deserved_others_desc' => $request->deserved_others_desc,
             ]);
             if($biodata_update){
@@ -359,10 +359,56 @@ class BiodataController extends Controller
                         'running_tab' => $request->running_tab,
                     ]);
                 }
-                return redirect()->back()->with('success', __('frontend.flush_messages.family_biodata_onsave'));
+                return redirect()->back()->with('success', __('frontend.flash_messages.deserved_biodata_onsave'));
             }
         }
-        return redirect()->back()->with('error',  __('frontend.flush_messages.biodata_onerror'));
+        return redirect()->back()->with('error',  __('frontend.flash_messages.biodata_onerror'));
+    }
+
+
+    public function updateOthersBiodata(Request $request){
+
+        $request->validate([
+            'user_id' => 'required|int',
+            'running_tab' => 'required|int|max:6',
+            'form_holder_desc' => 'required|string|min:10|max:255',
+            'male_guardian_desc' => 'required|string|min:10|max:255',
+            'male_guardian_agreement' => 'required|boolean',
+            'eleven_digit_mobile_number' => 'required|regex:/(01)[0-9]{9}/|max:11',
+            'main_email_address' => 'required|email:rfc,dns|max:50',
+            'deserved_money_pay' => 'required|string|min:2|max:20',
+            'media_terms_one_agreement' => 'required|boolean',
+            'hundred_money_pay' => 'required|boolean',
+            'three_hundred_money_pay' => 'required|boolean',
+            'media_terms_two_agreement' => 'required|boolean',
+            'reference_code' => 'nullable|string|min:2|max:20',
+        ]);
+        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+        if( count($retrieved_biodata) == 1 ){
+            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                'form_holder_desc' => $request->form_holder_desc,
+                'male_guardian_desc' => $request->male_guardian_desc,
+                'male_guardian_agreement' => $request->male_guardian_agreement,
+                'eleven_digit_mobile_number' => $request->eleven_digit_mobile_number,
+                'main_email_address' => $request->main_email_address,
+                'deserved_money_pay' => $request->deserved_money_pay,
+                'media_terms_one_agreement' => $request->media_terms_one_agreement,
+                'hundred_money_pay' => $request->hundred_money_pay,
+                'three_hundred_money_pay' => $request->three_hundred_money_pay,
+                'media_terms_two_agreement' => $request->media_terms_two_agreement,
+                'reference_code' => $request->reference_code,
+            ]);
+            if($biodata_update){
+                $retrieved_biodata = $retrieved_biodata[0];
+                if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
+                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                        'running_tab' => $request->running_tab,
+                    ]);
+                }
+                return redirect()->back()->with('success', __('frontend.flash_messages.others_biodata_onsave'));
+            }
+        }
+        return redirect()->back()->with('error',  __('frontend.flash_messages.biodata_onerror'));
     }
 
 

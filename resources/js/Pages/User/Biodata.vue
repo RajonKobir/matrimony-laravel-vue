@@ -5,6 +5,7 @@ import PersonalBiodata from '../../Components/User/PersonalBiodata/PersonalBioda
 import ReligiousBiodata from '../../Components/User/ReligiousBiodata/ReligiousBiodata.vue';
 import FamilyBiodata from '../../Components/User/FamilyBiodata/FamilyBiodata.vue';
 import DeservedBiodata from '../../Components/User/DeservedBiodata/DeservedBiodata.vue';
+import OthersBiodata from '../../Components/User/OthersBiodata/OthersBiodata.vue';
 import PopupMessage from '../../Components/User/PersonalBiodata/PopupMessage.vue';
 import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
@@ -203,7 +204,7 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    Content 5
+                    <OthersBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 

@@ -25,7 +25,7 @@ const props = defineProps({
 
 // initializing
 let innerHTML = ref('');
-let searchAblePostOffice = ref(props.temporaryAddress.selectedPostOffice == null || props.temporaryAddress.selectedPostCode == null ? props.translations.biodata_form.personal_biodata.temporary_address_title : props.temporaryAddress.selectedPostOffice +' - '+ props.temporaryAddress.selectedPostCode);
+let selectedTemporaryPostOffice = ref(props.temporaryAddress.selectedPostOffice == null || props.temporaryAddress.selectedPostCode == null ? props.translations.biodata_form.personal_biodata.temporary_address_title : props.temporaryAddress.selectedPostOffice +' - '+ props.temporaryAddress.selectedPostCode);
 let selectCountryInnerHTML = ref(`<div class="odl-head">
         <button action="goBackHandler" class="od-location-picker-previous">
             <i action="goBackHandler" class="fa fa-arrow-left"></i>
@@ -285,7 +285,7 @@ const handleLineClicks = (e) => {
         selectedPostOffice.value = post_office_name;
         selectedPostCode.value = post_code;
 
-        searchAblePostOffice.value = post_office_name + ' - ' +post_code;
+        selectedTemporaryPostOffice.value = post_office_name + ' - ' +post_code;
         isHidden.value = true;
         e.target.classList.remove('dropdown_popup_amimation');
         isSearchAble.value = true;
@@ -302,7 +302,7 @@ const handleLineClicks = (e) => {
 
     else if( clickedAction === 'addressAreSame') {
         let rajon = emits('addressAreSame', true);
-        searchAblePostOffice.value = props.temporaryAddress.selectedPostOffice +' - '+ props.temporaryAddress.selectedPostCode;
+        selectedTemporaryPostOffice.value = props.temporaryAddress.selectedPostOffice +' - '+ props.temporaryAddress.selectedPostCode;
         isHidden.value = !isHidden.value;
     }
 
@@ -335,7 +335,7 @@ onUpdated(() => {
         <div class="od-search-option-input">
             <div class="od-location-dropdown od-field-type__location od-biodata-search-control" data-field_id="10">
                 <button @click="addressHandler" class="od-location-dropdown-trigger block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                    {{ searchAblePostOffice }}
+                    {{ selectedTemporaryPostOffice }}
                 </button>
                 <div v-if="!isHidden" v-html="innerHTML" @click="handleLineClicks" class="odl-wrap od-location-panel-wrap active dropdown_popup_amimation" >
 

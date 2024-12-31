@@ -22,9 +22,13 @@ return [
         'gender_update_message_male' => "Male's form has been loaded.",
         'gender_update_message_female' => "Female's form has been loaded.",
     ],
-    'flush_messages' => [
+    'flash_messages' => [
+        'biodata_onerror' => "Sorry. Something went wrong!",
         'personal_biodata_onsave' => "Personal data saved successfully.",
-        'personal_biodata_onerror' => "Sorry. Something went wrong!",
+        'religious_biodata_onsave' => "ধর্মীয় তথ্য সফলভাবে সংরক্ষিত হয়েছে৷",
+        'family_biodata_onsave' => "পারিবারিক তথ্য সফলভাবে সংরক্ষিত হয়েছে৷",
+        'deserved_biodata_onsave' => "প্রত্যাশিত জীবনসঙ্গীর তথ্য সফলভাবে সংরক্ষিত হয়েছে৷",
+        'others_biodata_onsave' => "অন্যান্য তথ্য সফলভাবে সংরক্ষিত হয়েছে৷",
     ],
     'main_menu' => [
         'home' => 'Home',
