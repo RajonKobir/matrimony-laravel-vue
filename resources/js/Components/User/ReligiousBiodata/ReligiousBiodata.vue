@@ -40,6 +40,7 @@ const isModalOpen = ref(false);
 
 const form = useForm({
     csrf_token: csrf_token,
+    biodata_completion: 40,
     running_tab: 2,
     user_id: user_id,
     gender: props.selectedGender,
@@ -69,7 +70,7 @@ const submit = (e) => {
 
             if( page.props.flash.success ){
                 form.reset();
-                emits('onCompleteTab', 2);
+                emits('onCompleteTab', 2, form.biodata_completion);
             }
             else if( page.props.flash.error ){
                 modalMessage.value = {
@@ -88,8 +89,8 @@ const closeModal = (value) => {
 }
 
 
-const onSelectIslamicStudies = (selectedIslamicStudiessArray) =>{
-    props.single_biodata.islamic_studies = form.islamic_studies = selectedIslamicStudiessArray.map((islamic_study) => islamic_study).join(', ');
+const onSelectIslamicStudies = (selectedIslamicStudiesArray) =>{
+    props.single_biodata.islamic_studies = form.islamic_studies = selectedIslamicStudiesArray.map((islamic_study) => islamic_study).join(', ');
 }
 
 
@@ -227,15 +228,6 @@ onMounted(() => {
             </select>
             <InputError class="mt-2" :message="form.errors.veiling_style" />
         </div>
-
-        <!-- <div class="form_item col-span-6 p-2">
-            <select v-model="form.islamic_studies" @change="(e) => { single_biodata.islamic_studies = e.target.value }" id="islamic_studies" name="islamic_studies"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" style="padding-left: 5px;">
-                <option value="null" disabled selected >{{ translations.biodata_form.religious_biodata.islamic_studies_title }}</option>
-                <option v-for="islamic_studies in translations.biodata_form.religious_biodata.islamic_studies_options" :key="islamic_studies.id" :value="islamic_studies">{{ islamic_studies }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.islamic_studies" />
-        </div> -->
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
             <MultipleIslamicStudiesSelection :translations :islamicStudies="single_biodata.islamic_studies" @onSelectIslamicStudies="onSelectIslamicStudies" />

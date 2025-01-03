@@ -39,6 +39,7 @@ const isModalOpen = ref(false);
 
 const form = useForm({
     csrf_token: csrf_token,
+    biodata_completion: 100,
     running_tab: 4,
     user_id: user_id,
     form_holder_desc: null,
@@ -60,7 +61,7 @@ const submit = (e) => {
         onSuccess: (response) => {
 
             if( page.props.flash.success ){
-                emits('onCompleteTab', 4);
+                emits('onCompleteTab', 4, form.biodata_completion);
             }
             else if( page.props.flash.error ){
                 modalMessage.value = {
@@ -172,21 +173,21 @@ onMounted(() => {
             <InputError class="mt-2" :message="form.errors.male_guardian_agreement" />
         </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
+        <!-- <div class="form_item col-span-12 md:col-span-6 p-2">
             <label for="eleven_digit_mobile_number" class="text-base">
                 {{ translations.biodata_form.others_biodata.eleven_digit_mobile_number_title }}
             </label>
             <input type="tel" v-model="form.eleven_digit_mobile_number" @input="(e) => { single_biodata.eleven_digit_mobile_number = e.target.value }" name="eleven_digit_mobile_number" id="eleven_digit_mobile_number" max="11" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
             <InputError v-if="form.errors.eleven_digit_mobile_number" class="mt-2" :message="translations.biodata_form.others_biodata.eleven_digit_mobile_number_error" />
-        </div>
+        </div> -->
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
+        <!-- <div class="form_item col-span-12 md:col-span-6 p-2">
             <label for="main_email_address" class="text-base">
                 {{ translations.biodata_form.others_biodata.main_email_address_title }}
             </label>
             <input type="text" v-model="form.main_email_address" @input="(e) => { single_biodata.main_email_address = e.target.value }" name="main_email_address" id="main_email_address" max="50" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
             <InputError class="mt-2" :message="form.errors.main_email_address" />
-        </div>
+        </div> -->
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
             <label for="deserved_money_pay" class="text-base">
@@ -275,7 +276,7 @@ onMounted(() => {
     color: #fff !important;
 }
 @media(max-width: 768px) {
-    .deserved_maritial_status{
+    .deserved_maritial_statuses{
         padding-left: 5px !important;
     }
 }

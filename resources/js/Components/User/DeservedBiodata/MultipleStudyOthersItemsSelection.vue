@@ -10,42 +10,42 @@ import {
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 
 const emits = defineEmits([
-    'onSelectIslamicStudies'
+    'onSelectStudyOthersItems'
 ]);
 
 const props = defineProps({
     translations: {
         type: Object,
     },
-    islamicStudies: {
+    StudyOthersItems: {
         type: String,
     },
 });
 
-const selectedIslamicStudies = ref([]);
+const selectedStudyOthersItems = ref([]);
 const showPopup = ref(false);
 
 
-const onClickIslamicStudiesItems = (e) => {
-    if( selectedIslamicStudies.value.includes("না") || selectedIslamicStudies.value.includes("None") ){
+const onClickStudyOthersItemsItems = (e) => {
+    if( selectedStudyOthersItems.value.includes("যেকোনো") || selectedStudyOthersItems.value.includes("Any") ){
             Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
             if( index != 0 ){
-                selectedIslamicStudies.value = selectedIslamicStudies.value.filter(function(item) {
-                    return item === "না" || item === "None";
+                selectedStudyOthersItems.value = selectedStudyOthersItems.value.filter(function(item) {
+                    return item === "যেকোনো" || item === "Any";
                 })
 
             }
         });
     }
-    emits('onSelectIslamicStudies', selectedIslamicStudies.value);
+    emits('onSelectStudyOthersItems', selectedStudyOthersItems.value);
 };
 
 
 onMounted(() => {
-    if( props.islamicStudies != null ){
-        if( props.islamicStudies != '' ){
-            selectedIslamicStudies.value = props.islamicStudies.split(", ");
-            emits('onSelectIslamicStudies', selectedIslamicStudies.value);
+    if( props.StudyOthersItems != null ){
+        if( props.StudyOthersItems != '' ){
+            selectedStudyOthersItems.value = props.StudyOthersItems.split(", ");
+            emits('onSelectStudyOthersItems', selectedStudyOthersItems.value);
         }
     }
 });
@@ -55,12 +55,12 @@ onMounted(() => {
 
 
 <template>
-    <Listbox v-model="selectedIslamicStudies" multiple>
+    <Listbox v-model="selectedStudyOthersItems" multiple>
         <ListboxButton @click="showPopup = !showPopup"
             class="relative appearance-none w-full text-left bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <span class="block truncate leading-tight">
-                <ListboxLabel>{{ translations.biodata_form.religious_biodata.islamic_studies_title }}:</ListboxLabel>
-                {{ selectedIslamicStudies.map((islamic_study) => islamic_study).join(', ') }}
+                <ListboxLabel>{{ translations.biodata_form.deserved_biodata.deserved_study_others_degrees_title }}:</ListboxLabel>
+                {{ selectedStudyOthersItems.map((study_others) => study_others).join(', ') }}
             </span>
             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -75,12 +75,12 @@ onMounted(() => {
                 <ListboxOptions static
                     class="popup_jobs_section absolute mt-1 h-60  overflow-auto rounded-md bg-white border border-gray-400 hover:border-gray-500 px-4 py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
 
-                    <div v-if="selectedIslamicStudies.length > 0" @click="showPopup = false" class="okay_button px-4 py-2 font-semibold text-sm bg-cyan-500 text-white rounded-full shadow-sm flex justify-center w-12">
+                    <div v-if="selectedStudyOthersItems.length > 0" @click="showPopup = false" class="okay_button px-4 py-2 font-semibold text-sm bg-cyan-500 text-white rounded-full shadow-sm flex justify-center w-12">
                         <CheckIcon class="h-5 w-5" aria-hidden="true" />
                         <span>{{ translations.biodata_form.multiple_selection_ok }}</span>
                     </div>
 
-                    <ListboxOption @click="onClickIslamicStudiesItems" v-slot="{ active, selected }" v-for="(islamic_study, islamic_study_key) in translations.biodata_form.religious_biodata.islamic_studies_options" :key="islamic_study_key" :value="islamic_study" as="template" :disabled="islamic_study.unavailable" >
+                    <ListboxOption @click="onClickStudyOthersItemsItems" v-slot="{ active, selected }" v-for="(study_others, study_others_key) in translations.biodata_form.deserved_biodata.deserved_study_others_degrees_options" :key="study_others_key" :value="study_others" as="template" :disabled="study_others.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
                             'relative cursor-default select-none py-2 pl-10 pr-4',
@@ -90,7 +90,7 @@ onMounted(() => {
                                 'block truncate',
                             ]">
 
-                                {{ islamic_study }}
+                                {{ study_others }}
 
                             </span>
 

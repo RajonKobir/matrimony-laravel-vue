@@ -1,5 +1,6 @@
 <script setup>
 
+import { ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Header from '../Components/Frontend/Header.vue';
 import Footer from '../Components/Frontend/Footer.vue';
@@ -21,6 +22,10 @@ const props = defineProps({
         type: Boolean,
     },
 });
+
+
+// initializing
+const single_biodata = ref([]);
 
 
 function handleImageError() {
@@ -45,7 +50,7 @@ const current_domain = window.location.host;
 
     <div class="od-container-main">
 
-        <Header :translations :locale :locales :canLogin :canRegister />
+        <Header :translations :locale :locales :canLogin :canRegister :single_biodata />
 
             <slot />
 

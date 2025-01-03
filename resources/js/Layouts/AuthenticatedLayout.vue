@@ -20,6 +20,9 @@ const props = defineProps({
     canRegister: {
         type: Boolean,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 
@@ -45,7 +48,7 @@ const current_domain = window.location.host;
 
     <div class="od-container-main">
 
-        <Header :translations :locale :locales :canLogin :canRegister />
+        <Header :translations :locale :locales :canLogin :canRegister :single_biodata />
         <div class="container max-w-screen-xl mx-auto">
             <slot />
         </div>

@@ -13,12 +13,12 @@ const props = defineProps({
     translations: {
         type: Object,
     },
-    deserved_age: {
+    deserved_age_range: {
         type: String,
     },
 });
 
-const age_state = ref( props.deserved_age == null ? [16, 65] : [parseInt(props.deserved_age.split("-")[0].trim()), parseInt(props.deserved_age.split("-")[1].trim())] );
+const age_state = ref( props.deserved_age_range == null ? [16, 65] : [parseInt(props.deserved_age_range.split("-")[0].trim()), parseInt(props.deserved_age_range.split("-")[1].trim())] );
 
 const onChangeSlider = (age_state) => {
     emits('onUpdateAgeSlider', age_state);
@@ -34,7 +34,7 @@ const diplayAgeItem = (data) => {
 <template>
 
     <div class="text-center mb-6" >
-        <label for="age_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_age_title }}-</label>
+        <label for="age_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_age_range_title }}-</label>
     </div>
     <Range
         @update:model-value="onChangeSlider"

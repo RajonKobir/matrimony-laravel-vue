@@ -13,7 +13,7 @@ const props = defineProps({
     translations: {
         type: Object,
     },
-    deserved_height: {
+    deserved_height_range: {
         type: String,
     },
 });
@@ -25,7 +25,7 @@ const getKeyByValue = (object, value) => {
 }
 
 
-const height_state = ref( props.deserved_height == null ? [1, 31] : [ parseInt( getKeyByValue(props.translations.biodata_form.personal_biodata.height_options, props.deserved_height.split("-")[0].trim()) ), parseInt( getKeyByValue(props.translations.biodata_form.personal_biodata.height_options, props.deserved_height.split("-")[1].trim()) ) ]);
+const height_state = ref( props.deserved_height_range == null ? [1, 31] : [ parseInt( getKeyByValue(props.translations.biodata_form.personal_biodata.height_options, props.deserved_height_range.split("-")[0].trim()) ), parseInt( getKeyByValue(props.translations.biodata_form.personal_biodata.height_options, props.deserved_height_range.split("-")[1].trim()) ) ]);
 
 
 const onChangeSlider = (height_state) => {
@@ -42,7 +42,7 @@ const diplayHeightItem = (data) => {
 <template>
 
     <div class="text-center mb-6" >
-        <label for="height_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_height_title }}-</label>
+        <label for="height_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_height_range_title }}-</label>
     </div>
     <Range
         @update:model-value="onChangeSlider"

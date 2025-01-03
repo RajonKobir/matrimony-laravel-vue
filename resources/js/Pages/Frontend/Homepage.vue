@@ -51,10 +51,10 @@ document.body.classList.add("frontend.home");
         <section class="od-section od-home-call-to-action">
             <h2> <span>Shadibari</span> {{ translations.homepage.biodata_section_heading }}</h2>
             <div class="cta-btn-group">
-                <a href="https://ordhekdeen.com/user/account/edit-biodata" class="od-button"><img
-                        src="https://ordhekdeen.com/images/plus-ico.svg" alt="Plus-icon">{{ translations.homepage.biodata_button_text }}</a>
-                <a href="https://youtu.be/1NFkBACLdJU" target="_blank" class="od-button second-btn"><img
-                        src="https://ordhekdeen.com/images/youtube-ico.svg" alt="YouTube-icon">{{ translations.homepage.biodata_instructions_button_text }}</a>
+                <a href="#" class="od-button"><img
+                        src="assets/images/plus-ico.svg" alt="Plus-icon">{{ translations.homepage.biodata_button_text }}</a>
+                <a href="#" target="_blank" class="od-button second-btn"><img
+                        src="assets/images/youtube-ico.svg" alt="YouTube-icon">{{ translations.homepage.biodata_instructions_button_text }}</a>
             </div>
         </section>
 
@@ -68,7 +68,7 @@ document.body.classList.add("frontend.home");
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/couple.svg" alt="Couple Icon">
+                                <img src="assets/images/couple.svg" alt="Couple Icon">
                                 <h4>{{ translations.homepage.user_count_box_1_title }}</h4>
                                 <h3><span class="od-count od-total-profiles">6,940</span></h3>
 
@@ -76,7 +76,7 @@ document.body.classList.add("frontend.home");
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/male.svg" alt="Male Icon">
+                                <img src="assets/images/male.svg" alt="Male Icon">
                                 <h4>{{ translations.homepage.user_count_box_2_title }}</h4>
                                 <h3><span class="od-count od-total-men-profiles">2,830</span></h3>
 
@@ -84,7 +84,7 @@ document.body.classList.add("frontend.home");
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/female.svg" alt="Female Icon">
+                                <img src="assets/images/female.svg" alt="Female Icon">
                                 <h4>{{ translations.homepage.user_count_box_3_title }}</h4>
                                 <h3><span class="od-count od-total-female-profiles">4,099</span></h3>
 
@@ -92,7 +92,7 @@ document.body.classList.add("frontend.home");
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/married.svg" alt="Success Icon">
+                                <img src="assets/images/married.svg" alt="Success Icon">
                                 <h4>{{ translations.homepage.user_count_box_4_title }}</h4>
                                 <h3><span class="od-count od-total-success-stories">2,099</span><span>+</span></h3>
                             </div>
@@ -112,7 +112,7 @@ document.body.classList.add("frontend.home");
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/hiw-create-biodata.svg"
+                                <img src="assets/images/hiw-create-biodata.svg"
                                     alt="Create Biodata Icon">
                                 <h3>{{ translations.homepage.how_to_box_1_title }}</h3>
                                 <p>{{ translations.homepage.how_to_box_1_text }}</p>
@@ -120,21 +120,21 @@ document.body.classList.add("frontend.home");
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/hiw-search.svg" alt="Search Icon">
+                                <img src="assets/images/hiw-search.svg" alt="Search Icon">
                                 <h3>{{ translations.homepage.how_to_box_2_title }}</h3>
                                 <p>{{ translations.homepage.how_to_box_2_text }}</p>
                             </div>
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/hiw-contact.svg" alt="Contact Icon">
+                                <img src="assets/images/hiw-contact.svg" alt="Contact Icon">
                                 <h3>{{ translations.homepage.how_to_box_3_title }}</h3>
                                 <p>{{ translations.homepage.how_to_box_3_text }}</p>
                             </div>
                         </div>
                         <div class="od-section-widget-item od-col-12 od-col-sm-6 od-col-md-3">
                             <div class="od-section-widget-item-content">
-                                <img src="https://ordhekdeen.com/images/hiw-success.svg" alt="Success Icon">
+                                <img src="assets/images/hiw-success.svg" alt="Success Icon">
                                 <h3>{{ translations.homepage.how_to_box_4_title }}</h3>
                                 <p>{{ translations.homepage.how_to_box_4_text }}</p>
                             </div>
@@ -143,31 +143,5 @@ document.body.classList.add("frontend.home");
                 </div>
             </div>
         </section>
-
-        <!-- Client's feedback -->
-        <!-- <section class="od-section">
-    <div class="od-container">
-        <div class="od-section-fbreview">
-            <div class="od-section-fbreview-items od-row">
-            	<div class="od-col-12">
-            		<h2> <span>Shadibari তের</span> সেবা গ্রহীতাদের মন্তব্য</h2>
-            	</div>
-                <div class="od-section-fbreview-item od-col-12 od-col-sm-6">
-                    <div class="od-section-fbreview-item-content">
-                        <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FSaiful806%2Fposts%2Fpfbid02hwHNpYD4URsYu9J2L3HZxXf2Ko1YGaSv55T8VfbMcBcE4cvPNF3ypBTVrgJcDYkbl&width=552&show_text=false&height=266&appId" style="._2162._2_1h._rb9 {display: none !important;} " style="._2162._2_1h._rb9:100%; " allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                    </div>
-                </div>
-                <div class="od-section-fbreview-item od-col-12 od-col-sm-6">
-                    <div class="od-section-fbreview-item-content">
-                        <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FNuruzzaman789%2Fposts%2Fpfbid037MRKNv6KgHt1HCBhAbcHJhrKBFVY4hHWt8i4tNH84bz1DQbbshS9XovshToPxeN1l&width=552&show_text=false&height=305&appId" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> -->
-        <input type="hidden" id="current_page_name" value="search_page">
-        <input type="hidden" id="page_type" value="home">
-        <input type="hidden" id="biodata_search_url" value="https://ordhekdeen.com/biodatas">
     </div>
 </template>

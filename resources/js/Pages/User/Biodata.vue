@@ -11,6 +11,11 @@ import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 
 
+const emits = defineEmits([
+    'loadSingleBiodata',
+]);
+
+
 defineProps({
     translations: {
         type: Object,
@@ -58,7 +63,11 @@ const onUpdateGender = (gender) => {
 }
 
 
-const onCompleteTab = (nextIndex) => {
+const onCompleteTab = (nextIndex, biodataCompletion) => {
+    if( single_biodata.value.biodata_completion < biodataCompletion ){
+        single_biodata.value.biodata_completion = biodataCompletion;
+        emits('loadSingleBiodata', single_biodata.value);
+    }
     switch(nextIndex) {
     case 1:
         disableTab1.value = false;
@@ -109,14 +118,14 @@ onMounted(() => {
             return;
         }
         single_biodata.value = response.data[0];
-        onCompleteTab(single_biodata.value.running_tab);
+        onCompleteTab(single_biodata.value.running_tab, single_biodata.value.biodata_completion);
         selectedGender.value = single_biodata.value.gender;
-
+        emits('loadSingleBiodata', single_biodata.value);
     })
     .catch(function (error) {
         modalMessage.value = {
             modalHeading : page.props.translations.modal_messages.error_heading,
-            modalDescription : page.props.translations.modal_messages.error_description,
+            modalDescription : page.props.translations.modal_messages.biodata_error_description,
         }
         isModalOpen.value = true;
     });
@@ -197,7 +206,7 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <DeservedBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+                    <DeservedBiodata :translations :locale :locales :single_biodata :selectedGender :districts @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 

@@ -18,7 +18,7 @@ const props = defineProps({
     deserved_division: {
         type: String,
     },
-    deserved_district: {
+    deserved_districts: {
         type: String,
     },
 });
@@ -26,7 +26,7 @@ const props = defineProps({
 
 // initializing
 let innerHTML = ref('');
-let selectedDivisonDistrict = ref(props.deserved_division == null || props.deserved_district == null ? props.translations.biodata_form.deserved_biodata.deserved_district_title : props.deserved_division +' - '+ props.deserved_district);
+let selectedDivisonDistrict = ref(props.deserved_division == null || props.deserved_districts == null ? props.translations.biodata_form.deserved_biodata.deserved_district_title : props.deserved_division +' - '+ props.deserved_districts);
 let selectCountryInnerHTML = ref(`<div class="odl-head">
         <button action="goBackHandler" class="od-location-picker-previous">
             <i action="goBackHandler" class="fa fa-arrow-left"></i>

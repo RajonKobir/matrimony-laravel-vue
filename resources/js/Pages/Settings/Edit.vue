@@ -4,6 +4,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
+import { ref } from "vue";
 
 defineProps({
     mustVerifyEmail: {
@@ -29,6 +30,10 @@ defineProps({
     },
 });
 
+
+// initializing
+const single_biodata = ref([]);
+
 document.body.classList.remove(...document.body.classList);
 document.body.classList.add("frontend.edit_profile");
 
@@ -37,7 +42,7 @@ document.body.classList.add("frontend.edit_profile");
 <template>
     <Head title="Settings" />
 
-    <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister>
+    <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister :single_biodata >
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"

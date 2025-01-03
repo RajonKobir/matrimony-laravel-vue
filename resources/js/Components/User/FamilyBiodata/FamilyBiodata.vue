@@ -5,6 +5,11 @@ import { usePage, useForm } from '@inertiajs/vue3';
 import InputError from '../../InputError.vue';
 
 
+const emits = defineEmits([
+    'onCompleteTab',
+]);
+
+
 const props = defineProps({
     translations: {
         type: Object,
@@ -24,11 +29,6 @@ const props = defineProps({
 });
 
 
-const emits = defineEmits([
-    'onCompleteTab',
-]);
-
-
 // initializing
 const page = usePage();
 const csrf_token = page.props.csrf_token;
@@ -39,6 +39,7 @@ const isModalOpen = ref(false);
 
 const form = useForm({
     csrf_token: csrf_token,
+    biodata_completion: 60,
     running_tab: 3,
     user_id: user_id,
     father_name: null,
@@ -60,7 +61,7 @@ const submit = (e) => {
 
             if( page.props.flash.success ){
                 form.reset();
-                emits('onCompleteTab', 3);
+                emits('onCompleteTab', 3, form.biodata_completion);
             }
             else if( page.props.flash.error ){
                 modalMessage.value = {

@@ -38,13 +38,13 @@ const submit = () => {
     });
 };
 
-const loginWithGoogle = () => {
-    window.location.href = route('googleRedirect');
-};
+// const loginWithGoogle = () => {
+//     window.location.href = route('googleRedirect');
+// };
 
-const loginWithFacebook = () => {
-    window.location.href = route('facebookRedirect');
-};
+// const loginWithFacebook = () => {
+//     window.location.href = route('facebookRedirect');
+// };
 
 document.body.classList.remove(...document.body.classList);
 document.body.classList.add("frontend.login");
@@ -69,7 +69,64 @@ document.body.classList.add("frontend.login");
                     {{ $page.props.flash.error }}
                 </div>
 
-                <div class="mt-4 flex items-center justify-center">
+                <h2 class="text-center text-xl">
+                    {{ translations.login.login_title }}
+                </h2>
+
+                <form @submit.prevent="submit" class="mt-4">
+                    <div>
+                        <InputLabel for="email" :value="translations.login.email_or_mobile" />
+
+                        <TextInput id="email" type="text" class="mt-1 block w-full" v-model="form.email" required
+                            autofocus autocomplete="username" />
+
+                        <InputError class="mt-2" :message="form.errors.email" />
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel for="password" :value="translations.login.password" />
+
+                        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
+                            required autocomplete="current-password" />
+
+                        <InputError class="mt-2" :message="form.errors.password" />
+                    </div>
+
+                    <div class="mt-4 block">
+                        <label class="flex items-center">
+                            <Checkbox name="remember" v-model:checked="form.remember" />
+                            <span class="ms-2 text-sm text-gray-600">
+                                {{ translations.login.login_saved }}
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-center">
+                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing">
+                            {{ translations.login.login_button_text }}
+                        </PrimaryButton>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-center">
+                        <Link v-if="canResetPassword" :href="route('password.request')"
+                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            {{ translations.login.forgot_password }}
+                        </Link>
+                    </div>
+
+
+                    <div class="mt-4 flex justify-center">
+                        <Link :href="route('register')"
+                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            {{ translations.login.new_registration }}
+                        </Link>
+                    </div>
+
+                </form>
+
+
+            <!-- <div class="mt-4 flex items-center justify-center">
                     <button @click="loginWithGoogle"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
                         :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -109,54 +166,7 @@ document.body.classList.add("frontend.login");
                         </svg>
                         <span class="ml-1">Login With Facebook</span>
                     </button>
-                </div>
-
-                <form @submit.prevent="submit" class="mt-4">
-                    <div>
-                        <InputLabel for="email" value="Email" />
-
-                        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
-                            autofocus autocomplete="username" />
-
-                        <InputError class="mt-2" :message="form.errors.email" />
-                    </div>
-
-                    <div class="mt-4">
-                        <InputLabel for="password" value="Password" />
-
-                        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
-                            required autocomplete="current-password" />
-
-                        <InputError class="mt-2" :message="form.errors.password" />
-                    </div>
-
-                    <div class="mt-4 block">
-                        <label class="flex items-center">
-                            <Checkbox name="remember" v-model:checked="form.remember" />
-                            <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                        </label>
-                    </div>
-
-                    <div class="mt-4 flex items-center justify-end">
-                        <Link v-if="canResetPassword" :href="route('password.request')"
-                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Forgot your password?
-                        </Link>
-
-                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing">
-                            Log in
-                        </PrimaryButton>
-                    </div>
-
-                    <div class="mt-4 flex justify-center">
-                        <Link :href="route('register')"
-                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            New? Register Here!
-                        </Link>
-                    </div>
-
-                </form>
+                </div> -->
 
             </div>
         </div>

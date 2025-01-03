@@ -13,7 +13,7 @@ const props = defineProps({
     translations: {
         type: Object,
     },
-    deserved_height: {
+    deserved_height_range: {
         type: String,
     },
 });
@@ -25,7 +25,7 @@ const getKeyByValue = (object, value) => {
 }
 
 
-const height_state = ref( props.deserved_height == null ? [1, 31] : [ parseInt( getKeyByValue(props.translations.biodata_form.personal_biodata.height_options, props.deserved_height.split("-")[0].trim()) ), parseInt( getKeyByValue(props.translations.biodata_form.personal_biodata.height_options, props.deserved_height.split("-")[1].trim()) ) ]);
+const height_state = ref( props.deserved_height_range == null ? [1, 31] : [ parseInt( getKeyByValue(props.translations.biodata_form.deserved_biodata.deserved_height_range_options, props.deserved_height_range.split("-")[0].trim()) ), parseInt( getKeyByValue(props.translations.biodata_form.deserved_biodata.deserved_height_range_options, props.deserved_height_range.split("-")[1].trim()) ) ]);
 
 
 const onChangeSlider = (height_state) => {
@@ -33,7 +33,14 @@ const onChangeSlider = (height_state) => {
 }
 
 const diplayHeightItem = (data) => {
-    return h('div', { class: 'px-2 py-0 shadow', innerHTML: props.translations.biodata_form.personal_biodata.height_options[data] });
+    let first_or_last = '';
+    if( data == 1){
+        first_or_last = 'first_child';
+    }
+    if( data == 31){
+        first_or_last = 'last_child';
+    }
+    return h('div', { class: first_or_last + ' px-2 py-0 shadow', innerHTML: props.translations.biodata_form.deserved_biodata.deserved_height_range_options[data] });
 }
 
 
@@ -41,8 +48,8 @@ const diplayHeightItem = (data) => {
 
 <template>
 
-    <div class="text-center mb-6" >
-        <label for="height_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_height_title }}-</label>
+    <div class="mb-6" >
+        <label for="height_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_height_range_title }}-</label>
     </div>
     <Range
         @update:model-value="onChangeSlider"
@@ -51,10 +58,10 @@ const diplayHeightItem = (data) => {
         :max="31"
         :smooth="true"
         :renderTop="diplayHeightItem"
-        size="medium"
+        size="small"
         rangeHighlight
-        thumb-size="medium"
-        class="text-xs"
+        thumb-size="large"
+        class="height_slider text-xs"
         id="height_slider"
         style="width: 100%"
     />
@@ -62,4 +69,13 @@ const diplayHeightItem = (data) => {
 
 </template>
 
-<style scoped></style>
+<style>
+/* .height_slider .m-range-thumb-top-container div.first_child{
+    min-width: max-content !important;
+    margin-left: 40px;
+} */
+.height_slider .m-range-thumb-top-container div.last_child{
+    min-width: max-content !important;
+    margin-right: 40px;
+}
+</style>

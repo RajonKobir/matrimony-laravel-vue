@@ -1,5 +1,6 @@
 <script setup>
 import GuestLayout from '../../Layouts/GuestLayout.vue';
+import Checkbox from '../../Components/Checkbox.vue';
 import InputError from '../../Components/InputError.vue';
 import InputLabel from '../../Components/InputLabel.vue';
 import PrimaryButton from '../../Components/PrimaryButton.vue';
@@ -20,10 +21,11 @@ defineProps({
 });
 
 const form = useForm({
-    name: '',
+    mobile: '',
     email: '',
     password: '',
     password_confirmation: '',
+    remember: false,
 });
 
 const submit = () => {
@@ -32,13 +34,13 @@ const submit = () => {
     });
 };
 
-const loginWithGoogle = () => {
-    window.location.href = route('googleRedirect');
-};
+// const loginWithGoogle = () => {
+//     window.location.href = route('googleRedirect');
+// };
 
-const loginWithFacebook = () => {
-    window.location.href = route('facebookRedirect');
-};
+// const loginWithFacebook = () => {
+//     window.location.href = route('facebookRedirect');
+// };
 
 document.body.classList.remove(...document.body.classList);
 document.body.classList.add("frontend.register");
@@ -55,7 +57,74 @@ document.body.classList.add("frontend.register");
 
             <div class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
 
-                <div class="mt-4 flex items-center justify-center">
+                <h2 class="text-center text-xl">
+                    {{ translations.register.register_title }}
+                </h2>
+
+                <form @submit.prevent="submit" class="mt-4">
+                    <div>
+                        <InputLabel for="mobile" :value="translations.register.mobile_title" />
+
+                        <TextInput id="mobile" type="tel" class="mt-1 block w-full" v-model="form.mobile" autofocus autocomplete="mobile" />
+
+                        <InputError class="mt-2" :message="form.errors.mobile" />
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel for="email" :value="translations.register.email_title" />
+
+                        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" autocomplete="username" />
+
+                        <InputError class="mt-2" :message="form.errors.email" />
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel for="password" :value="translations.register.password_title" />
+
+                        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
+                            required autocomplete="new-password" />
+
+                        <InputError class="mt-2" :message="form.errors.password" />
+                    </div>
+
+                    <div class="mt-4">
+                        <InputLabel for="password_confirmation" :value="translations.register.confirm_password_title" />
+
+                        <TextInput id="password_confirmation" type="password" class="mt-1 block w-full"
+                            v-model="form.password_confirmation" required autocomplete="new-password" />
+
+                        <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                    </div>
+
+
+                    <div class="mt-4 block">
+                        <label class="flex items-center">
+                            <Checkbox name="remember" v-model:checked="form.remember" />
+                            <span class="ms-2 text-sm text-gray-600">
+                                {{ translations.login.login_saved }}
+                            </span>
+                        </label>
+                    </div>
+
+
+                    <div class="mt-4 flex items-center justify-center">
+                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing">
+                            {{ translations.register.register_button_text }}
+                        </PrimaryButton>
+                    </div>
+
+                    <div class="mt-4 flex items-center justify-center">
+                        <Link :href="route('login')"
+                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            {{ translations.register.already_registered }}
+                        </Link>
+                    </div>
+
+                </form>
+
+
+                <!-- <div class="mt-4 flex items-center justify-center">
                     <button @click="loginWithGoogle"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
                         :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -74,11 +143,11 @@ document.body.classList.add("frontend.register");
                                 d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
                                 fill="#EB4335" />
                         </svg>
-                        <span class="ml-1">Login With Google</span>
+                        <span class="ml-1">{{ translations.register.register_with_google }}</span>
                     </button>
-                </div>
+                </div> -->
 
-                <div class="mt-4 flex items-center justify-center">
+                <!-- <div class="mt-4 flex items-center justify-center">
                     <button @click="loginWithFacebook"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
                         :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -95,57 +164,8 @@ document.body.classList.add("frontend.register");
                         </svg>
                         <span class="ml-1">Login With Facebook</span>
                     </button>
-                </div>
+                </div> -->
 
-                <form @submit.prevent="submit" class="mt-4">
-                    <div>
-                        <InputLabel for="name" value="Name" />
-
-                        <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required
-                            autofocus autocomplete="name" />
-
-                        <InputError class="mt-2" :message="form.errors.name" />
-                    </div>
-
-                    <div class="mt-4">
-                        <InputLabel for="email" value="Email" />
-
-                        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
-                            autocomplete="username" />
-
-                        <InputError class="mt-2" :message="form.errors.email" />
-                    </div>
-
-                    <div class="mt-4">
-                        <InputLabel for="password" value="Password" />
-
-                        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
-                            required autocomplete="new-password" />
-
-                        <InputError class="mt-2" :message="form.errors.password" />
-                    </div>
-
-                    <div class="mt-4">
-                        <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                        <TextInput id="password_confirmation" type="password" class="mt-1 block w-full"
-                            v-model="form.password_confirmation" required autocomplete="new-password" />
-
-                        <InputError class="mt-2" :message="form.errors.password_confirmation" />
-                    </div>
-
-                    <div class="mt-4 flex items-center justify-end">
-                        <Link :href="route('login')"
-                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Already registered?
-                        </Link>
-
-                        <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing">
-                            Register
-                        </PrimaryButton>
-                    </div>
-                </form>
 
             </div>
         </div>

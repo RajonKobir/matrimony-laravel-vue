@@ -20,6 +20,9 @@ const props = defineProps({
     canRegister: {
         type: Boolean,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 onMounted(() => {
@@ -154,28 +157,21 @@ onMounted(() => {
                                             <div v-if="$page.props.auth.user" class="od-dropdown-menu-container od-animate od-slideIn">
                                                 <div class="odd-user-info">
 
-                                                    <img src="https://ordhekdeen.com/images/male.svg" alt="Male-Avatar" style="margin: 0 auto;">
-
+                                                    <img src="assets/images/male.svg" alt="Male-Avatar" style="margin: 0 auto;">
 
                                                     <div class="odd-bio-status-wrap">
-                                                        <h3>বায়োডাটার অবস্থা</h3>
+                                                        <h3>{{ translations.header.biodata_condition }}</h3>
                                                         <div class="odd-bio-status">
-                                                            <span class="od-incomplete">Incomplete</span>
+                                                            <span class="od-incomplete">{{ single_biodata.biodata_completion ? single_biodata.biodata_completion + '%' : '0%' }}</span>
                                                         </div>
 
-                                                    </div>
-
-                                                    <div class="od-preview-biodata-link">
-                                                        <a class="od-button"
-                                                            href="/dashboard">আমার
-                                                            বায়োডাটা</a>
                                                     </div>
                                                 </div>
                                                 <nav class="odd-nav od-dropdown-menu-content">
                                                     <ul class="od-dropdown-menu-lists">
                                                         <li>
                                                             <Link :href="route('user.profile')" as="button">
-                                                                <img src="https://ordhekdeen.com/images/editbiodata-ico.svg"
+                                                                <img src="assets/images/editbiodata-ico.svg"
                                                                     alt="Edit biodata-icon">
                                                                     {{ translations.main_menu.biodata_settings }}
                                                             </Link>
@@ -212,14 +208,14 @@ onMounted(() => {
                                                         </li> -->
                                                         <li>
                                                             <Link :href="route('user.settings.edit')" as="button">
-                                                                <img src="https://ordhekdeen.com/images/settings-ico.svg"
+                                                                <img src="assets/images/settings-ico.svg"
                                                                     alt="Setting-icon">
                                                                     {{ translations.main_menu.profile_settings }}</Link>
                                                         </li>
                                                         <li>
                                                             <Link :href="route('logout')"
                                                             method="post" as="button" >
-                                                                <img src="https://ordhekdeen.com/images/logout-ico.svg"
+                                                                <img src="assets/images/logout-ico.svg"
                                                                     alt="Logout-icon">
                                                                     {{ translations.main_menu.logout }}
                                                             </Link>

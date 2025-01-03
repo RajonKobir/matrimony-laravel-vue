@@ -53,6 +53,7 @@ const isKowmiHonorable = ref(false);
 
 const form = useForm({
     csrf_token: csrf_token,
+    biodata_completion: 20,
     running_tab: 1,
     user_id: user_id,
     birth_date: null,
@@ -103,7 +104,7 @@ const submit = (e) => {
             if( page.props.flash.success ){
                 form.errors = false;
                 form.reset();
-                emits('onCompleteTab', 1);
+                emits('onCompleteTab', 1, form.biodata_completion);
             }
             else if( page.props.flash.error ){
                 modalMessage.value = {
@@ -552,7 +553,7 @@ onMounted(() => {
             <label for="media_agreement" class="text-base">{{ translations.biodata_form.personal_biodata.media_agreement }}</label>
             <select @change="mediaAgreement" id="media_agreement" name="media_agreement"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null">{{ translations.form_basics.select_text }}</option>
+                <option value="null" disabled selected>{{ translations.form_basics.select_text }}</option>
                 <option value="1">{{ translations.form_basics.inshallah_yes }}</option>
                 <option value="0">{{ translations.form_basics.no }}</option>
             </select>
@@ -647,7 +648,7 @@ onMounted(() => {
         <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
             <input type="text" v-model="form.job_location" @input="(e) => { single_biodata.job_location = e.target.value }" name="job_location" list="job_location_lists" :placeholder="translations.biodata_form.personal_biodata.job_location_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
             <datalist id="job_location_lists">
-                <option v-for="(single_district) in districts" :key="single_district.id">{{ locale == 'en' ? single_district.district_name : single_district.district_bn_name }}</option>
+                <option v-for="single_district in districts" :key="single_district.id">{{ locale == 'en' ? single_district.district_name : single_district.district_bn_name }}</option>
             </datalist>
             <InputError class="mt-2" :message="form.errors.job_location" />
         </div>

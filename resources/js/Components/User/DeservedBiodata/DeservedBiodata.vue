@@ -3,9 +3,20 @@ import { ref, onMounted } from 'vue';
 import PopupMessage from './PopupMessage.vue';
 import { usePage, useForm } from '@inertiajs/vue3';
 import InputError from '../../InputError.vue';
-import DynamicAddress from './DynamicAddress.vue';
 import AgeSlider from './AgeSlider.vue';
 import HeightSlider from './HeightSlider.vue';
+import MultipleSkinColorsSelection from './MultipleSkinColorsSelection.vue';
+import MultipleMaritialStatusSelection from './MultipleMaritialStatusSelection.vue';
+import MultipleAkidaMajhabSelection from './MultipleAkidaMajhabSelection.vue';
+import MultipleFamilyConditionsSelection from './MultipleFamilyConditionsSelection.vue';
+import MultipleJobTitlesSelection from './MultipleJobTitlesSelection.vue';
+import MultipleConditionsSelection from './MultipleConditionsSelection.vue';
+import MultipleEducationMediumSelection from './MultipleEducationMediumSelection.vue';
+import MultipleGeneralItemsSelection from './MultipleGeneralItemsSelection.vue';
+import MultipleAliyaItemsSelection from './MultipleAliyaItemsSelection.vue';
+import MultipleKowmiItemsSelection from './MultipleKowmiItemsSelection.vue';
+import MultipleStudyOthersItemsSelection from './MultipleStudyOthersItemsSelection.vue';
+import MultipleDistrictsSelection from './MultipleDistrictsSelection.vue';
 
 
 const props = defineProps({
@@ -23,6 +34,9 @@ const props = defineProps({
     },
     selectedGender: {
         type: String,
+    },
+    districts: {
+        type: Object,
     },
 });
 
@@ -46,19 +60,27 @@ const deservedHigherHeight = ref(65);
 
 const form = useForm({
     csrf_token: csrf_token,
+    biodata_completion: 80,
     running_tab: 4,
     user_id: user_id,
-    deserved_division: null,
-    deserved_district: null,
-    deserved_age: null,
-    deserved_skin_color: null,
-    deserved_height: null,
-    deserved_akida_majhhab: null,
-    deserved_family_condition: null,
-    deserved_job_title: null,
-    deserved_education: null,
-    deserved_maritial_status: null,
-    deserved_condition: null,
+    deserved_districts: null,
+    deserved_age_range: null,
+    deserved_skin_colors: null,
+    deserved_height_range: null,
+    deserved_akida_majhhabs: null,
+    deserved_family_conditions: null,
+    deserved_job_titles: null,
+    deserved_education_mediums: null,
+    deserved_general_selected: null,
+    deserved_general_degrees: null,
+    deserved_aliya_selected: null,
+    deserved_aliya_degrees: null,
+    deserved_kowmi_selected: null,
+    deserved_kowmi_degrees: null,
+    deserved_study_others_selected: null,
+    deserved_study_others_degrees: null,
+    deserved_maritial_statuses: null,
+    deserved_conditions: null,
     deserved_others_desc: null,
 });
 const submit = (e) => {
@@ -69,7 +91,7 @@ const submit = (e) => {
 
             if( page.props.flash.success ){
                 form.reset();
-                emits('onCompleteTab', 4);
+                emits('onCompleteTab', 4, form.biodata_completion);
             }
             else if( page.props.flash.error ){
                 modalMessage.value = {
@@ -88,23 +110,97 @@ const closeModal = (value) => {
 }
 
 
-const onUpdateDynamicAddress = (address) => {
-    props.single_biodata.deserved_division = form.deserved_division = address.selectedDivision;
-    props.single_biodata.deserved_district =  form.deserved_district = address.selectedDistrict;
+const onSelectDistricts = (selectedDistricts) => {
+    props.single_biodata.deserved_districts = form.deserved_districts = selectedDistricts.map((district) => district).join(', ');
 }
 
 
 const onUpdateAgeSlider = (slider_state) => {
     deservedLowerAge.value = slider_state[0];
     deservedHigherAge.value = slider_state[1];
-    props.single_biodata.deserved_age = form.deserved_age = deservedLowerAge.value + ' - ' + deservedHigherAge.value;
+    props.single_biodata.deserved_age_range = form.deserved_age_range = deservedLowerAge.value + ' - ' + deservedHigherAge.value;
 }
 
 
 const onUpdateHeightSlider = (slider_state) => {
     deservedLowerHeight.value = props.translations.biodata_form.personal_biodata.height_options[slider_state[0]];
     deservedHigherHeight.value = props.translations.biodata_form.personal_biodata.height_options[slider_state[1]];
-    props.single_biodata.deserved_height = form.deserved_height = deservedLowerHeight.value + ' - ' + deservedHigherHeight.value;
+    props.single_biodata.deserved_height_range = form.deserved_height_range = deservedLowerHeight.value + ' - ' + deservedHigherHeight.value;
+}
+
+
+const onSelectSkinColors = (selectedSkinColorsArray) =>{
+    props.single_biodata.deserved_skin_colors = form.deserved_skin_colors = selectedSkinColorsArray.map((skin_color) => skin_color).join(', ');
+}
+
+const onSelectMaritialStatuses = (selectedMaritialStatusesArray) =>{
+    props.single_biodata.deserved_maritial_statuses = form.deserved_maritial_statuses = selectedMaritialStatusesArray.map((maritial_status) => maritial_status).join(', ');
+}
+
+const onSelectAkidaMajhabs = (selectedAkidaMajhabsArray) =>{
+    props.single_biodata.deserved_akida_majhhabs = form.deserved_akida_majhhabs = selectedAkidaMajhabsArray.map((akida_majhab) => akida_majhab).join(', ');
+}
+
+const onSelectFamilyConditions = (selectedFamilyConditionsArray) =>{
+    props.single_biodata.deserved_family_conditions = form.deserved_family_conditions = selectedFamilyConditionsArray.map((family_condition) => family_condition).join(', ');
+}
+
+const onSelectJobTitles = (selectedJobTitlesArray) =>{
+    props.single_biodata.deserved_job_titles = form.deserved_job_titles = selectedJobTitlesArray.map((job_title) => job_title).join(', ');
+}
+
+const onSelectConditions = (selectedConditionsArray) =>{
+    props.single_biodata.deserved_conditions = form.deserved_conditions = selectedConditionsArray.map((condition) => condition).join(', ');
+}
+
+const onSelectEducationMedium = (selectedEducationMediumArray) =>{
+    form.deserved_education_mediums = selectedEducationMediumArray.map((medium_of_study) => medium_of_study).join(', ');
+    props.single_biodata.deserved_education_mediums = form.deserved_education_mediums;
+
+    if( form.deserved_education_mediums.includes("যেকোনো") || form.deserved_education_mediums.includes("Any") ){
+        form.deserved_general_selected = form.deserved_aliya_selected = form.deserved_kowmi_selected = form.deserved_study_others_selected = true;
+        return;
+    }
+
+    if( form.deserved_education_mediums.includes("জেনারেল") || form.deserved_education_mediums.includes("General") ){
+        form.deserved_general_selected = true;
+    }else{
+        form.deserved_general_selected = false;
+    }
+
+    if( form.deserved_education_mediums.includes("আলিয়া") || form.deserved_education_mediums.includes("Aliya") ){
+        form.deserved_aliya_selected = true;
+    }else{
+        form.deserved_aliya_selected = false;
+    }
+
+    if( form.deserved_education_mediums.includes("ক্বওমী") || form.deserved_education_mediums.includes("Kowmi") ){
+        form.deserved_kowmi_selected = true;
+    }else{
+        form.deserved_kowmi_selected = false;
+    }
+
+    if( form.deserved_education_mediums.includes("অন্যান্য") || form.deserved_education_mediums.includes("Others") ){
+        form.deserved_study_others_selected = true;
+    }else{
+        form.deserved_study_others_selected = false;
+    }
+}
+
+const onSelectGeneralItems = (selectedGeneralItemsArray) =>{
+    props.single_biodata.deserved_general_degrees = form.deserved_general_degrees = selectedGeneralItemsArray.map((general_degree) => general_degree).join(', ');
+}
+
+const onSelectAliyaItems = (selectedAliyaItemsArray) =>{
+    props.single_biodata.deserved_aliya_degrees = form.deserved_aliya_degrees = selectedAliyaItemsArray.map((aliya_degree) => aliya_degree).join(', ');
+}
+
+const onSelectKowmiItems = (selectedKowmiItemsArray) =>{
+    props.single_biodata.deserved_kowmi_degrees = form.deserved_kowmi_degrees = selectedKowmiItemsArray.map((kowmi_degree) => kowmi_degree).join(', ');
+}
+
+const onSelectStudyOthersItems = (selectedStudyOthersItemsArray) =>{
+    props.single_biodata.deserved_study_others_degrees = form.deserved_study_others_degrees = selectedStudyOthersItemsArray.map((study_others_degree) => study_others_degree).join(', ');
 }
 
 
@@ -115,38 +211,59 @@ onMounted(() => {
         let single_biodata_keys = Object.keys(props.single_biodata);
         single_biodata_keys.forEach(function(item, index, arr){
             switch(item) {
-            case 'deserved_division':
-                form.deserved_division = props.single_biodata[item];
+            case 'deserved_districts':
+                form.deserved_districts = props.single_biodata[item];
                 break;
-            case 'deserved_district':
-                form.deserved_district = props.single_biodata[item];
+            case 'deserved_age_range':
+                form.deserved_age_range = props.single_biodata[item];
                 break;
-            case 'deserved_age':
-                form.deserved_age = props.single_biodata[item];
+            case 'deserved_skin_colors':
+                form.deserved_skin_colors = props.single_biodata[item];
                 break;
-            case 'deserved_skin_color':
-                form.deserved_skin_color = props.single_biodata[item];
+            case 'deserved_height_range':
+                form.deserved_height_range = props.single_biodata[item];
                 break;
-            case 'deserved_height':
-                form.deserved_height = props.single_biodata[item];
+            case 'deserved_akida_majhhabs':
+                form.deserved_akida_majhhabs = props.single_biodata[item];
                 break;
-            case 'deserved_akida_majhhab':
-                form.deserved_akida_majhhab = props.single_biodata[item];
+            case 'deserved_family_conditions':
+                form.deserved_family_conditions = props.single_biodata[item];
                 break;
-            case 'deserved_family_condition':
-                form.deserved_family_condition = props.single_biodata[item];
+            case 'deserved_job_titles':
+                form.deserved_job_titles = props.single_biodata[item];
                 break;
-            case 'deserved_job_title':
-                form.deserved_job_title = props.single_biodata[item];
+            case 'deserved_education_mediums':
+                form.deserved_education_mediums = props.single_biodata[item];
                 break;
-            case 'deserved_education':
-                form.deserved_education = props.single_biodata[item];
+            case 'deserved_general_selected':
+                form.deserved_general_selected = props.single_biodata[item];
                 break;
-            case 'deserved_maritial_status':
-                form.deserved_maritial_status = props.single_biodata[item];
+            case 'deserved_general_degrees':
+                form.deserved_general_degrees = props.single_biodata[item];
                 break;
-            case 'deserved_condition':
-                form.deserved_condition = props.single_biodata[item];
+            case 'deserved_aliya_selected':
+                form.deserved_aliya_selected = props.single_biodata[item];
+                break;
+            case 'deserved_aliya_degrees':
+                form.deserved_aliya_degrees = props.single_biodata[item];
+                break;
+            case 'deserved_kowmi_selected':
+                form.deserved_kowmi_selected = props.single_biodata[item];
+                break;
+            case 'deserved_kowmi_degrees':
+                form.deserved_kowmi_degrees = props.single_biodata[item];
+                break;
+            case 'deserved_study_others_selected':
+                form.deserved_study_others_selected = props.single_biodata[item];
+                break;
+            case 'deserved_study_others_degrees':
+                form.deserved_study_others_degrees = props.single_biodata[item];
+                break;
+            case 'deserved_maritial_statuses':
+                form.deserved_maritial_statuses = props.single_biodata[item];
+                break;
+            case 'deserved_conditions':
+                form.deserved_conditions = props.single_biodata[item];
                 break;
             case 'deserved_others_desc':
                 form.deserved_others_desc = props.single_biodata[item];
@@ -175,102 +292,73 @@ onMounted(() => {
         <input v-model="form.running_tab" type="hidden" name="running_tab" >
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <DynamicAddress :translations :locale :deserved_division="single_biodata.deserved_division" :deserved_district="single_biodata.deserved_district" @onUpdateDynamicAddress="onUpdateDynamicAddress" />
-            <InputError v-if="form.errors.deserved_division || form.errors.deserved_district" class="mt-2" :message="translations.biodata_form.deserved_biodata.dynamic_address_error" />
+            <MultipleDistrictsSelection :translations :locale :Districts="single_biodata.deserved_districts" :districts="districts" @onSelectDistricts="onSelectDistricts" />
+            <InputError class="mt-2" :message="form.errors.deserved_districts" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <AgeSlider :translations :deserved_age="single_biodata.deserved_age" @onUpdateAgeSlider="onUpdateAgeSlider"/>
-            <InputError class="mt-2" :message="form.errors.deserved_age" />
+            <AgeSlider :translations :deserved_age_range="single_biodata.deserved_age_range" @onUpdateAgeSlider="onUpdateAgeSlider"/>
+            <InputError class="mt-2" :message="form.errors.deserved_age_range" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_skin_color" @change="(e) => { single_biodata.deserved_skin_color = e.target.value }" id="deserved_skin_color" name="deserved_skin_color"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_skin_color_title }}</option>
-                <option v-for="deserved_skin_color in translations.biodata_form.personal_biodata.skin_color_options" :key="deserved_skin_color.id" :value="deserved_skin_color">{{ deserved_skin_color }}</option>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_skin_color" />
+            <HeightSlider :translations :deserved_height_range="single_biodata.deserved_height_range" @onUpdateHeightSlider="onUpdateHeightSlider"/>
+            <InputError class="mt-2" :message="form.errors.deserved_height_range" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_maritial_status" @change="(e) => { single_biodata.deserved_maritial_status = e.target.value }" id="deserved_maritial_status" name="deserved_maritial_status"
-                class="deserved_maritial_status block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_maritial_status_title }}</option>
-                <template v-for="(deserved_maritial_status, deserved_maritial_status_key) in translations.biodata_form.personal_biodata.maritial_status_options" :key="deserved_maritial_status.id">
-                        <option :value="deserved_maritial_status_key" v-if="(single_biodata.gender == 'male' && deserved_maritial_status_key != 'widow_no_child' && deserved_maritial_status_key != 'widow_with_child' ) || (single_biodata.gender == 'female' && deserved_maritial_status_key != 'widower_no_child' && deserved_maritial_status_key != 'widower_with_child' )" >
-                            {{ deserved_maritial_status }}
-                        </option>
-                </template>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_maritial_status" />
+            <MultipleSkinColorsSelection :translations :skinColors="single_biodata.deserved_skin_colors" @onSelectSkinColors="onSelectSkinColors" />
+            <InputError class="mt-2" :message="form.errors.deserved_skin_colors" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <HeightSlider :translations :deserved_height="single_biodata.deserved_height" @onUpdateHeightSlider="onUpdateHeightSlider"/>
-            <InputError class="mt-2" :message="form.errors.deserved_height" />
+            <MultipleMaritialStatusSelection :translations :maritialStatuses="single_biodata.deserved_maritial_statuses" :gender="single_biodata.gender" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
+            <InputError class="mt-2" :message="form.errors.deserved_maritial_statuses" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_akida_majhhab" @change="(e) => { single_biodata.deserved_akida_majhhab = e.target.value }" id="deserved_akida_majhhab" name="deserved_akida_majhhab"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_akida_majhhab_title }}</option>
-                <option v-for="deserved_akida_majhhab in translations.biodata_form.religious_biodata.akida_majhhab_options" :key="deserved_akida_majhhab.id" :value="deserved_akida_majhhab">{{ deserved_akida_majhhab }}</option>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_akida_majhhab" />
+            <MultipleAkidaMajhabSelection :translations :akidaMajhabs="single_biodata.deserved_akida_majhhabs" @onSelectAkidaMajhabs="onSelectAkidaMajhabs" />
+            <InputError class="mt-2" :message="form.errors.deserved_akida_majhhabs" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_family_condition" @change="(e) => { single_biodata.deserved_family_condition = e.target.value }" id="deserved_family_condition" name="deserved_family_condition"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_family_condition_title }}</option>
-                <option v-for="deserved_family_condition in translations.biodata_form.family_biodata.family_condition_options" :key="deserved_family_condition.id" :value="deserved_family_condition">{{ deserved_family_condition }}</option>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_family_condition" />
+            <MultipleFamilyConditionsSelection :translations :familyConditions="single_biodata.deserved_family_conditions" @onSelectFamilyConditions="onSelectFamilyConditions" />
+            <InputError class="mt-2" :message="form.errors.deserved_family_conditions" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_job_title" @change="(e) => { single_biodata.deserved_job_title = e.target.value }" id="deserved_job_title" name="deserved_job_title"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_job_title_title }}</option>
-                <option v-for="deserved_job_title in translations.biodata_form.personal_biodata.job_title_options" :key="deserved_job_title.id" :value="deserved_job_title">{{ deserved_job_title }}</option>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_job_title" />
+            <MultipleJobTitlesSelection :translations :JobTitles="single_biodata.deserved_job_titles" :gender="single_biodata.gender" @onSelectJobTitles="onSelectJobTitles" />
+            <InputError class="mt-2" :message="form.errors.deserved_job_titles" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_education" @change="(e) => { single_biodata.deserved_education = e.target.value }" id="deserved_education" name="deserved_education"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_education_title }}</option>
-                <option v-for="deserved_education in translations.biodata_form.personal_biodata.education_medium_options" :key="deserved_education.id" :value="deserved_education">{{ deserved_education }}</option>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_education" />
+            <MultipleEducationMediumSelection :translations :educationMediums="single_biodata.deserved_education_mediums" @onSelectEducationMedium="onSelectEducationMedium"/>
+            <InputError class="mt-2" :message="form.errors.deserved_education_mediums" />
         </div>
 
-        <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_condition" @change="(e) => { single_biodata.deserved_condition = e.target.value }" id="deserved_condition" name="deserved_condition"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_condition_title_male }}</option>
-                <option v-for="deserved_condition in translations.biodata_form.deserved_biodata.deserved_condition_options_male" :key="deserved_condition.id" :value="deserved_condition">{{ deserved_condition }}</option>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_condition" />
+        <div v-if="form.deserved_general_selected" class="form_item col-span-12 md:col-span-6 p-2">
+            <MultipleGeneralItemsSelection :translations :GeneralItems="single_biodata.deserved_general_degrees" @onSelectGeneralItems="onSelectGeneralItems" />
+            <InputError class="mt-2" :message="form.errors.deserved_general_degrees" />
         </div>
 
-        <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.deserved_condition" @change="(e) => { single_biodata.deserved_condition = e.target.value }" id="deserved_condition" name="deserved_condition"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.deserved_biodata.deserved_condition_title_female }}</option>
-                <option v-for="deserved_condition in translations.biodata_form.deserved_biodata.deserved_condition_options_female" :key="deserved_condition.id" :value="deserved_condition">{{ deserved_condition }}</option>
-                <option :value="translations.biodata_form.deserved_biodata.deserved_special_selection" >{{ translations.biodata_form.deserved_biodata.deserved_special_selection }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_condition" />
+        <div v-if="form.deserved_aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
+            <MultipleAliyaItemsSelection :translations :AliyaItems="single_biodata.deserved_aliya_degrees" @onSelectAliyaItems="onSelectAliyaItems" />
+            <InputError class="mt-2" :message="form.errors.deserved_aliya_degrees" />
+        </div>
+
+        <div v-if="form.deserved_aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
+            <MultipleKowmiItemsSelection :translations :KowmiItems="single_biodata.deserved_kowmi_degrees" @onSelectKowmiItems="onSelectKowmiItems" />
+            <InputError class="mt-2" :message="form.errors.deserved_kowmi_degrees" />
+        </div>
+
+        <div v-if="form.deserved_aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
+            <MultipleStudyOthersItemsSelection :translations :StudyOthersItems="single_biodata.deserved_study_others_degrees" @onSelectStudyOthersItems="onSelectStudyOthersItems" />
+            <InputError class="mt-2" :message="form.errors.deserved_study_others_degrees" />
+        </div>
+
+        <div class="form_item col-span-12 md:col-span-6 p-2">
+            <MultipleConditionsSelection :translations :gender="single_biodata.gender" :conditions="single_biodata.deserved_conditions" @onSelectConditions="onSelectConditions" />
+            <InputError class="mt-2" :message="form.errors.deserved_conditions" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
@@ -297,7 +385,7 @@ onMounted(() => {
     color: #fff !important;
 }
 @media(max-width: 768px) {
-    .deserved_maritial_status{
+    .deserved_maritial_statuses{
         padding-left: 5px !important;
     }
 }

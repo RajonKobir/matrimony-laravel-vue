@@ -17,8 +17,9 @@ defineProps({
 const user = usePage().props.auth.user;
 
 const form = useForm({
-    name: user.name,
-    email: user.email,
+    name: user.name ? user.name : '',
+    mobile: user.mobile ? user.mobile : '',
+    email: user.email ? user.email : '',
 });
 </script>
 
@@ -52,6 +53,21 @@ const form = useForm({
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+
+            <div>
+                <InputLabel for="mobile" value="Mobile" />
+
+                <TextInput
+                    id="mobile"
+                    type="tel"
+                    class="mt-1 block w-full"
+                    v-model="form.mobile"
+                    required
+                    autocomplete="username"
+                />
+
+                <InputError class="mt-2" :message="form.errors.mobile" />
             </div>
 
             <div>

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -40,9 +43,32 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    // public function store(LoginRequest $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->authenticate();
+        //it's the default one
+        // $request->authenticate();
+
+        //validation
+        $validated = $request->validate([
+            'password' => ['required', Rules\Password::defaults()],
+            'email' => 'required|string|max:100',
+        ]);
+
+        $user= User::where( 'mobile', $request->email )->orWhere( 'email', $request->email )->get();
+
+        // If a user exists
+        if ( $user ) {
+            $first_user = $user[0];
+            if( Hash::check($validated['password'], $first_user->password ) ){
+                // Authenticate the user
+                Auth::login($first_user);
+            }
+            elseif( Hash::check($first_user->password, $validated['password']) ){
+                // Authenticate the user
+                Auth::login($first_user);
+            }
+        }
 
         $request->session()->regenerate();
 
@@ -60,6 +86,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }
