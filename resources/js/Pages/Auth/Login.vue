@@ -65,8 +65,10 @@ document.body.classList.add("frontend.login");
                     {{ status }}
                 </div>
 
-                <div v-if="$page.props.flash.error" class="alert alert-danger alert-dismissible">
-                    {{ $page.props.flash.error }}
+                <div v-if="$page.props.flash.error" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                    <div class="alert-body">
+                        {{ $page.props.flash.error }}
+                    </div>
                 </div>
 
                 <h2 class="text-center text-xl">

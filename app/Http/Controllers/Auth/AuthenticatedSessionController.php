@@ -58,21 +58,25 @@ class AuthenticatedSessionController extends Controller
         $user= User::where( 'mobile', $request->email )->orWhere( 'email', $request->email )->get();
 
         // If a user exists
-        if ( $user ) {
-            $first_user = $user[0];
-            if( Hash::check($validated['password'], $first_user->password ) ){
-                // Authenticate the user
-                Auth::login($first_user);
-            }
-            elseif( Hash::check($first_user->password, $validated['password']) ){
-                // Authenticate the user
-                Auth::login($first_user);
+        if( $user ) {
+            if( count($user) > 0 ){
+                $first_user = $user[0];
+                if( Hash::check($validated['password'], $first_user->password ) ){
+                    // Authenticate the user
+                    Auth::login($first_user);
+                    $request->session()->regenerate();
+                    return redirect()->intended(route('user.profile', absolute: false));
+                }
+                elseif( Hash::check($first_user->password, $validated['password']) ){
+                    // Authenticate the user
+                    Auth::login($first_user);
+                    $request->session()->regenerate();
+                    return redirect()->intended(route('user.profile', absolute: false));
+                }
             }
         }
 
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('user.profile', absolute: false));
+        return redirect()->back()->with('error',  __('frontend.flash_messages.login_error'));
     }
 
     /**
