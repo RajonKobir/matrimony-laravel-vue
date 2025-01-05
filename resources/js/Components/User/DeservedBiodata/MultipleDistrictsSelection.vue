@@ -30,6 +30,26 @@ const props = defineProps({
 
 const selectedDistricts = ref([]);
 const showPopup = ref(false);
+const newDivisionId = ref('');
+const divisionNames = {
+    '1' : { "name" : "Barishal", "bn_name" : "বরিশাল", },
+    '2' : { "name": "Chattogram", "bn_name": "চট্টগ্রাম", },
+    '3' : { "name": "Dhaka", "bn_name": "ঢাকা", },
+    '4' : { "name": "Khulna", "bn_name": "খুলনা", },
+    '5' : { "name": "Rajshahi", "bn_name": "রাজশাহী", },
+    '6' : { "name": "Rangpur", "bn_name": "রংপুর", },
+    '7' : { "name": "Sylhet", "bn_name": "সিলেট", },
+    '8' : { "name": "Mymensingh", "bn_name": "ময়মনসিংহ", },
+};
+
+const showDivisionName = (divisionId) => {
+    if( newDivisionId.value != divisionId ){
+        newDivisionId.value = divisionId;
+        return true;
+    }else{
+        return false;
+    }
+}
 
 
 const onClickDistrictsItems = (e) => {
@@ -86,25 +106,38 @@ onMounted(() => {
                         <span>{{ translations.biodata_form.multiple_selection_ok }}</span>
                     </div>
 
-                    <ListboxOption @click="onClickDistrictsItems" v-slot="{ active, selected }" v-for="district in districts" :key="district.id" :value="locale == 'en' ? district.district_name : district.district_bn_name" as="template" :disabled="district.unavailable" >
-                        <li :class="[
-                            active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
-                        ]">
-                            <span :class="[
-                                selected ? 'font-medium' : 'font-normal',
-                                'block truncate',
+
+                    <template v-for="district in districts" :key="district.id" >
+
+                        <div v-if="[1, 14, 18, 26, 34, 40, 51, 55].includes(district.id)" class="relative flex items-center">
+                            <div class="flex-grow border-t border-gray-400"></div>
+                            <span class="flex-shrink mx-4 text-gray-400">
+                                {{ divisionNames[district.division_id].bn_name }}
+                            </span>
+                            <div class="flex-grow border-t border-gray-400"></div>
+                        </div>
+
+                        <ListboxOption @click="onClickDistrictsItems" v-slot="{ active, selected }" :value="locale == 'en' ? district.district_name : district.district_bn_name" as="template" :disabled="district.unavailable" >
+                            <li :class="[
+                                active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
+                                'relative cursor-default select-none py-2 pl-10 pr-4',
                             ]">
+                                <span :class="[
+                                    selected ? 'font-medium' : 'font-normal',
+                                    'block truncate',
+                                ]">
 
-                                {{ locale == 'en' ? district.district_name : district.district_bn_name }}
+                                    {{ locale == 'en' ? district.district_name : district.district_bn_name }}
 
-                            </span>
+                                </span>
 
-                            <span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
-                                <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                            </span>
-                        </li>
-                    </ListboxOption>
+                                <span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
+                                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                                </span>
+                            </li>
+                        </ListboxOption>
+
+                    </template>
 
                 </ListboxOptions>
 

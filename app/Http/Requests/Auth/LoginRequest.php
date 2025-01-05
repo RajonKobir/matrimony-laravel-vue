@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rules;
 
 class LoginRequest extends FormRequest
 {
@@ -27,8 +28,9 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            // 'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'max:100'],
+            'password' => ['required', 'string', Rules\Password::defaults()],
         ];
     }
 
@@ -41,7 +43,8 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        //updated login attempt
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember')) && ! Auth::attempt( [ 'mobile' => $this->email, 'password' => $this->password ] , $this->boolean('remember')) ) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

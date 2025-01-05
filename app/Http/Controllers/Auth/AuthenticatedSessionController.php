@@ -43,40 +43,37 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    // public function store(LoginRequest $request): RedirectResponse
-    public function store(Request $request)
+    public function store(LoginRequest $request): RedirectResponse
+    // public function store(Request $request): RedirectResponse
     {
         //it's the default one
-        // $request->authenticate();
+        $request->authenticate();
 
-        //validation
-        $validated = $request->validate([
-            'password' => ['required', Rules\Password::defaults()],
-            'email' => 'required|string|max:100',
-        ]);
+        // //validation
+        // $validated = $request->validate([
+        //     'password' => ['required', Rules\Password::defaults()],
+        //     'email' => 'required|string|max:100',
+        // ]);
 
-        $user= User::where( 'mobile', $request->email )->orWhere( 'email', $request->email )->get();
+        // $user= User::where( 'mobile', $request->email )->orWhere( 'email', $request->email )->get();
 
-        // If a user exists
-        if( $user ) {
-            if( count($user) > 0 ){
-                $first_user = $user[0];
-                if( Hash::check($validated['password'], $first_user->password ) ){
-                    // Authenticate the user
-                    Auth::login($first_user);
-                    $request->session()->regenerate();
-                    return redirect()->intended(route('user.profile', absolute: false));
-                }
-                elseif( Hash::check($first_user->password, $validated['password']) ){
-                    // Authenticate the user
-                    Auth::login($first_user);
-                    $request->session()->regenerate();
-                    return redirect()->intended(route('user.profile', absolute: false));
-                }
-            }
-        }
+        // // If a user exists
+        // if( $user ) {
+        //     if( count($user) > 0 ){
+        //         $first_user = $user[0];
+        //         if( Hash::check($validated['password'], $first_user->password ) ){
+        //             // Authenticate the user
+        //             Auth::login($first_user);
+        //             $request->session()->regenerate();
+        //             return redirect()->intended(route('user.profile', absolute: false));
+        //         }
+        //     }
+        // }
+        // $request->session()->regenerate();
+        // return redirect()->back()->with('error',  __('frontend.flash_messages.login_error'));
 
-        return redirect()->back()->with('error',  __('frontend.flash_messages.login_error'));
+        $request->session()->regenerate();
+        return redirect()->intended(route('user.profile', absolute: false));
     }
 
     /**

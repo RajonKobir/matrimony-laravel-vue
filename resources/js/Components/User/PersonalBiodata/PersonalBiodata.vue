@@ -66,15 +66,13 @@ const form = useForm({
     permanent_division: null,
     permanent_district: null,
     permanent_upazila: null,
-    permanent_post_office: null,
-    permanent_post_code: null,
+    permanent_union_parishad: null,
     address_same: false,
     temporary_country: null,
     temporary_division: null,
     temporary_district: null,
     temporary_upazila: null,
-    temporary_post_office: null,
-    temporary_post_code: null,
+    temporary_union_parishad: null,
     job_title: null,
     job_details: null,
     job_location: null,
@@ -229,8 +227,7 @@ const onUpdatePermanentAddress = (address) => {
     props.single_biodata.permanent_division = form.permanent_division = address.selectedDivision;
     props.single_biodata.permanent_district = form.permanent_district = address.selectedDistrict;
     props.single_biodata.permanent_upazila = form.permanent_upazila = address.selectedUpazila;
-    props.single_biodata.permanent_post_office = form.permanent_post_office = address.selectedPostOffice;
-    props.single_biodata.permanent_post_code = form.permanent_post_code = address.selectedPostCode;
+    props.single_biodata.permanent_union_parishad = form.permanent_union_parishad = address.selectedUnionParishad;
 }
 
 
@@ -239,8 +236,7 @@ const onUpdateTemporaryAddress = (address) => {
     props.single_biodata.temporary_division = form.temporary_division = address.selectedDivision;
     props.single_biodata.temporary_district = form.temporary_district = address.selectedDistrict;
     props.single_biodata.temporary_upazila = form.temporary_upazila = address.selectedUpazila;
-    props.single_biodata.temporary_post_office = form.temporary_post_office = address.selectedPostOffice;
-    props.single_biodata.temporary_post_code = form.temporary_post_code = address.selectedPostCode;
+    props.single_biodata.temporary_union_parishad = form.temporary_union_parishad = address.selectedUnionParishad;
 }
 
 
@@ -252,8 +248,6 @@ const addressAreSame = (true_or_false) => {
         temporaryAddress.value.selectedDivision = props.single_biodata.temporary_division = form.temporary_division = form.permanent_division;
         temporaryAddress.value.selectedDistrict = props.single_biodata.temporary_district = form.temporary_district = form.permanent_district;
         temporaryAddress.value.selectedUpazila = props.single_biodata.temporary_upazila = form.temporary_upazila = form.permanent_upazila;
-        temporaryAddress.value.selectedPostOffice = props.single_biodata.temporary_post_office = form.temporary_post_office = form.permanent_post_office;
-        temporaryAddress.value.selectedPostCode = props.single_biodata.temporary_post_code = form.temporary_post_code = form.permanent_post_code;
 
     }
 }
@@ -430,13 +424,9 @@ onMounted(() => {
                 form.permanent_upazila = props.single_biodata[item];
                 permanentAddress.value.selectedUpazila = props.single_biodata[item];
                 break;
-            case 'permanent_post_office':
-                form.permanent_post_office = props.single_biodata[item];
-                permanentAddress.value.selectedPostOffice = props.single_biodata[item];
-                break;
-            case 'permanent_post_code':
-                form.permanent_post_code = props.single_biodata[item];
-                permanentAddress.value.selectedPostCode = props.single_biodata[item];
+            case 'permanent_union_parishad':
+                form.permanent_union_parishad = props.single_biodata[item];
+                permanentAddress.value.selectedUnionParishad = props.single_biodata[item];
                 break;
             case 'temporary_country':
                 form.temporary_country = props.single_biodata[item];
@@ -454,13 +444,9 @@ onMounted(() => {
                 form.temporary_upazila = props.single_biodata[item];
                 temporaryAddress.value.selectedUpazila = props.single_biodata[item];
                 break;
-            case 'temporary_post_office':
-                form.temporary_post_office = props.single_biodata[item];
-                temporaryAddress.value.selectedPostOffice = props.single_biodata[item];
-                break;
-            case 'temporary_post_code':
-                form.temporary_post_code = props.single_biodata[item];
-                temporaryAddress.value.selectedPostCode = props.single_biodata[item];
+            case 'temporary_union_parishad':
+                form.temporary_union_parishad = props.single_biodata[item];
+                temporaryAddress.value.selectedUnionParishad = props.single_biodata[item];
                 break;
             case 'job_title':
                 form.job_title = props.single_biodata[item];
@@ -628,11 +614,11 @@ onMounted(() => {
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
             <PermanentDynamicAddress :translations :locale :permanentAddress @onUpdatePermanentAddress="onUpdatePermanentAddress" />
-            <InputError v-if="form.errors.permanent_country || form.errors.permanent_division || form.errors.permanent_district || form.errors.permanent_upazila || form.errors.permanent_post_office || form.errors.permanent_post_code" class="mt-2" :message="translations.biodata_form.personal_biodata.permanent_address_error" />
+            <InputError v-if="form.errors.permanent_country || form.errors.permanent_division || form.errors.permanent_district || form.errors.permanent_upazila" class="mt-2" :message="translations.biodata_form.personal_biodata.permanent_address_error" />
         </div>
         <div class="form_item col-span-12 md:col-span-6 p-2">
             <TemporaryDynamicAddress :translations :locale :temporaryAddress @addressAreSame="addressAreSame" @onUpdateTemporaryAddress="onUpdateTemporaryAddress" />
-            <InputError v-if="form.errors.temporary_country || form.errors.temporary_division || form.errors.temporary_district || form.errors.temporary_upazila || form.errors.temporary_post_office || form.errors.temporary_post_code" class="mt-2" :message="translations.biodata_form.personal_biodata.temporary_address_error" />
+            <InputError v-if="form.errors.temporary_country || form.errors.temporary_division || form.errors.temporary_district || form.errors.temporary_upazila " class="mt-2" :message="translations.biodata_form.personal_biodata.temporary_address_error" />
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">

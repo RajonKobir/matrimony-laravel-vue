@@ -7,6 +7,7 @@ use App\Models\Division;
 use App\Models\District;
 use App\Models\Upazila;
 use App\Models\Postcode;
+use App\Models\UnionParishad;
 
 class AddressController extends Controller
 {
@@ -80,7 +81,8 @@ class AddressController extends Controller
 
     public function getUpazilas(string $district_id)
     {
-        $upazilas = Upazila::where('district_id', $district_id)->get();
+        // $upazilas = Upazila::where('district_id', $district_id)->get();
+        $upazilas = UnionParishad::where('district_id', $district_id)->get();
         return $upazilas;
     }
 
@@ -88,6 +90,12 @@ class AddressController extends Controller
     {
         $postcodes = Postcode::where('upazila_name', 'LIKE', '%' . $upazila_name . '%')->get();
         return $postcodes;
+    }
+
+    public function getUnionParishads(string $upazila_name)
+    {
+        $union_parishads = UnionParishad::where('upazila', 'LIKE', '%' . $upazila_name . '%')->get();
+        return $union_parishads;
     }
 
 }

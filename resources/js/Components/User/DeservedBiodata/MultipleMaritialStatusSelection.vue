@@ -86,25 +86,25 @@ onMounted(() => {
                     <template v-for="(maritial_status, maritial_status_key) in translations.biodata_form.deserved_biodata.deserved_maritial_statuses_options" :key="maritial_status.id">
 
 
-                        <ListboxOption @click="onClickMaritialStatusesItems" v-slot="{ active, selected }" :value="maritial_status" v-if="(gender == 'male' && maritial_status_key != 'widow_no_child' && maritial_status_key != 'widow_with_child' ) || (gender == 'female' && maritial_status_key != 'widower_no_child' && maritial_status_key != 'widower_with_child' )" as="template" :disabled="maritial_status.unavailable" >
-                        <li :class="[
-                            active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
-                        ]">
-                            <span :class="[
-                                selected ? 'font-medium' : 'font-normal',
-                                'block truncate',
+                        <ListboxOption @click="onClickMaritialStatusesItems" v-slot="{ active, selected }" :value="maritial_status" v-if="(gender == 'female' && maritial_status_key != 'widow_no_child' && maritial_status_key != 'widow_with_child' ) || (gender == 'male' && maritial_status_key != 'widower_no_child' && maritial_status_key != 'widower_with_child' )" as="template" :disabled="maritial_status.unavailable" >
+                            <li :class="[
+                                active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
+                                'relative cursor-default select-none py-2 pl-10 pr-4',
                             ]">
+                                <span :class="[
+                                    selected ? 'font-medium' : 'font-normal',
+                                    'block truncate',
+                                ]">
 
-                                {{ maritial_status }}
+                                    {{ maritial_status }}
 
-                            </span>
+                                </span>
 
-                            <span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
-                                <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                            </span>
-                        </li>
-                    </ListboxOption>
+                                <span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
+                                    <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                                </span>
+                            </li>
+                        </ListboxOption>
 
 
                     </template>

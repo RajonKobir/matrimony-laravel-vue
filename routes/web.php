@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\Auth\Admin\AdminAuthController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
@@ -70,13 +71,33 @@ Route::middleware(Localization::class)->group(function(){
         Route::post('/country_id/{country_id}', 'getDivisions')->name('getDivisionsByCountryId');
         Route::post('/division_id/{division_id}', 'getDistricts')->name('getDistrictsByDivisionId');
         Route::post('/district_id/{district_id}', 'getUpazilas')->name('getUpazilasByDistrictId');
-        Route::post('/upazila_name/{upazila_name}', 'getPostcodes')->name('getPostcodesByUpazilaName');
+        // Route::post('/upazila_name/{upazila_name}', 'getPostcodes')->name('getPostcodesByUpazilaName');
+        Route::post('/upazila_name/{upazila_name}', 'getUnionParishads')->name('getUnionParishadsByUpazilaName');
     });
 
 
     // Mail Controllers
     Route::prefix('/mails')->controller(MailController::class)->name('mails.')->group(function () {
         Route::post('/contact', 'sendMail')->name('frontend.contact.post');
+    });
+
+
+
+
+        // Admin Controller
+    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+        Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('adminLogin');
+        Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
+
+        Route::group(['middleware' => 'is_admin'], function () {
+            Route::get('/', function () {
+                return view('admin.welcome');
+            })->name('adminDashboard');
+
+        });
+
+        Route::post('logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
+
     });
 
 

@@ -157,7 +157,9 @@ onMounted(() => {
                                             <div v-if="$page.props.auth.user" class="od-dropdown-menu-container od-animate od-slideIn">
                                                 <div class="odd-user-info">
 
-                                                    <img src="assets/images/male.svg" alt="Male-Avatar" style="margin: 0 auto;">
+                                                    <img v-if="single_biodata.gender == 'male'" src="assets/images/male.svg" alt="Male-Avatar" style="margin: 0 auto;">
+
+                                                    <img v-if="single_biodata.gender == 'female'" src="assets/images/female.svg" alt="Female-Avatar" style="margin: 0 auto;">
 
                                                     <div class="odd-bio-status-wrap">
                                                         <h3>{{ translations.header.biodata_condition }}</h3>

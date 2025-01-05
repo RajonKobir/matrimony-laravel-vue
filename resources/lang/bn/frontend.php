@@ -55,6 +55,7 @@ return [
         'confirm_password_title' => 'কনফার্ম পাসওয়ার্ড',
         'already_registered' => 'ইতিমধ্যে নিবন্ধিত?',
         'register_button_text' => 'রেজিষ্ট্রার',
+        'register_mobile_error' => 'অনুগ্রহ করে ১১ ডিজিটের সঠিক মোবাইল নম্বর প্রদান করুন।',
     ],
     'login' => [
         'login_title' => 'রেজিষ্ট্রেশনকৃত তথ্য দিয়ে লগইন করুন',
@@ -107,6 +108,8 @@ return [
         'select_district_heading' => 'জেলা নির্বাচন করুন',
         'select_upazila_heading' => 'উপজেলা নির্বাচন করুন',
         'select_postoffice_heading' => 'ডাকঘর নির্বাচন করুন',
+        'select_union_parishad_heading' => 'ইউনিয়ন নির্বাচন করুন',
+        'select_thana_heading' => 'থানা নির্বাচন করুন',
         'search_whole_country_text' => 'সমগ্র দেশ',
         'search_indicator' => 'খুঁজুন',
         'initial_country' => 'বাংলাদেশ',
