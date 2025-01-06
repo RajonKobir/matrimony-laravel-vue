@@ -242,12 +242,23 @@ const onUpdateTemporaryAddress = (address) => {
 
 const addressAreSame = (true_or_false) => {
     if( true_or_false ){
+
+        if( !form.permanent_upazila && !form.permanent_union_parishad){
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.permanent_address_error,
+            }
+            isModalOpen.value = true;
+            return;
+        }
+
         form.address_same = true_or_false;
 
         temporaryAddress.value.selectedCountry = props.single_biodata.temporary_country = form.temporary_country = form.permanent_country;
         temporaryAddress.value.selectedDivision = props.single_biodata.temporary_division = form.temporary_division = form.permanent_division;
         temporaryAddress.value.selectedDistrict = props.single_biodata.temporary_district = form.temporary_district = form.permanent_district;
         temporaryAddress.value.selectedUpazila = props.single_biodata.temporary_upazila = form.temporary_upazila = form.permanent_upazila;
+        temporaryAddress.value.selectedUnionParishad = props.single_biodata.temporary_union_parishad = form.temporary_union_parishad = form.permanent_union_parishad;
 
     }
 }
@@ -551,7 +562,7 @@ onMounted(() => {
             <label for="gender" class="text-base">{{ translations.biodata_form.personal_biodata.gender_title }}</label>
             <select @change="genderUpdate" id="gender" name="gender"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option  value="null">{{ translations.form_basics.select_text }}</option>
+                <option  value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
                 <option v-for="(single_gender, gender_key) in translations.biodata_form.personal_biodata.gender_options" :key="single_gender.id" :value="gender_key" :selected="gender_key == gender">{{ single_gender }}</option>
             </select>
         </div>
@@ -622,7 +633,7 @@ onMounted(() => {
         </div>
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleJobSelection :translations :jobTitles="single_biodata.job_title" @onSelectJobs="onSelectJobs"/>
+            <MultipleJobSelection :translations :jobTitles="single_biodata.job_title" :gender="single_biodata.gender" @onSelectJobs="onSelectJobs"/>
             <InputError class="mt-2" :message="form.errors.job_title" />
         </div>
 

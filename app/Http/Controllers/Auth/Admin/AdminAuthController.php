@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+use Illuminate\Validation\Rules;
 
 class AdminAuthController extends Controller
 {
@@ -16,10 +17,10 @@ class AdminAuthController extends Controller
     public function postLogin(Request $request)
     {
 
-        // $request->validate($request, [
-        //     'email' => 'required|email',
-        //     'password' => 'required',
-        // ]);
+        $request->validate([
+            'email' => 'required|email|max:100',
+            'password' => ['required', 'string', Rules\Password::defaults()->min(6)->max(20)],
+        ]);
 
         if(auth()->guard('admin')->attempt(['email' => $request->input('email'),  'password' => $request->input('password')])){
             $user = auth()->guard('admin')->user();
@@ -27,9 +28,10 @@ class AdminAuthController extends Controller
                 return redirect()->route('adminDashboard')->with('success','You are Logged in sucessfully.');
                 // return Inertia::render('Admin/Home');
             }
-        }else {
-            return back()->with('error','Whoops! invalid email and password.');
         }
+
+        return back()->with('error','Whoops! invalid email and password.');
+
     }
 
     public function adminLogout(Request $request)

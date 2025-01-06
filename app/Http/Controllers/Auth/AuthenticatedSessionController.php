@@ -51,7 +51,7 @@ class AuthenticatedSessionController extends Controller
 
         // //validation
         // $validated = $request->validate([
-        //     'password' => ['required', Rules\Password::defaults()],
+        //     'password' => ['required', Rules\Password::defaults()->min(6)->max(20)],
         //     'email' => 'required|string|max:100',
         // ]);
 

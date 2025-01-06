@@ -17,6 +17,9 @@ const props = defineProps({
     translations: {
         type: Object,
     },
+    locale: {
+        type: String,
+    },
     JobTitles: {
         type: String,
     },
@@ -31,14 +34,9 @@ const showPopup = ref(false);
 
 const onClickJobTitlesItems = (e) => {
     if( selectedJobTitles.value.includes("যেকোনো") || selectedJobTitles.value.includes("Any") ){
-            Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedJobTitles.value = selectedJobTitles.value.filter(function(item) {
-                    return item === "যেকোনো" || item === "Any";
-                })
-
-            }
-        });
+        selectedJobTitles.value = selectedJobTitles.value.filter(function(item) {
+            return item === "যেকোনো" || item === "Any";
+        })
     }
     emits('onSelectJobTitles', selectedJobTitles.value);
 };
@@ -58,6 +56,7 @@ onMounted(() => {
 
 
 <template>
+
     <Listbox v-model="selectedJobTitles" multiple>
         <ListboxButton @click="showPopup = !showPopup"
             class="relative appearance-none w-full text-left bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
@@ -83,7 +82,7 @@ onMounted(() => {
                         <span>{{ translations.biodata_form.multiple_selection_ok }}</span>
                     </div>
 
-                    <ListboxOption v-if="gender == 'male'" @click="onClickJobTitlesItems" v-slot="{ active, selected }" v-for="(job_title, job_title_key) in translations.biodata_form.deserved_biodata.deserved_job_titles_options_male" :key="job_title_key" :value="job_title" as="template" :disabled="job_title.unavailable" >
+                    <ListboxOption @click="onClickJobTitlesItems" v-slot="{ active, selected }" v-for="(job_title, job_title_key) in translations.biodata_form.deserved_biodata.deserved_job_titles_options" :key="job_title_key" :value="gender == 'male' ? job_title.replace('শিক্ষক', 'শিক্ষিকা') : job_title" as="template" :disabled="job_title.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
                             'relative cursor-default select-none py-2 pl-10 pr-4',
@@ -93,27 +92,7 @@ onMounted(() => {
                                 'block truncate',
                             ]">
 
-                                {{ job_title }}
-
-                            </span>
-
-                            <span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3 ">
-                                <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                            </span>
-                        </li>
-                    </ListboxOption>
-
-                    <ListboxOption v-if="gender == 'female'" @click="onClickJobTitlesItems" v-slot="{ active, selected }" v-for="(job_title, job_title_key) in translations.biodata_form.deserved_biodata.deserved_job_titles_options_female" :key="job_title_key" :value="job_title" as="template" :disabled="job_title.unavailable" >
-                        <li :class="[
-                            active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
-                        ]">
-                            <span :class="[
-                                selected ? 'font-medium' : 'font-normal',
-                                'block truncate',
-                            ]">
-
-                                {{ job_title }}
+                                {{ gender == 'male' ? job_title.replace('শিক্ষক', 'শিক্ষিকা') : job_title }}
 
                             </span>
 
@@ -130,6 +109,7 @@ onMounted(() => {
         </div>
 
     </Listbox>
+
 </template>
 
 

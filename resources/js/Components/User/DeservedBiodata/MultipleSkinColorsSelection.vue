@@ -28,14 +28,9 @@ const showPopup = ref(false);
 
 const onClickSkinColorsItems = (e) => {
     if( selectedSkinColors.value.includes("যেকোনো") || selectedSkinColors.value.includes("Any") ){
-            Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedSkinColors.value = selectedSkinColors.value.filter(function(item) {
-                    return item === "যেকোনো" || item === "Any";
-                })
-
-            }
-        });
+        selectedSkinColors.value = selectedSkinColors.value.filter(function(item) {
+            return item === "যেকোনো" || item === "Any";
+        })
     }
     emits('onSelectSkinColors', selectedSkinColors.value);
 };

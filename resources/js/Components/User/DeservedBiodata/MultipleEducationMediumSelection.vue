@@ -28,14 +28,9 @@ const showPopup = ref(false);
 
 const onClickEducationMediumItems = (e) => {
     if( selectedEducationMediums.value.includes("যেকোনো") || selectedEducationMediums.value.includes("Any") ){
-            Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedEducationMediums.value = selectedEducationMediums.value.filter(function(item) {
-                    return item === "যেকোনো" || item === "Any";
-                })
-
-            }
-        });
+        selectedEducationMediums.value = selectedEducationMediums.value.filter(function(item) {
+            return item === "যেকোনো" || item === "Any";
+        })
     }
     emits('onSelectEducationMedium', selectedEducationMediums.value);
 };

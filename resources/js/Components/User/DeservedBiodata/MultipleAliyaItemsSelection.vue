@@ -28,14 +28,9 @@ const showPopup = ref(false);
 
 const onClickAliyaItemsItems = (e) => {
     if( selectedAliyaItems.value.includes("যেকোনো") || selectedAliyaItems.value.includes("Any") ){
-            Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedAliyaItems.value = selectedAliyaItems.value.filter(function(item) {
-                    return item === "যেকোনো" || item === "Any";
-                })
-
-            }
-        });
+        selectedAliyaItems.value = selectedAliyaItems.value.filter(function(item) {
+            return item === "যেকোনো" || item === "Any";
+        })
     }
     emits('onSelectAliyaItems', selectedAliyaItems.value);
 };

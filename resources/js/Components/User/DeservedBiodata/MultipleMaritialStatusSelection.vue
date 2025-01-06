@@ -31,14 +31,9 @@ const showPopup = ref(false);
 
 const onClickMaritialStatusesItems = (e) => {
     if( selectedMaritialStatuses.value.includes("যেকোনো") || selectedMaritialStatuses.value.includes("Any") ){
-            Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedMaritialStatuses.value = selectedMaritialStatuses.value.filter(function(item) {
-                    return item === "যেকোনো" || item === "Any";
-                })
-
-            }
-        });
+        selectedMaritialStatuses.value = selectedMaritialStatuses.value.filter(function(item) {
+            return item === "যেকোনো" || item === "Any";
+        })
     }
     emits('onSelectMaritialStatuses', selectedMaritialStatuses.value);
 };

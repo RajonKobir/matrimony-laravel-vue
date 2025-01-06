@@ -346,12 +346,12 @@ onMounted(() => {
             <InputError class="mt-2" :message="form.errors.deserved_aliya_degrees" />
         </div>
 
-        <div v-if="form.deserved_aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
+        <div v-if="form.deserved_kowmi_selected" class="form_item col-span-12 md:col-span-6 p-2">
             <MultipleKowmiItemsSelection :translations :KowmiItems="single_biodata.deserved_kowmi_degrees" @onSelectKowmiItems="onSelectKowmiItems" />
             <InputError class="mt-2" :message="form.errors.deserved_kowmi_degrees" />
         </div>
 
-        <div v-if="form.deserved_aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
+        <div v-if="form.deserved_study_others_selected" class="form_item col-span-12 md:col-span-6 p-2">
             <MultipleStudyOthersItemsSelection :translations :StudyOthersItems="single_biodata.deserved_study_others_degrees" @onSelectStudyOthersItems="onSelectStudyOthersItems" />
             <InputError class="mt-2" :message="form.errors.deserved_study_others_degrees" />
         </div>

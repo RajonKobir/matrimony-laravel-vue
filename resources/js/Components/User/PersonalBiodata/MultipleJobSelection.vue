@@ -20,6 +20,9 @@ const props = defineProps({
     jobTitles: {
         type: String,
     },
+    gender: {
+        type: String,
+    },
 });
 
 const selectedJobs = ref([]);
@@ -28,18 +31,12 @@ const showPopup = ref(false);
 
 const onClickJobItems = (e) => {
     if( selectedJobs.value.includes("নাই") || selectedJobs.value.includes("None") ){
-            Object.keys(props.translations.biodata_form.personal_biodata.job_title_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedJobs.value = selectedJobs.value.filter(function(item) {
-                    return item === "নাই" || item === "None";
-                })
-
-            }
-        });
-    }else{
-        if( selectedJobs.value.length > 3 ){
-            selectedJobs.value.pop();
-        }
+        selectedJobs.value = selectedJobs.value.filter(function(item) {
+            return item === "নাই" || item === "None";
+        })
+    }
+    else if( selectedJobs.value.length > 3 ){
+        selectedJobs.value.pop();
     }
     emits('onSelectJobs', selectedJobs.value);
 };
@@ -64,7 +61,7 @@ onMounted(() => {
             class="relative appearance-none w-full text-left bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <span class="block truncate leading-tight">
                 <ListboxLabel>{{ translations.biodata_form.personal_biodata.job_title_title }}:</ListboxLabel>
-                {{ selectedJobs.map((job) => job).join(', ') }}
+                {{ selectedJobs.map((job_title) => job_title).join(', ') }}
             </span>
             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -84,7 +81,7 @@ onMounted(() => {
                         <span>{{ translations.biodata_form.multiple_selection_ok }}</span>
                     </div>
 
-                    <ListboxOption @click="onClickJobItems" v-slot="{ active, selected }" v-for="(job, person_key) in translations.biodata_form.personal_biodata.job_title_options" :key="person_key" :value="job" as="template" :disabled="job.unavailable" >
+                    <ListboxOption @click="onClickJobItems" v-slot="{ active, selected }" v-for="(job_title, job_title_key) in translations.biodata_form.personal_biodata.job_title_options" :key="job_title_key" :value="gender == 'female' ? job_title.replace('শিক্ষক', 'শিক্ষিকা') : job_title" as="template" :disabled="job_title.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
                             'relative cursor-default select-none py-2 pl-10 pr-4',
@@ -94,7 +91,7 @@ onMounted(() => {
                                 'block truncate',
                             ]">
 
-                                {{ job }}
+                                {{ gender == 'female' ? job_title.replace('শিক্ষক', 'শিক্ষিকা') : job_title }}
 
                             </span>
 

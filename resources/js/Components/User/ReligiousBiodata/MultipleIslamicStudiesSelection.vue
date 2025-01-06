@@ -28,14 +28,9 @@ const showPopup = ref(false);
 
 const onClickIslamicStudiesItems = (e) => {
     if( selectedIslamicStudies.value.includes("না") || selectedIslamicStudies.value.includes("None") ){
-            Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedIslamicStudies.value = selectedIslamicStudies.value.filter(function(item) {
-                    return item === "না" || item === "None";
-                })
-
-            }
-        });
+        selectedIslamicStudies.value = selectedIslamicStudies.value.filter(function(item) {
+            return item === "না" || item === "None";
+        })
     }
     emits('onSelectIslamicStudies', selectedIslamicStudies.value);
 };

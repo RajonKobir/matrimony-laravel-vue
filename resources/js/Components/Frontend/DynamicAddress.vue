@@ -251,7 +251,7 @@ const handleLineClicks = (e) => {
                     <button action="goBackHandler" class="od-location-picker-previous">
                         <i action="goBackHandler" class="fa fa-arrow-left"></i>
                     </button>
-                    <h3>${ upazila_name.includes("কর্পোরেশন") ? props.translations.searchForm.select_thana_heading : props.translations.searchForm.select_union_parishad_heading }</h3>
+                    <h3>${ upazila_name.includes("সিটি") ? props.translations.searchForm.select_thana_heading : props.translations.searchForm.select_union_parishad_heading }</h3>
                     <button action="onClickClose" class="od-close-panel">
                         <i action="onClickClose" class="fa fa-times"></i>
                     </button>

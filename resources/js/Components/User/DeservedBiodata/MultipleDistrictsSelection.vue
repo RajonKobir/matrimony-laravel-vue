@@ -54,14 +54,9 @@ const showDivisionName = (divisionId) => {
 
 const onClickDistrictsItems = (e) => {
     if( selectedDistricts.value.includes("যেকোনো") || selectedDistricts.value.includes("Any") ){
-            Object.keys(props.translations.biodata_form.religious_biodata.islamic_studies_options).forEach(function(item, index, arr){
-            if( index != 0 ){
-                selectedDistricts.value = selectedDistricts.value.filter(function(item) {
-                    return item === "যেকোনো" || item === "Any";
-                })
-
-            }
-        });
+        selectedDistricts.value = selectedDistricts.value.filter(function(item) {
+            return item === "যেকোনো" || item === "Any";
+        })
     }
     emits('onSelectDistricts', selectedDistricts.value);
 };
@@ -112,7 +107,7 @@ onMounted(() => {
                         <div v-if="[1, 14, 18, 26, 34, 40, 51, 55].includes(district.id)" class="relative flex items-center">
                             <div class="flex-grow border-t border-gray-400"></div>
                             <span class="flex-shrink mx-4 text-gray-400">
-                                {{ divisionNames[district.division_id].bn_name }}
+                                {{ locale == 'bn' ? divisionNames[district.division_id].bn_name + ' বিভাগ' :  divisionNames[district.division_id].name + ' Division' }}
                             </span>
                             <div class="flex-grow border-t border-gray-400"></div>
                         </div>
