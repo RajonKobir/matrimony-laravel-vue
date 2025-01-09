@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import {
     Listbox,
     ListboxLabel,
@@ -49,6 +49,18 @@ onMounted(() => {
 });
 
 
+watch(props, async (newValue, oldValue) => {
+    if( newValue ){
+        if( newValue.maritialStatuses ){
+            selectedMaritialStatuses.value = newValue.maritialStatuses.split(", ");
+        }
+        else if( newValue.maritialStatuses == null ){
+            selectedMaritialStatuses.value = [];
+        }
+    }
+})
+
+
 </script>
 
 
@@ -58,7 +70,7 @@ onMounted(() => {
             class="relative appearance-none w-full text-left bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <span class="block truncate leading-tight">
                 <ListboxLabel>{{ translations.biodata_form.deserved_biodata.deserved_maritial_statuses_title }}:</ListboxLabel>
-                {{ selectedMaritialStatuses.map((maritial_status) => maritial_status).join(', ') }}
+                {{ selectedMaritialStatuses.map((maritial_status) => translations.biodata_form.deserved_biodata.deserved_maritial_statuses_options[maritial_status]).join(', ') }}
             </span>
             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -81,7 +93,7 @@ onMounted(() => {
                     <template v-for="(maritial_status, maritial_status_key) in translations.biodata_form.deserved_biodata.deserved_maritial_statuses_options" :key="maritial_status.id">
 
 
-                        <ListboxOption @click="onClickMaritialStatusesItems" v-slot="{ active, selected }" :value="maritial_status" v-if="(gender == 'female' && maritial_status_key != 'widow_no_child' && maritial_status_key != 'widow_with_child' ) || (gender == 'male' && maritial_status_key != 'widower_no_child' && maritial_status_key != 'widower_with_child' )" as="template" :disabled="maritial_status.unavailable" >
+                        <ListboxOption @click="onClickMaritialStatusesItems" v-slot="{ active, selected }" :value="maritial_status_key" v-if="(gender == 'female' && maritial_status_key != 'widow_no_child' && maritial_status_key != 'widow_with_child' ) || (gender == 'male' && maritial_status_key != 'widower_no_child' && maritial_status_key != 'widower_with_child' )" as="template" :disabled="maritial_status.unavailable" >
                             <li :class="[
                                 active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
                                 'relative cursor-default select-none py-2 pl-10 pr-4',

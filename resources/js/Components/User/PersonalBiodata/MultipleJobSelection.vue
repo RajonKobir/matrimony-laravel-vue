@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import {
     Listbox,
     ListboxLabel,
@@ -25,6 +25,7 @@ const props = defineProps({
     },
 });
 
+// initializing
 const selectedJobs = ref([]);
 const showPopup = ref(false);
 
@@ -41,6 +42,10 @@ const onClickJobItems = (e) => {
     emits('onSelectJobs', selectedJobs.value);
 };
 
+if ( props.jobTitles ){
+    selectedJobs.value = props.jobTitles.split(", ");
+}
+
 
 onMounted(() => {
     if( props.jobTitles != null ){
@@ -50,6 +55,18 @@ onMounted(() => {
         }
     }
 });
+
+
+watch(props, async (newValue, oldValue) => {
+    if( newValue ){
+        if( newValue.jobTitles ){
+            selectedJobs.value = newValue.jobTitles.split(", ");
+        }
+        else if( newValue.jobTitles == null ){
+            selectedJobs.value = [];
+        }
+    }
+})
 
 
 </script>

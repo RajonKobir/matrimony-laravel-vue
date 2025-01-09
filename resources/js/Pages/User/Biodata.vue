@@ -63,6 +63,16 @@ const onUpdateGender = (gender) => {
 }
 
 
+const onUpdateDeservedJobTitles = (deserved_job_titles) => {
+    single_biodata.value.deserved_job_titles = deserved_job_titles;
+}
+
+
+const onUpdateDeservedMaritialStatuses = (deserved_maritial_statuses) => {
+    single_biodata.value.deserved_maritial_statuses = deserved_maritial_statuses;
+}
+
+
 const onCompleteTab = (nextIndex, biodataCompletion) => {
     if( single_biodata.value.biodata_completion < biodataCompletion ){
         single_biodata.value.biodata_completion = biodataCompletion;
@@ -185,7 +195,7 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <PersonalBiodata :translations :locale :locales :single_biodata :districts @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender"/>
+                    <PersonalBiodata :translations :locale :locales :single_biodata :districts @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender" @onUpdateDeservedJobTitles="onUpdateDeservedJobTitles" @onUpdateDeservedMaritialStatuses="onUpdateDeservedMaritialStatuses" />
 
                 </TabPanel>
 

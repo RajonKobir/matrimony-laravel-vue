@@ -10,6 +10,14 @@ import MultipleJobSelection from './MultipleJobSelection.vue';
 import MultipleEducationMediumSelection from './MultipleEducationMediumSelection.vue';
 
 
+const emits = defineEmits([
+    'onCompleteTab',
+    'onUpdateGender',
+    'onUpdateDeservedJobTitles',
+    'onUpdateDeservedMaritialStatuses',
+]);
+
+
 const props = defineProps({
     translations: {
         type: Object,
@@ -27,12 +35,6 @@ const props = defineProps({
         type: Object,
     },
 });
-
-
-const emits = defineEmits([
-    'onCompleteTab',
-    'onUpdateGender',
-]);
 
 
 // initializing
@@ -201,6 +203,10 @@ const genderUpdate = (e) => {
         } ))
         .then(function (response) {
             if( response.data ){
+                form.maritial_status = props.single_biodata.maritial_status = response.data.maritial_status;
+                form.job_title = props.single_biodata.job_title = response.data.job_title;
+                emits( 'onUpdateDeservedJobTitles', response.data.deserved_job_titles );
+                emits( 'onUpdateDeservedMaritialStatuses', response.data.deserved_maritial_statuses );
                 modalMessage.value = {
                     modalHeading : page.props.translations.modal_messages.success_heading,
                     modalDescription : modalDescription,

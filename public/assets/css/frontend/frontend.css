@@ -2298,18 +2298,20 @@ nav.od-menu-lists-container .od-menu-list-item a {
 .od-home-top-bg {
   position:relative;
   width:100%;
-  padding:0px 20px 100px 20px;
+  padding:0px 20px 50px 20px;
   background-position:top center;
   background-repeat:no-repeat;
   background-size:cover;
   /* background-image:url(../images/bg-mobile.svg) */
   background-color: #FBD5B1;
+  margin-bottom: 50px;
 }
 @media(min-width: 767.9px) {
   .od-home-top-bg {
-    padding:0px 30px 150px 30px;
+    padding:0px 30px 75px 30px;
     /* background-image:url(../images/bg.svg) */
     background-color: #FBD5B1;
+    margin-bottom: 75px;
   }
 }
 .od-search-option {

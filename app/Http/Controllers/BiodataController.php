@@ -101,10 +101,77 @@ class BiodataController extends Controller
         $biodata = Biodata::where('user_id', $request->user_id)->get();
         if ($request->gender){
             if( count($biodata) == 1 ){
-                $biodata = Biodata::where('user_id', $request->user_id)->update([
+                $retrieved_biodata = $biodata[0];
+                $maritial_status = $retrieved_biodata->maritial_status;
+                $job_title = $retrieved_biodata->job_title;
+                $deserved_job_titles = $retrieved_biodata->deserved_job_titles;
+                $deserved_maritial_statuses = $retrieved_biodata->deserved_maritial_statuses;
+
+                //modifying job_title
+                if( $job_title ){
+                    if( $request->gender == 'female' ){
+                        $job_title = str_replace( "শিক্ষক", "শিক্ষিকা", $job_title );
+                    }
+                    elseif( $request->gender == 'male' ){
+                        $job_title = str_replace( "শিক্ষিকা", "শিক্ষক", $job_title );
+                    }
+                }
+                //modifying job_title ends
+
+                //modifying maritial_status
+                if( $maritial_status ){
+                    if( $request->gender == 'female' && $maritial_status == 'widower_no_child' ){
+                        $maritial_status = 'widow_no_child';
+                    }
+                    elseif( $request->gender == 'female' && $maritial_status == 'widower_with_child' ){
+                        $maritial_status = 'widow_with_child';
+                    }
+                    elseif( $request->gender == 'male' && $maritial_status == 'widow_no_child' ){
+                        $maritial_status = 'widower_no_child';
+                    }
+                    elseif( $request->gender == 'male' && $maritial_status == 'widow_with_child' ){
+                        $maritial_status = 'widower_with_child';
+                    }
+                }
+                //modifying maritial_status ends here
+
+                //modifying deserved_job_titles
+                if( $deserved_job_titles ){
+                    if( $request->gender == 'male' ){
+                        $deserved_job_titles = str_replace( "শিক্ষক", "শিক্ষিকা", $deserved_job_titles );
+                    }
+                    elseif( $request->gender == 'female' ){
+                        $deserved_job_titles = str_replace( "শিক্ষিকা", "শিক্ষক", $deserved_job_titles );
+                    }
+                }
+                //modifying deserved_job_titles ends here
+
+                //modifying deserved_maritial_statuses
+                if( $deserved_maritial_statuses ){
+                    if( $request->gender == 'male' && str_contains($deserved_maritial_statuses, 'widower_no_child') || str_contains($deserved_maritial_statuses, 'widower_with_child') ){
+                        $deserved_maritial_statuses = str_replace( "widower_no_child", "widow_no_child", $deserved_maritial_statuses );
+                        $deserved_maritial_statuses = str_replace( "widower_with_child", "widow_with_child", $deserved_maritial_statuses );
+                    }
+                    elseif( $request->gender == 'female' && str_contains($deserved_maritial_statuses, 'widow_no_child') || str_contains($deserved_maritial_statuses, 'widow_with_child') ){
+                        $deserved_maritial_statuses = str_replace( "widow_no_child", "widower_no_child", $deserved_maritial_statuses );
+                        $deserved_maritial_statuses = str_replace( "widow_with_child", "widower_with_child", $deserved_maritial_statuses );
+                    }
+                }
+                //modifying deserved_maritial_statuses ends here
+
+                // updating biodata
+                $updated_biodata = Biodata::where('user_id', $request->user_id)->update([
                     'gender' => $request->gender,
+                    'maritial_status' =>  $maritial_status,
+                    'job_title' =>  $job_title,
+                    'deserved_job_titles' =>  $deserved_job_titles,
+                    'deserved_maritial_statuses' =>  $deserved_maritial_statuses,
                 ]);
-                return true;
+                // if succeed
+                if( $updated_biodata ){
+                    $biodata = Biodata::where('user_id', $request->user_id)->get();
+                    return $biodata[0];
+                }
             }
             elseif( count($biodata) > 1 ){
                 return false;

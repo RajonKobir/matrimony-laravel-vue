@@ -6,6 +6,7 @@ use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FrontEndController;
+use App\Http\Controllers\BackEndController;
 use App\Http\Controllers\BiodataController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -83,22 +84,17 @@ Route::middleware(Localization::class)->group(function(){
 
 
 
-
-        // Admin Controller
-    Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
-        Route::get('/login', [AdminAuthController::class, 'getLogin'])->name('adminLogin');
-        Route::post('/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
-
-        Route::group(['middleware' => 'is_admin'], function () {
-            Route::get('/', function () {
-                return view('admin.welcome');
-            })->name('adminDashboard');
-
-        });
-
-        Route::post('logout', [AdminAuthController::class, 'adminLogout'])->name('adminLogout');
-
+    // backend routes
+    Route::prefix('/admin')->controller(BackEndController::class)->name('backend.')->group(function () {
+        Route::get('/', 'getDashboard')->middleware('is_admin')->name('dashboard');
+        Route::get('/login', 'getLogin')->name('login');
+        Route::post('/login', 'postLogin')->name('login.post');
+        Route::post('/logout', 'adminLogout')->name('logout');
+        Route::fallback('backEndFallBack')->name('fallback');
     });
+
+
+    Route::fallback([FrontEndController::class, 'frontEndFallBack'])->name('frontend.fallback');
 
 
 });

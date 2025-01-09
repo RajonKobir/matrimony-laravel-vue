@@ -54,4 +54,11 @@ class FrontEndController extends Controller
         return Inertia::render('Profile', $pageProps);
     }
 
+
+    public function frontEndFallBack(){
+
+        return Inertia::render('404',  $this->pageProps);
+    }
+
+
 }
