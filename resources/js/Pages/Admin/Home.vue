@@ -1,7 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { Link, usePage, Head } from '@inertiajs/vue3';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
+import Biodata from '../../Components/Admin/Biodata/Biodata.vue';
+import AdminLayout from '../../Layouts/AdminLayout.vue';
+import Header from '../../Components/Admin/Header.vue';
+import Content from '../../Components/Admin/Content/Content.vue';
 
 
 defineProps({
@@ -20,6 +24,9 @@ defineProps({
     canRegister: {
         type: Boolean,
     },
+    all_biodatas: {
+        type: Object,
+    },
 });
 
 
@@ -36,6 +43,11 @@ function changeTab(index) {
 }
 
 
+const onUpdateAllBiodatas = (biodatas) => {
+    page.props.all_biodatas = biodatas;
+}
+
+
 </script>
 
 
@@ -43,93 +55,122 @@ function changeTab(index) {
 
     <Head title="Dashboard" />
 
-    <div class="biodata_main w-full min-h-screen">
-        <TabGroup :selectedIndex="selectedTab" @change="changeTab">
+    <AdminLayout :translations :locale :locales>
 
-            <TabList class="flex justify-center space-x-1 rounded-xl bg-blue-900/20 p-1">
-                <Tab v-slot="{ selected }" :class="['mx-2']">
-                    <button
-                        :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
-                        Tab 1
-                    </button>
-                </Tab>
-                <Tab v-slot="{ selected }" >
-                    <button
-                        :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
-                        Tab 2
-                    </button>
-                </Tab>
-                <Tab v-slot="{ selected }" >
-                    <button
-                        :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
-                        Tab 3
-                    </button>
-                </Tab>
-                <Tab v-slot="{ selected }" >
-                    <button
-                        :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
-                        Tab 4
-                    </button>
-                </Tab>
-                <Tab v-slot="{ selected }" >
-                    <button
-                        :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
-                        Tab 5
-                    </button>
-                </Tab>
-                <Tab v-slot="{ selected }" >
-                    <button
-                        :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
-                        <Link :href="route('backend.logout')" method="post" as="button" >
-                            <!-- <img src="assets/images/logout-ico.svg" alt="Logout-icon"> -->
-                            Logout
-                        </Link>
-                    </button>
-                </Tab>
-            </TabList>
+        <Header :translations :locale :locales :canLogin :canRegister />
+
+        <div class="biodata_main w-full min-h-screen">
+            <TabGroup :selectedIndex="selectedTab" @change="changeTab">
+
+                <TabList class="relative flex justify-center space-x-1 rounded-xl bg-blue-900/20 p-1">
+                    <Tab v-slot="{ selected }" :class="['mx-2']">
+                        <button
+                            :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                            Biodatas
+                        </button>
+                    </Tab>
+                    <Tab v-slot="{ selected }" >
+                        <button
+                            :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                            Users
+                        </button>
+                    </Tab>
+                    <Tab v-slot="{ selected }" >
+                        <button
+                            :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                            Likes
+                        </button>
+                    </Tab>
+                    <Tab v-slot="{ selected }" >
+                        <button
+                            :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                            Messages
+                        </button>
+                    </Tab>
+                    <Tab v-slot="{ selected }" >
+                        <button
+                            :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                            Packages
+                        </button>
+                    </Tab>
+                    <Tab v-slot="{ selected }" >
+                        <button
+                            :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                            Contents
+                        </button>
+                    </Tab>
+
+                </TabList>
 
 
-            <TabPanels class="mt-2">
+                <TabPanels class=" ">
 
-                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                ]">
+                    <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                    ]">
 
-                    Content 1
+                        <Biodata :translations :all_biodatas @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
-                </TabPanel>
+                    </TabPanel>
 
-                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                ]">
+                    <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                    ]">
 
-                    Content 2
+                        Content 2
 
-                </TabPanel>
+                    </TabPanel>
 
-                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                ]">
+                    <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                    ]">
 
-                    Content 3
+                        Content 3
 
-                </TabPanel>
+                    </TabPanel>
 
-                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                ]">
+                    <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                    ]">
 
-                    Content 4
+                        Content 4
 
-                </TabPanel>
+                    </TabPanel>
 
-                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                ]">
+                    <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                    ]">
 
-                    Content 5
+                        Content 5
 
-                </TabPanel>
+                    </TabPanel>
 
-            </TabPanels>
+                    <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                    ]">
 
-        </TabGroup>
+                        <Content :translations />
 
-    </div>
+                    </TabPanel>
+
+                </TabPanels>
+
+            </TabGroup>
+
+        </div>
+
+    </AdminLayout>
 
 </template>
+
+<style>
+.logout_image{
+    background: #fef1f6;
+    border-radius: 4px;
+    width: 25px;
+    height: 25px;
+    filter: grayscale(100%);
+    transition: filter .29s ease 0s;
+    padding: 5px;
+    border-radius: 4px;
+    object-fit: contain;
+    object-position: center;
+}
+.od-localization-container {
+    padding-left: 0 !important;
+}
+</style>

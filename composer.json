@@ -10,11 +10,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "alexusmai/laravel-file-manager": "^3.2",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
+        "outhebox/laravel-translations": "^1.1",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

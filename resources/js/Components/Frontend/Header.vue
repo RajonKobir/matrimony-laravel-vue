@@ -148,11 +148,11 @@ onMounted(() => {
                                     <div class="od-menu-list-item">
                                         <div class="od-my-account-container">
                                             <Link v-if="!$page.props.auth.user" :href="route('login')" class="od-button signin-button">
-                                            <span>{{ translations.main_menu.login }}</span>
+                                                <span>{{ translations.main_menu.login }}</span>
                                             </Link>
-                                            <span v-if="$page.props.auth.user" class="od-button signin-button">
+                                            <Link v-if="$page.props.auth.user" :href="route('user.profile')" class="od-button signin-button">
                                                 <i class="fa fa-user"></i>
-                                            </span>
+                                            </Link>
 
                                             <div v-if="$page.props.auth.user" class="od-dropdown-menu-container od-animate od-slideIn">
                                                 <div class="odd-user-info">

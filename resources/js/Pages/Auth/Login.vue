@@ -6,6 +6,7 @@ import InputLabel from '../../Components/InputLabel.vue';
 import PrimaryButton from '../../Components/PrimaryButton.vue';
 import TextInput from '../../Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref } from "vue";
 
 
 defineProps({
@@ -25,6 +26,9 @@ defineProps({
         type: String,
     },
 });
+
+// initializing
+const showPassword = ref(false);
 
 const form = useForm({
     email: '',
@@ -86,11 +90,18 @@ document.body.classList.add("frontend.login");
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4 relative">
                         <InputLabel for="password" :value="translations.login.password" />
 
-                        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
-                            required autocomplete="current-password" />
+                        <div class="flex items-center">
+                            <TextInput v-if="showPassword" id="password" type="text" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                            <TextInput v-else id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                            <span class="button cursor-pointer focus:outline-none absolute right-2" @click="showPassword=!showPassword">
+                                <span class="icon is-small is-right">
+                                    <i class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }"></i>
+                                </span>
+                            </span>
+                        </div>
 
                         <InputError class="mt-2" :message="form.errors.password" />
                     </div>

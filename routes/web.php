@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\App;
 use App\Http\Middleware\Localization;
+use App\Http\Controllers\FileManagerController;
 
 
 require __DIR__.'/auth.php';
@@ -90,8 +91,25 @@ Route::middleware(Localization::class)->group(function(){
         Route::get('/login', 'getLogin')->name('login');
         Route::post('/login', 'postLogin')->name('login.post');
         Route::post('/logout', 'adminLogout')->name('logout');
+
+        //backend biodata controllers
+        Route::prefix('/biodata')->controller(BiodataController::class)->name('biodata.')->group(function () {
+            Route::post('/approve/{user_id}', 'updateIsApproved')->middleware('is_admin')->name('approve');
+            // Route::post('/update_media_agreement', 'updateMediaAgreement')->middleware('verified')->name('post.update_media_agreement');
+            // Route::post('/update_gender', 'updateGender')->middleware('verified')->name('post.update_gender');
+            // Route::post('/update_personal_biodata', 'updatePersonalBiodata')->middleware('verified')->name('post.update_personal_biodata');
+            // Route::post('/update_religious_biodata', 'updateReligiousBiodata')->middleware('verified')->name('post.update_religious_biodata');
+            // Route::post('/update_family_biodata', 'updateFamilyBiodata')->middleware('verified')->name('post.update_family_biodata');
+            // Route::post('/update_deserved_biodata', 'updateDeservedBiodata')->middleware('verified')->name('post.update_deserved_biodata');
+            // Route::post('/update_others_biodata', 'updateOthersBiodata')->middleware('verified')->name('post.update_others_biodata');
+        });
+
         Route::fallback('backEndFallBack')->name('fallback');
+
     });
+
+
+    Route::get('filemanager', [FileManagerController::class, 'index'])->middleware('is_admin')->name('filemanager');
 
 
     Route::fallback([FrontEndController::class, 'frontEndFallBack'])->name('frontend.fallback');

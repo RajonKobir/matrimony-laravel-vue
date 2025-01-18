@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Biodata;
+use Illuminate\Http\RedirectResponse;
 
 class BackEndController extends Controller
 {
@@ -26,7 +28,12 @@ class BackEndController extends Controller
     }
 
     public function getDashboard(){
-        return Inertia::render('Admin/Home', $this->pageProps);
+        $all_biodatas = Biodata::all();
+        $all_biodatas_array = [
+            'all_biodatas' => $all_biodatas,
+        ];
+        $pageProps = $all_biodatas_array + $this->pageProps;
+        return Inertia::render('Admin/Home', $pageProps);
     }
 
     public function getLogin(){
@@ -47,8 +54,10 @@ class BackEndController extends Controller
         if(auth()->guard('admin')->attempt(['email' => $request->input('email'),  'password' => $request->input('password')])){
             $user = auth()->guard('admin')->user();
             if($user){
-                $request->session()->regenerate();
-                return redirect()->route('backend.dashboard')->with('success','You are Logged in sucessfully.');
+                if( Auth::guard('translations')->attempt( ['email' => $request->input('email'),  'password' => $request->input('password')] ) ){
+                    $request->session()->regenerate();
+                    return redirect()->route('backend.dashboard')->with('success','You are Logged in sucessfully.');
+                }
             }
         }
 
@@ -57,11 +66,12 @@ class BackEndController extends Controller
     }
 
 
-    public function adminLogout(Request $request)
+    public function adminLogout(Request $request): RedirectResponse
     {
         Auth::guard('admin')->logout();
+        Auth::guard('translations')->logout();
 
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 

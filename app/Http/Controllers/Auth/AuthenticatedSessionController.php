@@ -37,6 +37,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
+        if (Auth::guard('web')->user()) {
+            return redirect()->intended(route('user.profile', absolute: false));
+        }
         return Inertia::render('Auth/Login', $this->pageProps);
     }
 
@@ -46,32 +49,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     // public function store(Request $request): RedirectResponse
     {
-        //it's the default one
+        //authenticating
         $request->authenticate();
-
-        // //validation
-        // $validated = $request->validate([
-        //     'password' => ['required', Rules\Password::defaults()->min(6)->max(20)],
-        //     'email' => 'required|string|max:100',
-        // ]);
-
-        // $user= User::where( 'mobile', $request->email )->orWhere( 'email', $request->email )->get();
-
-        // // If a user exists
-        // if( $user ) {
-        //     if( count($user) > 0 ){
-        //         $first_user = $user[0];
-        //         if( Hash::check($validated['password'], $first_user->password ) ){
-        //             // Authenticate the user
-        //             Auth::login($first_user);
-        //             $request->session()->regenerate();
-        //             return redirect()->intended(route('user.profile', absolute: false));
-        //         }
-        //     }
-        // }
-        // $request->session()->regenerate();
-        // return redirect()->back()->with('error',  __('frontend.flash_messages.login_error'));
-
         $request->session()->regenerate();
         return redirect()->intended(route('user.profile', absolute: false));
     }
@@ -83,10 +62,10 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect(route('login'));
     }
 }

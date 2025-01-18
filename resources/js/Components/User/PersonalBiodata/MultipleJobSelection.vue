@@ -66,7 +66,7 @@ watch(props, async (newValue, oldValue) => {
             selectedJobs.value = [];
         }
     }
-})
+});
 
 
 </script>

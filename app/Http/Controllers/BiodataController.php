@@ -84,6 +84,7 @@ class BiodataController extends Controller
                 $biodata = new Biodata();
                 $biodata->user_id = $request->user_id;
                 $biodata->media_agreement = $request->media_agreement;
+                $biodata->biodata_code = mt_rand(100000,999999) . '-' . uniqid();
                 $biodata->save();
                 return true;
             }
@@ -517,6 +518,34 @@ class BiodataController extends Controller
         }
         return redirect()->back()->with('error',  __('frontend.flash_messages.biodata_onerror'));
     }
+
+
+
+
+
+
+    // backend starts here
+    public function updateIsApproved(Request $request)
+    {
+
+        $request->validate([
+            'user_id' => 'integer',
+            'is_approved' => 'boolean',
+        ]);
+
+        $biodata = Biodata::where('user_id', $request->user_id)->get();
+
+        if( count($biodata) == 1 ){
+            $biodata = Biodata::where('user_id', $request->user_id)->update([
+                'is_approved' => $request->is_approved,
+            ]);
+            return Biodata::all();
+        }
+
+        return Biodata::all();
+
+    }
+    // backend ends here
 
 
 }

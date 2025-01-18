@@ -1,18 +1,6 @@
 <?php
 
 return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines contain the default error messages used by
-    | the validator class. Some of these rules have multiple versions such
-    | as the size rules. Feel free to tweak each of these messages here.
-    |
-    */
-
     'accepted' => ':attribute ক্ষেত্রটি অবশ্যই একসেপ্ট করতে হবে।',
     'accepted_if' => ':attribute ক্ষেত্রটি অবশ্যই একসেপ্ট করতে হবে যখন :other হল :value।',
     'active_url' => ':attribute ক্ষেত্রটি অবশ্যই একটি বৈধ URL হতে হবে।',
@@ -33,7 +21,6 @@ return [
     ],
     'boolean' => ':attribute ক্ষেত্রটি সত্য বা মিথ্যা হতে হবে।',
     'can' => ':attribute ক্ষেত্রের একটি অননুমোদিত মান রয়েছে।',
-    // 'confirmed' => ':attribute ক্ষেত্রের নিশ্চিতকরণ মেলে না।',
     'confirmed' => 'এই তথ্যের অমিল খুঁজে পাওয়া গেছে।',
     'contains' => ':attribute ক্ষেত্রের একটি প্রয়োজনীয় মান অনুপস্থিত।',
     'current_password' => 'পাসওয়ার্ডটি ভুল।',
@@ -50,7 +37,6 @@ return [
     'distinct' => ':attribute ক্ষেত্রের একটি ডুপ্লিকেট মান আছে।',
     'doesnt_end_with' => ':attribute ক্ষেত্রটি অবশ্যই নিম্নলিখিতগুলির একটি দিয়ে শেষ হবে না: :values৷',
     'doesnt_start_with' => ':attribute ক্ষেত্রটি অবশ্যই নিম্নলিখিতগুলির একটি দিয়ে শুরু হবে না: :values৷',
-    // 'email' => ':attribute ক্ষেত্রটি অবশ্যই একটি বৈধ ইমেল হতে হবে।',
     'email' => 'এই তথ্যটি অবশ্যই একটি বৈধ ইমেল হতে হবে।',
     'ends_with' => ':attribute ক্ষেত্রটি অবশ্যই নিম্নলিখিতগুলির একটি দিয়ে শেষ হতে হবে: :values৷',
     'enum' => 'নির্বাচিত :attribute টি অবৈধ।',
@@ -85,14 +71,12 @@ return [
         'array' => ':attribute ফিল্ডে অবশ্যই :value আইটেম থেকে কম হতে হবে।',
         'file' => ':attribute ক্ষেত্রটি অবশ্যই :value কিলোবাইটের চেয়ে কম হতে হবে।',
         'numeric' => ':attribute ক্ষেত্রটি অবশ্যই :value এর চেয়ে কম হতে হবে।',
-        // 'string' => ':attribute ইনপুট ফিল্ড অবশই :value অক্ষরের কম হতে হবে।',
         'string' => ':এই তথ্যটি অবশই :value অক্ষরের কম হতে হবে।',
     ],
     'lte' => [
         'array' => ':attribute ফিল্ডে অবশ্যই :value আইটেম এর বেশি হবে না।',
         'file' => ':attribute ক্ষেত্রটি অবশ্যই :value কিলোবাইটের থেকে কম বা সমান হতে হবে।',
         'numeric' => ':attribute ক্ষেত্রটি অবশ্যই :value এর থেকে কম বা সমান হতে হবে।',
-        // 'string' => ':attribute ক্ষেত্রটি অবশ্যই :value অক্ষরের চেয়ে কম বা সমান হতে হবে।',
         'string' => 'এই তথ্যটি অবশ্যই :value অক্ষরের চেয়ে কম বা সমান হতে হবে।',
     ],
     'mac_address' => ':attribute ক্ষেত্রটি অবশ্যই একটি বৈধ MAC ঠিকানা হতে হবে।',
@@ -100,7 +84,6 @@ return [
         'array' => ':attribute ফিল্ডে অবশ্যই :max এর বেশি আইটেম হবে না।',
         'file' => ':attribute ক্ষেত্রটি অবশ্যই :max kilobytes-এর থেকে বেশি হওয়া উচিত নয়৷',
         'numeric' => ':attribute ক্ষেত্রটি অবশ্যই :max এর থেকে বেশি হওয়া উচিত নয়।',
-        // 'string' => ':attribute ক্ষেত্রটি অবশ্যই :max অক্ষরের বেশি হওয়া উচিত নয়।',
         'string' => 'এই তথ্যটি অবশ্যই :max অক্ষরের বেশি হওয়া উচিত নয়।',
     ],
     'max_digits' => ':attribute ফিল্ডে অবশ্যই :max সংখ্যার বেশি হবে না।',
@@ -109,21 +92,17 @@ return [
     'min' => [
         'array' => ':attribute ফিল্ডে কমপক্ষে :min আইটেম থাকতে হবে।',
         'file' => ':attribute ক্ষেত্রটি অন্তত :min কিলোবাইট হতে হবে।',
-        // 'numeric' => ':attribute ক্ষেত্রটি অবশ্যই কমপক্ষে :min হতে হবে।',
-        // 'numeric' => ':attribute ক্ষেত্রটি অবশ্যই কমপক্ষে :min হতে হবে।',
         'numeric' => 'এই তথ্যটি কমপক্ষে :min ডিজিটের হতে হবে।',
         'string' => 'এই তথ্যটি কমপক্ষে :min অক্ষরের হতে হবে।',
     ],
     'min_digits' => ':attribute ফিল্ডে কমপক্ষে :min ডিজিট থাকতে হবে।',
     'missing' => ':attribute ক্ষেত্রটি অবশ্যই অনুপস্থিত।',
     'missing_if' => ':attribute ক্ষেত্রটি অবশ্যই অনুপস্থিত যখন :other হল :value।',
-    'missing_unless' => 'The :attribute field must be missing unless :other is :value.',
     'missing_unless' => ':attribute ক্ষেত্রটি অবশ্যই অনুপস্থিত যদি না :other হল :value।',
     'missing_with' => ':values ​​উপস্থিত থাকলে :attribute ক্ষেত্রটি অবশ্যই অনুপস্থিত।',
     'missing_with_all' => ':values ​​উপস্থিত থাকলে :attribute ক্ষেত্রটি অবশ্যই অনুপস্থিত থাকবে।',
     'multiple_of' => ':attribute ক্ষেত্রটি অবশ্যই :value-এর গুনিতক হতে হবে।',
     'not_in' => 'নির্বাচিত :attribute টি অবৈধ।',
-    // 'not_regex' => ':attribute ক্ষেত্রের বিন্যাসটি অবৈধ।',
     'not_regex' => 'এই তথ্যটির বিন্যাস সঠিক নয়।',
     'numeric' => ':attribute ক্ষেত্রটি অবশ্যই একটি সংখ্যা হতে হবে।',
     'password' => [
@@ -131,7 +110,6 @@ return [
         'mixed' => ':attribute ক্ষেত্রে অন্তত একটি বড় হাতের এবং একটি ছোট হাতের অক্ষর থাকতে হবে।',
         'numbers' => ':attribute ফিল্ডে অন্তত একটি সংখ্যা থাকতে হবে।',
         'symbols' => ':attribute ফিল্ডে অন্তত একটি চিহ্ন থাকতে হবে।',
-        'uncompromised' => 'The given :attribute has appeared in a data leak. Please choose a different :attribute.',
         'uncompromised' => 'প্রদত্ত :attribute একটি ডেটা ফাঁসের মধ্যে উপস্থিত হয়েছে। অনুগ্রহ করে একটি ভিন্ন :attribute চয়ন করুন।',
     ],
     'present' => ':attribute ক্ষেত্রটি অবশ্যই উপস্থিত থাকতে হবে।',
@@ -143,16 +121,12 @@ return [
     'prohibited_if' => ':attribute ক্ষেত্রটি নিষিদ্ধ যখন :other হল :value।',
     'prohibited_unless' => ':attribute ক্ষেত্রটি নিষিদ্ধ যদি না :other এর :values থাকে।',
     'prohibits' => ':attribute ক্ষেত্রটি :other উপস্থিত হতে নিষেধ করে।',
-    // 'regex' => ':attribute ক্ষেত্রের বিন্যাসটি অবৈধ।',
     'regex' => 'এই তথ্যটির বিন্যাস সঠিক নয়।',
-    // 'required' => ':attribute অবশ্যই পূরণীয়।',
     'required' => 'এই তথ্যটি অবশ্যই পূরণীয়।',
     'required_array_keys' => ':attribute ফিল্ডে অবশ্যই: :values ​​এর জন্য এন্ট্রি থাকতে হবে।',
-    'required_if' => 'The :attribute field is required when :other is :value.',
     'required_if' => ':attribute ফিল্ডের প্রয়োজন হয় যখন :other হল :value।',
     'required_if_accepted' => 'যখন :other গৃহীত হয় তখন :attribute ফিল্ডের প্রয়োজন হয়।',
     'required_if_declined' => 'যখন :other প্রত্যাখ্যান করা হয় তখন :attribute ফিল্ডের প্রয়োজন হয়।',
-    'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_unless' => ':attribute ক্ষেত্রটি আবশ্যক যদি না :other এর মান :values থাকে।',
     'required_with' => 'যখন :values ​​উপস্থিত থাকে তখন :attribute ফিল্ডের প্রয়োজন হয়।',
     'required_with_all' => 'যখন :values ​​উপস্থিত থাকে তখন :attribute ফিল্ডের প্রয়োজন হয়।',
@@ -174,35 +148,9 @@ return [
     'url' => ':attribute ক্ষেত্রটি অবশ্যই একটি বৈধ URL হতে হবে।',
     'ulid' => ':attribute ক্ষেত্রটি অবশ্যই একটি বৈধ ULID হতে হবে।',
     'uuid' => ':attribute ক্ষেত্রটি অবশ্যই একটি বৈধ UUID হতে হবে।',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify custom validation messages for attributes using the
-    | convention "attribute.rule" to name the lines. This makes it quick to
-    | specify a specific custom language line for a given attribute rule.
-    |
-    */
-
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Validation Attributes
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used to swap our attribute placeholder
-    | with something more reader friendly such as "E-Mail Address" instead
-    | of "email". This simply helps us make our message more expressive.
-    |
-    */
-
-    'attributes' => [],
-
 ];

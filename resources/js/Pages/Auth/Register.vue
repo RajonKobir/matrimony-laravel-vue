@@ -6,6 +6,7 @@ import InputLabel from '../../Components/InputLabel.vue';
 import PrimaryButton from '../../Components/PrimaryButton.vue';
 import TextInput from '../../Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref } from "vue";
 
 
 defineProps({
@@ -19,6 +20,10 @@ defineProps({
         type: Array,
     },
 });
+
+// initializing
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const form = useForm({
     mobile: '',
@@ -78,20 +83,34 @@ document.body.classList.add("frontend.register");
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4 relative">
                         <InputLabel for="password" :value="translations.register.password_title" />
 
-                        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
-                            required autocomplete="new-password" />
+                        <div class="flex items-center">
+                            <TextInput v-if="showPassword" id="password" type="text" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
+                            <TextInput v-else id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
+                            <span class="button cursor-pointer focus:outline-none absolute right-2" @click="showPassword=!showPassword">
+                                <span class="icon is-small is-right">
+                                    <i class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }"></i>
+                                </span>
+                            </span>
+                        </div>
 
                         <InputError class="mt-2" :message="form.errors.password" />
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4 relative">
                         <InputLabel for="password_confirmation" :value="translations.register.confirm_password_title" />
 
-                        <TextInput id="password_confirmation" type="password" class="mt-1 block w-full"
-                            v-model="form.password_confirmation" required autocomplete="new-password" />
+                        <div class="flex items-center">
+                            <TextInput v-if="showConfirmPassword" id="password_confirmation" type="text" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
+                            <TextInput v-else id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
+                            <span class="button cursor-pointer focus:outline-none absolute right-2" @click="showConfirmPassword=!showConfirmPassword">
+                                <span class="icon is-small is-right">
+                                    <i class="fas" :class="{ 'fa-eye': showConfirmPassword, 'fa-eye-slash': !showConfirmPassword }"></i>
+                                </span>
+                            </span>
+                        </div>
 
                         <InputError class="mt-2" :message="form.errors.password_confirmation" />
                     </div>

@@ -5,7 +5,9 @@ import InputError from '../../Components/InputError.vue';
 import InputLabel from '../../Components/InputLabel.vue';
 import PrimaryButton from '../../Components/PrimaryButton.vue';
 import TextInput from '../../Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm, Link } from '@inertiajs/vue3';
+import { ref } from "vue";
+import ApplicationLogo from '../../Components/ApplicationLogo.vue';
 
 
 defineProps({
@@ -25,6 +27,9 @@ defineProps({
         type: String,
     },
 });
+
+// initializing
+const showPassword = ref(false);
 
 const form = useForm({
     email: '',
@@ -48,13 +53,13 @@ const submit = () => {
 // };
 
 document.body.classList.remove(...document.body.classList);
-document.body.classList.add("frontend.login");
+document.body.classList.add("backend.login");
 
 </script>
 
 <template>
 
-    <Head title="Login" />
+    <Head title="Admin Login" />
 
     <AdminLayout :translations :locale :locales>
 
@@ -72,9 +77,16 @@ document.body.classList.add("frontend.login");
                     </div>
                 </div>
 
+                <div class="flex justify-center items-center">
+                    <Link href="/">
+                        <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
+                    </Link>
+                </div>
+
                 <h2 class="text-center text-xl">
                     {{ translations.login.login_title }}
                 </h2>
+
 
                 <form @submit.prevent="submit" class="mt-4">
                     <div>
@@ -86,11 +98,18 @@ document.body.classList.add("frontend.login");
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4 relative">
                         <InputLabel for="password" :value="translations.login.login_password_title" />
 
-                        <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password"
-                            required autocomplete="current-password" />
+                        <div class="flex items-center">
+                            <TextInput v-if="showPassword" id="password" type="text" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                            <TextInput v-else id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="current-password" />
+                            <span class="button cursor-pointer focus:outline-none absolute right-2" @click="showPassword=!showPassword">
+                                <span class="icon is-small is-right">
+                                    <i class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }"></i>
+                                </span>
+                            </span>
+                        </div>
 
                         <InputError class="mt-2" :message="form.errors.password" />
                     </div>
