@@ -2,8 +2,26 @@
 import { ref, watch, onMounted } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import PopupMessage from './PopupMessage.vue';
-import DataTable from 'datatables.net-dt';
 import axios from 'axios';
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-dt';
+import 'datatables.net-buttons/js/buttons.html5';
+import jszip from 'jszip';
+// import pdfmake from 'pdfmake';
+import pdfmake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+DataTable.use(DataTablesCore);
+DataTablesCore.Buttons.jszip(jszip);
+DataTablesCore.Buttons.pdfMake(pdfmake);
+
+const options = {
+  responsive: true,
+  select: true,
+  layout: {
+    top: 'buttons',
+  },
+};
 
 
 const emits = defineEmits([
@@ -26,7 +44,8 @@ const page = usePage();
 // const single_biodata = ref([]);
 const modalMessage = ref({});
 const isModalOpen = ref(false);
-const table = ref({});
+let dt;
+const table = ref();
 
 
 const closeModal = (value) => {
@@ -63,11 +82,9 @@ const onClickApprove = (user_id) => {
         }))
         .then((response) => {
             emits('onUpdateAllBiodatas', response.data);
-            table.value.destroy();
+            dt.destroy();
             setTimeout(() => {
-                table.value = new DataTable('#myTable', {
-                    responsive: true
-                });
+                dt = new DataTable('#myTable', options);
             }, 500);
         });
     }
@@ -76,9 +93,7 @@ const onClickApprove = (user_id) => {
 
 onMounted(() => {
 
-    table.value = new DataTable('#myTable', {
-        responsive: true
-    });
+    dt = table.value.dt;
 
 });
 
@@ -100,7 +115,7 @@ document.body.classList.add("backend.biodata.incomplete");
 
     <div class="biodata_main w-full min-h-screen">
 
-        <table id="myTable" class="display">
+        <DataTable ref="table" :options="options" class="display stripe row-border hover order-column nowrap">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -130,8 +145,15 @@ document.body.classList.add("backend.biodata.incomplete");
                     </tr>
                 </template>
             </tbody>
-        </table>
+        </DataTable>
 
     </div>
 
 </template>
+
+<style>
+@import 'datatables.net-dt';
+@import 'datatables.net-buttons-dt';
+@import 'datatables.net-select-dt';
+@import 'datatables.net-responsive-dt';
+</style>

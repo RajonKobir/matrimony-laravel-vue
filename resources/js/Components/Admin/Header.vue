@@ -57,7 +57,7 @@ onMounted(() => {
                     <div class="od-row od-align-items-center">
                         <div class="od-col-4 od-col-md-3 md-order-2">
                             <div class="od-site-logo">
-                                <Link href="/">
+                                <Link href="/admin">
                                 <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
                                 </Link>
                             </div>
@@ -68,14 +68,6 @@ onMounted(() => {
                             </div>
                             <nav class="od-menu-lists-container">
                                 <ul class="od-menu-lists ">
-                                    <li class="od-menu-list-item od-localization-container hide-od-xl">
-                                        <a href="javascript:void(0);">
-                                            <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:mx-4" >
-                                                <img width="25" src="assets/images/logout-ico.svg" alt="Logout-icon" class="logout_image">
-                                                Logout
-                                            </Link>
-                                        </a>
-                                    </li>
                                     <li class="od-menu-list-item od-localization-container hide-od-xl">
                                         <a href="javascript:void(0);">
                                             <div class="od-localization-content od-display-flex od-align-items-center">
@@ -100,11 +92,21 @@ onMounted(() => {
                                             </div>
                                         </div>
                                     </li>
+
+                                    <li class="od-menu-list-item od-localization-container hide-od-xl">
+                                        <a href="javascript:void(0);">
+                                            <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:ml-4" >
+                                                <img width="25" src="assets/images/logout-ico.svg" alt="Logout-icon" class="logout_image">
+                                                Logout
+                                            </Link>
+                                        </a>
+                                    </li>
+
                                 </ul>
                             </nav>
                         </div>
                         <div class="od-col-4 od-col-md-3 md-order-3">
-                            <div class="od-header-right-container">
+                            <div class="">
                                 <div class="od-menu-lists od-display-flex od-align-items-center od-justify-content-end">
                                     <div class="od-menu-list-item">
                                         <div class="od-localization-container hide-od">
@@ -136,7 +138,7 @@ onMounted(() => {
                                     </div>
 
                                     <div class="od-menu-list-item hide-od">
-                                        <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:mx-4" >
+                                        <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:ml-4" >
                                             <img width="25" src="assets/images/logout-ico.svg" alt="Logout-icon" class="logout_image">
                                             Logout
                                         </Link>

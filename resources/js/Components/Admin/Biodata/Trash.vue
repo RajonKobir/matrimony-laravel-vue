@@ -99,7 +99,7 @@ document.body.classList.add("backend.biodata.approved");
             <tbody>
                 <template v-for="single_biodata in all_biodatas"
                 :key="single_biodata.id">
-                    <tr v-if="single_biodata.is_approved === true || single_biodata.is_approved === 1">
+                    <tr v-if="single_biodata.in_admin_trash === true || single_biodata.in_admin_trash === 1">
                         <td>{{ single_biodata.id }}</td>
                         <td>{{ single_biodata.user_id }}</td>
                         <td>{{ single_biodata.is_approved ? 'yes' : 'no' }}</td>

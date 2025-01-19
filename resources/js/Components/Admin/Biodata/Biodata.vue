@@ -5,6 +5,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import Aprroved from './Aprroved.vue';
 import CompletedRequests from './CompletedRequests.vue';
 import IncompleteRequests from './IncompleteRequests.vue';
+import Trash from './Trash.vue';
 
 
 const emits = defineEmits([
@@ -47,7 +48,7 @@ const onUpdateAllBiodatas = (biodatas) => {
 
     <Head title="Dashboard" />
 
-    <div class="biodata_main w-full ">
+    <div class="biodata_main w-full min-h-screen">
         <TabGroup :selectedIndex="selectedTab" @change="changeTab">
 
             <TabList class="relative flex justify-center space-x-1 rounded-xl bg-blue-900/20 p-1">
@@ -105,7 +106,7 @@ const onUpdateAllBiodatas = (biodatas) => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    Trash Content
+                    <Trash :translations :all_biodatas @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                 </TabPanel>
 

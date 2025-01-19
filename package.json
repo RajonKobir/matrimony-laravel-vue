@@ -8,6 +8,7 @@
     "devDependencies": {
         "@inertiajs/vue3": "^2.0.0",
         "@tailwindcss/forms": "^0.5.9",
+        "@types/pdfmake": "^0.2.11",
         "@vitejs/plugin-vue": "^5.2.1",
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.9",
@@ -21,7 +22,15 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.23",
         "@heroicons/vue": "^2.2.0",
+        "datatables.net-buttons": "^3.2.0",
+        "datatables.net-buttons-dt": "^3.2.0",
         "datatables.net-dt": "^2.2.1",
+        "datatables.net-responsive-dt": "^3.0.3",
+        "datatables.net-select": "^3.0.0",
+        "datatables.net-select-dt": "^3.0.0",
+        "datatables.net-vue3": "^3.0.4",
+        "jszip": "^3.10.1",
+        "pdfmake": "^0.2.18",
         "vue-range-multi": "^0.4.0",
         "vue3-datepicker": "^0.4.0"
     }
