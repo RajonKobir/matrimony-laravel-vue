@@ -37,25 +37,26 @@ onUnmounted(() => {
 
 <template>
     <footer>
-        <div class="od-footer-content">
-            <div class="od-container">
-                <div class="od-item-container">
+        <div class="footer-content">
+            <div class="main-container py-8">
+                <!-- <div class="od-item-container">
                     <div class="od-row od-align-items-center od-justify-content-center">
-                        <div class="od-footer-item"><a href="https://shadibari.com/privacy-policy">Privacy Policy</a>
+                        <div class="od-footer-item"><a href="/privacy-policy">Privacy Policy</a>
                         </div>
-                        <div class="od-footer-item"><a href="https://shadibari.com/terms-and-conditions">Terms &amp;
+                        <div class="od-footer-item"><a href="/terms-and-conditions">Terms &amp;
                                 Conditions</a></div>
-                        <div class="od-footer-item"><a href="https://shadibari.com/refund-policy">Refund Policy</a>
+                        <div class="od-footer-item"><a href="/refund-policy">Refund Policy</a>
                         </div>
                     </div>
-                </div>
-                <div class="od-social-icon">
+                </div> -->
+                <!-- <div class="od-social-icon">
                     <a href="https://www.facebook.com/shadibari/" target="_blank"><i
                             class="fa-brands fa-facebook"></i></a>
                     <a href="https://www.youtube.com/shadibari" target="_blank"><i
                             class="fa-brands fa-youtube"></i></a>
-                </div>
-                <div class="od-footer-bottom-text">© 2021-{{ new Date().getFullYear() }} shadibari.com</div>
+                </div> -->
+                <!-- <div class="footer-bottom-text">© 2021-{{ new Date().getFullYear() }} shadibari.com</div> -->
+                <div class="footer-bottom-text">© {{ new Date().getFullYear() }} shadibari.com</div>
 
                 <div  v-if="isVisible" @click="scrollUp" id="scrollUp" class="od-scrollTo-top" style="display: block; cursor: pointer;">
                     <i class="fa fa-angle-up"></i>

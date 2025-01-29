@@ -54,6 +54,8 @@ Route::middleware(Localization::class)->group(function(){
         //biodata controllers
         Route::prefix('/biodata')->controller(BiodataController::class)->name('biodata.')->group(function () {
             Route::get('/{user_id}', 'getSingleBiodata')->middleware('verified')->name('get');
+            Route::post('/update_hide_biodata', 'updateHideBiodata')->middleware('verified')->name('post.update_hide_biodata');
+            Route::post('/onClickPermanentDelete', 'onClickPermanentDeleteUser')->middleware('verified')->name('post.onClickPermanentDelete');
             Route::post('/update_media_agreement', 'updateMediaAgreement')->middleware('verified')->name('post.update_media_agreement');
             Route::post('/update_gender', 'updateGender')->middleware('verified')->name('post.update_gender');
             Route::post('/update_personal_biodata', 'updatePersonalBiodata')->middleware('verified')->name('post.update_personal_biodata');
@@ -88,20 +90,34 @@ Route::middleware(Localization::class)->group(function(){
     // backend routes
     Route::prefix('/admin')->controller(BackEndController::class)->name('backend.')->group(function () {
         Route::get('/', 'getDashboard')->middleware('is_admin')->name('dashboard');
-        Route::get('/login', 'getLogin')->name('login');
-        Route::post('/login', 'postLogin')->name('login.post');
+        Route::get('/login', 'getLogin')->middleware('throttle:6,1')->name('login');
+        Route::post('/login', 'postLogin')->middleware('throttle:6,1')->name('login.post');
         Route::post('/logout', 'adminLogout')->name('logout');
+
+        // Route::post('/get_user_data', 'getUserData')->middleware('is_admin')->name('get_user_data');
 
         //backend biodata controllers
         Route::prefix('/biodata')->controller(BiodataController::class)->name('biodata.')->group(function () {
-            Route::post('/approve/{user_id}', 'updateIsApproved')->middleware('is_admin')->name('approve');
-            // Route::post('/update_media_agreement', 'updateMediaAgreement')->middleware('verified')->name('post.update_media_agreement');
-            // Route::post('/update_gender', 'updateGender')->middleware('verified')->name('post.update_gender');
-            // Route::post('/update_personal_biodata', 'updatePersonalBiodata')->middleware('verified')->name('post.update_personal_biodata');
-            // Route::post('/update_religious_biodata', 'updateReligiousBiodata')->middleware('verified')->name('post.update_religious_biodata');
-            // Route::post('/update_family_biodata', 'updateFamilyBiodata')->middleware('verified')->name('post.update_family_biodata');
-            // Route::post('/update_deserved_biodata', 'updateDeservedBiodata')->middleware('verified')->name('post.update_deserved_biodata');
-            // Route::post('/update_others_biodata', 'updateOthersBiodata')->middleware('verified')->name('post.update_others_biodata');
+            Route::post('/single_approve', 'updateIsApprovedSingle')->middleware('is_admin')->name('single_approve');
+            Route::post('/multiple_approve', 'updateIsApprovedMultiple')->middleware('is_admin')->name('multiple_approve');
+            Route::post('/single_trash', 'updateInTrashSingle')->middleware('is_admin')->name('single_trash');
+            Route::post('/multiple_trash', 'updateInTrashMultiple')->middleware('is_admin')->name('multiple_trash');
+
+            Route::post('/onClickPermanentDelete', 'onClickPermanentDelete')->middleware('is_admin')->name('onClickPermanentDelete');
+
+            Route::post('/take_action', 'takeAction')->middleware('is_admin')->name('take_action');
+        });
+
+        //biodata controllers
+        Route::prefix('/biodata')->controller(BiodataController::class)->name('biodata.')->group(function () {
+            Route::get('/{user_id}', 'getSingleBiodata')->middleware('is_admin')->name('get');
+            Route::post('/update_media_agreement', 'updateMediaAgreement')->middleware('is_admin')->name('post.update_media_agreement');
+            Route::post('/update_gender', 'updateGender')->middleware('is_admin')->name('post.update_gender');
+            Route::post('/update_personal_biodata', 'updatePersonalBiodata')->middleware('is_admin')->name('post.update_personal_biodata');
+            Route::post('/update_religious_biodata', 'updateReligiousBiodata')->middleware('is_admin')->name('post.update_religious_biodata');
+            Route::post('/update_family_biodata', 'updateFamilyBiodata')->middleware('is_admin')->name('post.update_family_biodata');
+            Route::post('/update_deserved_biodata', 'updateDeservedBiodata')->middleware('is_admin')->name('post.update_deserved_biodata');
+            Route::post('/update_others_biodata', 'updateOthersBiodata')->middleware('is_admin')->name('post.update_others_biodata');
         });
 
         Route::fallback('backEndFallBack')->name('fallback');

@@ -4,7 +4,7 @@ import { ref, onMounted, onUpdated } from 'vue';
 import axios from 'axios';
 
 const emits = defineEmits([
-    'updateIsDisabled'
+    'onUpdateDynamicAddress'
 ]);
 
 
@@ -23,9 +23,9 @@ const props = defineProps({
 
 
 // initializing
-let innerHTML = ref('');
-let selectedUpazilaAndUnionParishad = ref(props.translations.searchForm.dropdown_3_placeholder);
-let selectCountryInnerHTML = ref(`<div class="odl-head">
+const innerHTML = ref('');
+const selectedUpazilaAndUnionParishad = ref(props.translations.searchForm.dropdown_3_placeholder);
+const selectCountryInnerHTML = ref(`<div class="odl-head">
         <button action="goBackHandler" class="od-location-picker-previous">
             <i action="goBackHandler" class="fa fa-arrow-left"></i>
         </button>
@@ -41,19 +41,19 @@ let selectCountryInnerHTML = ref(`<div class="odl-head">
             </button>
         </li>
     </ul>`);
-let selectDivisionInnerHTML = ref('');
-let selectDistrictInnerHTML = ref('');
-let selectUpazilaInnerHTML = ref('');
-let selectUnionParishadInnerHTML = ref('');
-let isHidden = ref(true);
-let isSearchAble = ref(false);
-let currentLayer = ref('');
-let selected_country_id = ref('');
-let selectedCountry = ref('');
-let selectedDivision = ref('');
-let selectedDistrict = ref('');
-let selectedUpazila = ref('');
-let selectedUnionParishad = ref('');
+const selectDivisionInnerHTML = ref('');
+const selectDistrictInnerHTML = ref('');
+const selectUpazilaInnerHTML = ref('');
+const selectUnionParishadInnerHTML = ref('');
+const isHidden = ref(true);
+const isSearchAble = ref(false);
+const currentLayer = ref('');
+const selected_country_id = ref('');
+const selectedCountry = ref('');
+const selectedDivision = ref('');
+const selectedDistrict = ref('');
+const selectedUpazila = ref('');
+const selectedUnionParishad = ref('');
 
 
 
@@ -66,7 +66,13 @@ const addressHandler = (e) => {
     e.target.classList.toggle('dropdown_popup_amimation');
     if( isSearchAble.value == true ){
         if( isHidden.value == false){
-            emits('updateIsDisabled', true);
+            emits('onUpdateDynamicAddress', {
+                selectedCountry : selectedCountry.value,
+                selectedDivision : selectedDivision.value,
+                selectedDistrict : selectedDistrict.value,
+                selectedUpazila : selectedUpazila.value,
+                selectedUnionParishad : selectedUnionParishad.value,
+            });
         }
     }
 }
@@ -74,7 +80,6 @@ const addressHandler = (e) => {
 
 const handleLineClicks = (e) => {
     e.preventDefault();
-    // let clickedAction = e.target.id;
     let clickedAction = e.target.getAttribute('action');
 
 
@@ -101,7 +106,13 @@ const handleLineClicks = (e) => {
             e.target.classList.toggle('dropdown_popup_amimation');
             if( isSearchAble.value == true ){
                 if( isHidden.value == false){
-                    emits('updateIsDisabled', true);
+                    emits('onUpdateDynamicAddress', {
+                        selectedCountry : selectedCountry.value,
+                        selectedDivision : selectedDivision.value,
+                        selectedDistrict : selectedDistrict.value,
+                        selectedUpazila : selectedUpazila.value,
+                        selectedUnionParishad : selectedUnionParishad.value,
+                    });
                 }
             }
         }
@@ -111,7 +122,13 @@ const handleLineClicks = (e) => {
         isHidden.value = !isHidden.value;
         if( isSearchAble.value == true ){
             if( props.isDisabled == true){
-                emits('updateIsDisabled', false);
+                emits('onUpdateDynamicAddress', {
+                    selectedCountry : selectedCountry.value,
+                    selectedDivision : selectedDivision.value,
+                    selectedDistrict : selectedDistrict.value,
+                    selectedUpazila : selectedUpazila.value,
+                    selectedUnionParishad : selectedUnionParishad.value,
+                });
             }
         }
     }
@@ -133,10 +150,7 @@ const handleLineClicks = (e) => {
                         <i action="onClickClose" class="fa fa-times"></i>
                     </button>
                 </div>
-                <ul class="odl-nav">
-                    <li>
-                        <button action="search_whole_country" selected_country_id="${ selected_country_id.value }" >${ props.translations.searchForm.search_whole_country_text }</button>
-                    </li>`;
+                <ul class="odl-nav">`;
             let division_id = '';
             let division_name = '';
             response.data.forEach(function(item, index, arr){
@@ -174,10 +188,7 @@ const handleLineClicks = (e) => {
                         <i action="onClickClose" class="fa fa-times"></i>
                     </button>
                 </div>
-                <ul class="odl-nav">
-                    <li>
-                        <button action="search_whole_country" selected_country_id="${ selected_country_id.value }" >${ props.translations.searchForm.search_whole_country_text }</button>
-                    </li>`;
+                <ul class="odl-nav">`;
             let district_id = '';
             let district_name = '';
             response.data.forEach(function(item, index, arr){
@@ -215,10 +226,7 @@ const handleLineClicks = (e) => {
                         <i action="onClickClose" class="fa fa-times"></i>
                     </button>
                 </div>
-                <ul class="odl-nav">
-                    <li>
-                        <button action="search_whole_country" selected_country_id="${ selected_country_id.value }" >${ props.translations.searchForm.search_whole_country_text }</button>
-                    </li>`;
+                <ul class="odl-nav">`;
                     let upazila_name = '';
                     response.data.forEach(function(item, index, arr){
                         if( upazila_name == item["upazila"] ){
@@ -256,10 +264,7 @@ const handleLineClicks = (e) => {
                         <i action="onClickClose" class="fa fa-times"></i>
                     </button>
                 </div>
-                <ul class="odl-nav">
-                    <li>
-                        <button action="search_whole_country" selected_country_id="${ selected_country_id.value }" >${ props.translations.searchForm.search_whole_country_text }</button>
-                    </li>`;
+                <ul class="odl-nav">`;
 
                     let union_parishad = '';
                     response.data.forEach(function(item, index, arr){
@@ -289,16 +294,13 @@ const handleLineClicks = (e) => {
         isHidden.value = true;
         e.target.classList.remove('dropdown_popup_amimation');
         isSearchAble.value = true;
-        emits('updateIsDisabled', false);
-    }
-
-    else if( clickedAction === 'search_whole_country') {
-        let selected_country_id = e.target.getAttribute('selected_country_id');
-        selectedUpazilaAndUnionParishad.value = props.translations.searchForm.search_whole_country_text;
-        isHidden.value = true;
-        e.target.classList.remove('dropdown_popup_amimation');
-        isSearchAble.value = true;
-        emits('updateIsDisabled', false);
+        emits('onUpdateDynamicAddress', {
+            selectedCountry : selectedCountry.value,
+            selectedDivision : selectedDivision.value,
+            selectedDistrict : selectedDistrict.value,
+            selectedUpazila : selectedUpazila.value,
+            selectedUnionParishad : selectedUnionParishad.value,
+        });
     }
 
 }
@@ -325,10 +327,12 @@ onUpdated(() => {
 <template>
 
     <div class="od-search-fields">
-        <div class="od-search-option-label">{{ props.translations.searchForm.dropdown_3_heading }}</div>
-        <div class="od-search-option-input">
-            <div class="od-location-dropdown od-field-type__location od-biodata-search-control" data-field_id="10">
-                <button @click="addressHandler" class="od-location-dropdown-trigger">
+        <label for="search_location_button" class="text-base">
+            {{ props.translations.searchForm.dropdown_3_heading }}
+        </label>
+        <div class="main-search-option-input">
+            <div class="od-location-dropdown od-field-type__location od-biodata-search-control">
+                <button @click="addressHandler" id="search_location_button" class="search_location_button text-left !text-gray-950 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     {{ selectedUpazilaAndUnionParishad }}
                 </button>
                 <div v-if="!isHidden" v-html="innerHTML" @click="handleLineClicks" class="odl-wrap od-location-panel-wrap active dropdown_popup_amimation" >
@@ -340,3 +344,15 @@ onUpdated(() => {
 
 
 </template>
+
+<style>
+.search_location_button::after{
+    position: absolute;
+    right: 15px;
+    content: "";
+    border-width: 5px 4px 0 4px;
+    border-style: solid;
+    border-color: #888 rgba(0,0,0,0) rgba(0,0,0,0) rgba(0,0,0,0);
+    top: calc(50% - 2px);
+}
+</style>

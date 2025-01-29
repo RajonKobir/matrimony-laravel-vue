@@ -8,6 +8,8 @@ import PermanentDynamicAddress from './PermanentDynamicAddress.vue';
 import TemporaryDynamicAddress from './TemporaryDynamicAddress.vue';
 import MultipleJobSelection from './MultipleJobSelection.vue';
 import MultipleEducationMediumSelection from './MultipleEducationMediumSelection.vue';
+import axios from 'axios';
+import { Link } from '@inertiajs/vue3';
 
 
 const emits = defineEmits([
@@ -40,7 +42,7 @@ const props = defineProps({
 // initializing
 const page = usePage();
 const csrf_token = page.props.csrf_token;
-const user_id = page.props.auth.user["id"];
+const user_id = page.props.auth.user.id;
 const media_agreement = ref(false);
 const gender = ref(null);
 const modalMessage = ref({});
@@ -147,7 +149,9 @@ const mediaAgreement = (e) => {
         axios.post(route('user.biodata.post.update_media_agreement', {
             csrf_token,
             user_id,
-            media_agreement: media_agreement.value
+            media_agreement: media_agreement.value,
+            user_mobile : page.props.auth.user.mobile,
+            user_email : page.props.auth.user.email,
         } ))
         .then(function (response) {
             if( response.data ){
@@ -180,50 +184,41 @@ const genderUpdate = (e) => {
     e.preventDefault();
     let genderValue = e.target.value;
     let modalDescription = '';
-    if( genderValue == ''){
-        modalMessage.value = {
-            modalHeading : page.props.translations.modal_messages.error_heading,
-            modalDescription : page.props.translations.modal_messages.error_description,
-        }
-        isModalOpen.value = true;
-        return;
-    } else {
-        gender.value = genderValue;
-        emits('onUpdateGender', gender.value);
-        props.single_biodata.gender = gender.value;
-        if( gender.value == 'male' ){
-            modalDescription = page.props.translations.modal_messages.gender_update_message_male;
-        }else{
-            modalDescription = page.props.translations.modal_messages.gender_update_message_female;
-        }
-        axios.post(route('user.biodata.post.update_gender', {
-            csrf_token,
-            user_id,
-            gender: gender.value
-        } ))
-        .then(function (response) {
-            if( response.data ){
-                form.maritial_status = props.single_biodata.maritial_status = response.data.maritial_status;
-                form.job_title = props.single_biodata.job_title = response.data.job_title;
-                emits( 'onUpdateDeservedJobTitles', response.data.deserved_job_titles );
-                emits( 'onUpdateDeservedMaritialStatuses', response.data.deserved_maritial_statuses );
-                modalMessage.value = {
-                    modalHeading : page.props.translations.modal_messages.success_heading,
-                    modalDescription : modalDescription,
-                }
-                isModalOpen.value = true;
-            }else{
-                modalMessage.value = {
-                    modalHeading : page.props.translations.modal_messages.error_heading,
-                    modalDescription : page.props.translations.modal_messages.error_description,
-                }
-                isModalOpen.value = true;
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    gender.value = genderValue;
+    emits('onUpdateGender', gender.value);
+    props.single_biodata.gender = gender.value;
+    if( gender.value == 'male' ){
+        modalDescription = page.props.translations.modal_messages.gender_update_message_male;
+    }else{
+        modalDescription = page.props.translations.modal_messages.gender_update_message_female;
     }
+    axios.post(route('user.biodata.post.update_gender', {
+        csrf_token,
+        user_id,
+        gender: gender.value
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            form.maritial_status = props.single_biodata.maritial_status = response.data.maritial_status;
+            form.job_title = props.single_biodata.job_title = response.data.job_title;
+            emits( 'onUpdateDeservedJobTitles', response.data.deserved_job_titles );
+            emits( 'onUpdateDeservedMaritialStatuses', response.data.deserved_maritial_statuses );
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.success_heading,
+                modalDescription : modalDescription,
+            }
+            isModalOpen.value = true;
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 // media agreement ends
 
@@ -553,7 +548,11 @@ onMounted(() => {
 
     <div v-if="!media_agreement" class="grid grid-cols-12 gap-0">
         <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
-            <label for="media_agreement" class="text-base">{{ translations.biodata_form.personal_biodata.media_agreement }}</label>
+            <label for="media_agreement" class="text-base">
+                {{ translations.biodata_form.personal_biodata.media_agreement }}
+                <Link :href="route('frontend.faq')" class="text-base font-bold justify-center" >{{ translations.biodata_form.personal_biodata.media_agreement_1 }}</Link>
+                {{ translations.biodata_form.personal_biodata.media_agreement_2 }}
+            </label>
             <select @change="mediaAgreement" id="media_agreement" name="media_agreement"
                 class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                 <option value="null" disabled selected>{{ translations.form_basics.select_text }}</option>

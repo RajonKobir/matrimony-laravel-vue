@@ -37,8 +37,8 @@ onUnmounted(() => {
 
 <template>
     <footer>
-        <div class="od-footer-content">
-            <div class="od-container">
+        <div class="footer-content">
+            <div class="main-container">
                 <div class="od-item-container">
                     <div class="od-row od-align-items-center od-justify-content-center">
 
@@ -50,7 +50,7 @@ onUnmounted(() => {
                     <a href="https://www.youtube.com/shadibari" target="_blank"><i
                             class="fa-brands fa-youtube"></i></a>
                 </div>
-                <div class="od-footer-bottom-text">© 2021-{{ new Date().getFullYear() }} shadibari.com</div>
+                <div class="footer-bottom-text">© 2021-{{ new Date().getFullYear() }} shadibari.com</div>
 
                 <div  v-if="isVisible" @click="scrollUp" id="scrollUp" class="od-scrollTo-top" style="display: block; cursor: pointer;">
                     <i class="fa fa-angle-up"></i>

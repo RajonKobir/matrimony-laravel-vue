@@ -48,7 +48,7 @@ const current_domain = window.location.host;
         <link rel="stylesheet" :href="`/assets/css/frontend/font-awesome.min.css`">
     </Head>
 
-    <div class="od-container-main">
+    <div class="shadibari-container-main">
 
         <Header :translations :locale :locales :canLogin :canRegister :single_biodata />
 

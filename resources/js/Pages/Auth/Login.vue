@@ -124,7 +124,7 @@ document.body.classList.add("frontend.login");
 
                     <div class="mt-4 flex items-center justify-center">
                         <Link v-if="canResetPassword" :href="route('password.request')"
-                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            class="rounded-md text-lg text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             {{ translations.login.forgot_password }}
                         </Link>
                     </div>
@@ -132,7 +132,7 @@ document.body.classList.add("frontend.login");
 
                     <div class="mt-4 flex justify-center">
                         <Link :href="route('register')"
-                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            class="rounded-md text-lg text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             {{ translations.login.new_registration }}
                         </Link>
                     </div>

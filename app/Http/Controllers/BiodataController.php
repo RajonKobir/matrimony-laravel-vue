@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Biodata;
-use Illuminate\Validation\Rule;
+use App\Models\User;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Hash;
 
 class BiodataController extends Controller
 {
@@ -63,17 +65,41 @@ class BiodataController extends Controller
     }
 
 
+    public function updateHideBiodata(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|int',
+            'hide_biodata' => 'required|boolean',
+        ]);
+        $biodata = Biodata::where('user_id', $request->user_id)->get();
+        if( count($biodata) == 1 ){
+            $biodata = Biodata::where('user_id', $request->user_id)->update([
+                'hide_biodata' => $request->hide_biodata,
+            ]);
+            return true;
+        }
+        elseif( count($biodata) > 1 ){
+            return false;
+        }
+        return false;
+    }
+
+
     public function updateMediaAgreement(Request $request)
     {
         $request->validate([
             'user_id' => 'required|int',
             'media_agreement' => 'required|boolean',
+            'user_mobile' => 'nullable|regex:/(01)[0-9]{9}/|max:11',
+            'user_email' => 'nullable|email:rfc,dns|max:50',
         ]);
         $biodata = Biodata::where('user_id', $request->user_id)->get();
         if ($request->media_agreement){
             if( count($biodata) == 1 ){
                 $biodata = Biodata::where('user_id', $request->user_id)->update([
                     'media_agreement' => $request->media_agreement,
+                    'user_mobile' => $request->user_mobile,
+                    'user_email' => $request->user_email,
                 ]);
                 return true;
             }
@@ -85,6 +111,8 @@ class BiodataController extends Controller
                 $biodata->user_id = $request->user_id;
                 $biodata->media_agreement = $request->media_agreement;
                 $biodata->biodata_code = mt_rand(100000,999999) . '-' . uniqid();
+                $biodata->user_mobile = $request->user_mobile;
+                $biodata->user_email = $request->user_email;
                 $biodata->save();
                 return true;
             }
@@ -226,7 +254,9 @@ class BiodataController extends Controller
             'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:200' : 'nullable|string|min:10|max:200',
             'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:10|max:100' : 'nullable|string|min:10|max:100',
         ]);
+
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+
         if( count($retrieved_biodata) == 1 ){
             $biodata_update = Biodata::where('user_id', $request->user_id)->update([
                 'birth_date' => $request->birth_date,
@@ -477,8 +507,6 @@ class BiodataController extends Controller
             'form_holder_desc' => 'required|string|min:10|max:255',
             'male_guardian_desc' => 'required|string|min:10|max:255',
             'male_guardian_agreement' => 'required|boolean',
-            // 'eleven_digit_mobile_number' => 'required|regex:/(01)[0-9]{9}/|max:11',
-            // 'main_email_address' => 'required|email:rfc,dns|max:50',
             'deserved_money_pay' => 'required|string|min:2|max:20',
             'media_terms_one_agreement' => 'required|boolean',
             'hundred_money_pay' => 'required|boolean',
@@ -492,8 +520,6 @@ class BiodataController extends Controller
                 'form_holder_desc' => $request->form_holder_desc,
                 'male_guardian_desc' => $request->male_guardian_desc,
                 'male_guardian_agreement' => $request->male_guardian_agreement,
-                // 'eleven_digit_mobile_number' => $request->eleven_digit_mobile_number,
-                // 'main_email_address' => $request->main_email_address,
                 'deserved_money_pay' => $request->deserved_money_pay,
                 'media_terms_one_agreement' => $request->media_terms_one_agreement,
                 'hundred_money_pay' => $request->hundred_money_pay,
@@ -520,17 +546,29 @@ class BiodataController extends Controller
     }
 
 
+    public function onClickPermanentDeleteUser(Request $request)
+    {
+
+        $request->validate([
+            'user_id' => 'required|integer|min:1|max_digits:10',
+        ]);
+
+        $biodata = Biodata::where('user_id', $request->user_id)->delete();
+
+        return $biodata;
+
+    }
 
 
 
 
     // backend starts here
-    public function updateIsApproved(Request $request)
+    public function updateIsApprovedSingle(Request $request)
     {
 
         $request->validate([
-            'user_id' => 'integer',
-            'is_approved' => 'boolean',
+            'user_id' => 'required|integer|min:1|max_digits:10',
+            'is_approved' => 'required|boolean',
         ]);
 
         $biodata = Biodata::where('user_id', $request->user_id)->get();
@@ -539,10 +577,151 @@ class BiodataController extends Controller
             $biodata = Biodata::where('user_id', $request->user_id)->update([
                 'is_approved' => $request->is_approved,
             ]);
-            return Biodata::all();
         }
 
         return Biodata::all();
+
+    }
+
+
+    public function updateIsApprovedMultiple(Request $request)
+    {
+
+        $request->validate([
+            'user_ids' => 'required|array',
+            'is_approved' => 'required|boolean',
+        ]);
+
+        foreach ($request->user_ids as $user_id_key => $single_user_id) {
+
+            $biodata = Biodata::where('user_id', $single_user_id)->get();
+
+            if( count($biodata) == 1 ){
+                $biodata = Biodata::where('user_id', $single_user_id)->update([
+                    'is_approved' => $request->is_approved,
+                ]);
+            }
+
+        }
+
+        return Biodata::all();
+
+    }
+
+
+    public function updateInTrashMultiple(Request $request)
+    {
+
+        $request->validate([
+            'user_ids' => 'required|array',
+            'in_admin_trash' => 'required|boolean',
+        ]);
+
+        foreach ($request->user_ids as $user_id_key => $single_user_id) {
+
+            $biodata = Biodata::where('user_id', $single_user_id)->get();
+
+            if( count($biodata) == 1 ){
+                $biodata = Biodata::where('user_id', $single_user_id)->update([
+                    'is_approved' => $request->in_admin_trash ? false : $biodata[0]->is_approved,
+                    'in_admin_trash' => $request->in_admin_trash,
+                ]);
+            }
+
+        }
+
+        return Biodata::all();
+
+    }
+
+
+    public function updateInTrashSingle(Request $request)
+    {
+
+        $request->validate([
+            'user_id' => 'required|integer|min:1|max_digits:10',
+            'in_admin_trash' => 'required|boolean',
+        ]);
+
+        $biodata = Biodata::where('user_id', $request->user_id)->get();
+
+        if( count($biodata) == 1 ){
+            $biodata = Biodata::where('user_id', $request->user_id)->update([
+                'is_approved' => $request->in_admin_trash ? false : $biodata[0]->is_approved,
+                'in_admin_trash' => $request->in_admin_trash,
+            ]);
+        }
+
+        return Biodata::all();
+
+    }
+
+
+    public function onClickPermanentDelete(Request $request)
+    {
+
+        $request->validate([
+            'user_id' => 'required|integer|min:1|max_digits:10',
+        ]);
+
+        $biodata = Biodata::where('user_id', $request->user_id)->delete();
+
+        return Biodata::all();
+
+    }
+
+
+    public function takeAction(Request $request)
+    {
+
+        $request->validate([
+            'biodata_code' => 'required|string|min:4|max:20',
+            'special_biodata' => 'required|boolean',
+            'biodata_categories' => 'nullable|string|min:4|max:100',
+            'biodata_restriction' => 'nullable|string|min:4|max:200',
+            'daily_free' => 'required|int|min:0|max:127',
+            'biodata_package' => 'required|int|min:0|max:32767',
+            'username' => 'required|string|min:4|max:50',
+            'password' => ['nullable', 'string', Rules\Password::defaults()->min(6)->max(20)],
+            'is_approved' => 'required|boolean',
+            'user_id' => 'required|integer|min:1|max_digits:10',
+        ]);
+
+
+        $biodata = Biodata::where('user_id',  $request->user_id)->get();
+
+        if( count($biodata) == 1 ){
+            $biodata = Biodata::where('user_id', $request->user_id)->update([
+                'user_id' => $request->user_id,
+                'is_approved' => $request->is_approved,
+                'user_mobile' => !filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $biodata[0]->user_mobile,
+                'user_email' => filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $biodata[0]->user_email,
+                'biodata_package' => $request->biodata_package,
+                'daily_free' => $request->daily_free,
+                'biodata_restriction' => $request->biodata_restriction,
+                'biodata_categories' => $request->biodata_categories,
+                'special_biodata' => $request->special_biodata,
+                'biodata_code' => $request->biodata_code,
+            ]);
+
+            if($biodata){
+                $user = User::where('email', $request->username)->orWhere('mobile', $request->username)->get();
+
+                if( count($user) == 1 ){
+                    $user = User::where('email',  $request->username)->orWhere('mobile', $request->username)->update([
+                        'email' => filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $user[0]->email,
+                        'mobile' => !filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $user[0]->mobile,
+                        'password' => !$request->password || $request->password == '' ? $user[0]->password : Hash::make($request->password),
+                    ]);
+                    if( $user ){
+                        return redirect()->back()->with('success', 'Action Taken Successfully!');
+                    }
+                }
+            }
+
+        }
+
+        return redirect()->back()->with('error', 'Something Went Wrong!');
 
     }
     // backend ends here

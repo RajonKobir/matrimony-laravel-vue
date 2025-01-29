@@ -32,7 +32,7 @@ const emits = defineEmits([
 // initializing
 const page = usePage();
 const csrf_token = page.props.csrf_token;
-const user_id = page.props.auth.user["id"];
+const user_id = page.props.auth.user.id;
 const modalMessage = ref({});
 const isModalOpen = ref(false);
 
@@ -172,22 +172,6 @@ onMounted(() => {
             </select>
             <InputError class="mt-2" :message="form.errors.male_guardian_agreement" />
         </div>
-
-        <!-- <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="eleven_digit_mobile_number" class="text-base">
-                {{ translations.biodata_form.others_biodata.eleven_digit_mobile_number_title }}
-            </label>
-            <input type="tel" v-model="form.eleven_digit_mobile_number" @input="(e) => { single_biodata.eleven_digit_mobile_number = e.target.value }" name="eleven_digit_mobile_number" id="eleven_digit_mobile_number" max="11" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
-            <InputError v-if="form.errors.eleven_digit_mobile_number" class="mt-2" :message="translations.biodata_form.others_biodata.eleven_digit_mobile_number_error" />
-        </div> -->
-
-        <!-- <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="main_email_address" class="text-base">
-                {{ translations.biodata_form.others_biodata.main_email_address_title }}
-            </label>
-            <input type="text" v-model="form.main_email_address" @input="(e) => { single_biodata.main_email_address = e.target.value }" name="main_email_address" id="main_email_address" max="50" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
-            <InputError class="mt-2" :message="form.errors.main_email_address" />
-        </div> -->
 
         <div class="form_item col-span-12 md:col-span-6 p-2">
             <label for="deserved_money_pay" class="text-base">

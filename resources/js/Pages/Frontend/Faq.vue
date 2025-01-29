@@ -42,13 +42,13 @@ document.body.classList.add("frontend.faq");
 
     <GuestLayout :translations :locale :locales>
 
-        <div class="od-content-main">
-            <section id="od_faq_container">
+        <div class="content-main min-h-screen">
+           <!--  <section id="od_faq_container">
                 <div class="od-page-banner">
                     <h1 class="od-banner-text">{{ translations.faq_page.page_header }}</h1>
                 </div>
                 <div class="od-faq-content-main">
-                    <div class="od-container">
+                    <div class="main-container">
                         <div class="od-faq-content">
                             <div class="od-faq-item-list-content">
                                 <div class="od-accordion">
@@ -214,7 +214,7 @@ document.body.classList.add("frontend.faq");
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>-->
         </div>
 
     </GuestLayout>

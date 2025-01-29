@@ -6,6 +6,7 @@ import ReligiousBiodata from '../../Components/User/ReligiousBiodata/ReligiousBi
 import FamilyBiodata from '../../Components/User/FamilyBiodata/FamilyBiodata.vue';
 import DeservedBiodata from '../../Components/User/DeservedBiodata/DeservedBiodata.vue';
 import OthersBiodata from '../../Components/User/OthersBiodata/OthersBiodata.vue';
+import HideOrDeleteBiodata from '../../Components/User/HideOrDeleteBiodata/HideOrDeleteBiodata.vue';
 import PopupMessage from '../../Components/User/PersonalBiodata/PopupMessage.vue';
 import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
@@ -35,7 +36,7 @@ defineProps({
 // initializing
 const page = usePage();
 const csrf_token = page.props.csrf_token;
-const user_id = page.props.auth.user["id"];
+const user_id = page.props.auth.user.id;
 const single_biodata = ref([]);
 const selectedTab = ref(0);
 const disableTab1 = ref(true);
@@ -187,6 +188,12 @@ onMounted(() => {
                         {{ translations.biodata_form.others_biodata.title }}
                     </button>
                 </Tab>
+                <Tab v-if="single_biodata.is_approved" v-slot="{ selected }" >
+                    <button
+                        :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
+                        {{ translations.biodata_form.hide_or_delete.hide_or_delete_title }}
+                    </button>
+                </Tab>
             </TabList>
 
 
@@ -224,6 +231,13 @@ onMounted(() => {
                 ]">
 
                     <OthersBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+
+                </TabPanel>
+
+                <TabPanel v-if="single_biodata.is_approved" :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                ]">
+
+                    <HideOrDeleteBiodata :translations :locale :locales :single_biodata :selectedGender />
 
                 </TabPanel>
 

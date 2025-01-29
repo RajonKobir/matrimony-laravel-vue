@@ -8,7 +8,9 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Biodata;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use App\Models\District;
 
 class BackEndController extends Controller
 {
@@ -31,6 +33,8 @@ class BackEndController extends Controller
         $all_biodatas = Biodata::all();
         $all_biodatas_array = [
             'all_biodatas' => $all_biodatas,
+            'front_end_translations' => __('frontend'),
+            'districts' => District::all(),
         ];
         $pageProps = $all_biodatas_array + $this->pageProps;
         return Inertia::render('Admin/Home', $pageProps);
@@ -82,6 +86,23 @@ class BackEndController extends Controller
     public function backEndFallBack(Request $request)
     {
         return Inertia::render('Admin/404', $this->pageProps);
+    }
+
+
+    public function getUserData(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|int',
+        ]);
+
+        $biodata = User::where('id', $request->user_id)->get();
+
+        if( count($biodata) == 1 ){
+            return $biodata[0];
+        }
+
+        return false;
+
     }
 
 

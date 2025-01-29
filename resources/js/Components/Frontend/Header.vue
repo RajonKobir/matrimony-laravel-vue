@@ -44,7 +44,7 @@ onMounted(() => {
 
     document.querySelector(".od-mobile-menu-trigger").addEventListener("click", function (e) {
         e.preventDefault();
-        document.querySelector(".od-menu-lists-container").classList.toggle("active");
+        document.querySelector(".menu-lists-container").classList.toggle("active");
     });
 
 });
@@ -56,7 +56,7 @@ onMounted(() => {
     <header id="main_header">
         <div id="od_header">
             <div id="main_header_inner" class="od-w-100">
-                <div class="od-container">
+                <div class="main-container">
                     <div class="od-row od-align-items-center">
                         <div class="od-col-4 od-col-md-3 md-order-2">
                             <div class="od-site-logo">
@@ -69,22 +69,25 @@ onMounted(() => {
                             <div class="od-mobile-menu-trigger">
                                 <a href="#"><i class="fa fa-bars"></i></a>
                             </div>
-                            <nav class="od-menu-lists-container">
+                            <nav class="menu-lists-container">
                                 <ul class="od-menu-lists ">
                                     <li class="od-menu-list-item">
                                         <Link href="/">{{ translations.main_menu.home }}</Link>
                                     </li>
-                                    <li class="od-menu-list-item">
+                                    <!-- <li class="od-menu-list-item">
                                         <Link href="/about">{{ translations.main_menu.about }}</Link>
+                                    </li> -->
+                                    <li class="od-menu-list-item">
+                                        <Link href="/faq">শর্ত ও কার্যাবলী</Link>
                                     </li>
                                     <li class="od-menu-list-item">
-                                        <Link href="/faq">{{ translations.main_menu.faq }}</Link>
+                                        <Link href="/instructions">মতামত</Link>
                                     </li>
-                                    <li class="od-menu-list-item">
-                                        <Link href="/instructions">{{ translations.main_menu.instructions }}</Link>
-                                    </li>
-                                    <li class="od-menu-list-item">
+                                    <!-- <li class="od-menu-list-item">
                                         <Link href="/contact">{{ translations.main_menu.contact }}</Link>
+                                    </li> -->
+                                    <li v-if="!$page.props.auth.user" class="free_registration od-menu-list-item">
+                                        <Link href="/register">ফ্রি-রেজিষ্ট্রেশন</Link>
                                     </li>
                                     <li class="od-menu-list-item od-localization-container hide-od-xl">
                                         <a href="javascript:void(0);">
@@ -99,8 +102,8 @@ onMounted(() => {
                                             </div>
                                         </a>
                                         <div class="od-dropdown-menu-container od-animate od-slideIn">
-                                            <div class="od-dropdown-menu-content">
-                                                <ul class="od-dropdown-menu-lists">
+                                            <div class="dropdown-menu-content">
+                                                <ul class="dropdown-menu-lists">
                                                     <li v-for="lang in locales" :key="lang.id">
                                                         <Link v-if="lang != locale" :href="route('localization', lang)">
                                                         {{ lang == 'en' ? 'English' : 'বাংলা' }}
@@ -131,8 +134,8 @@ onMounted(() => {
                                                 </div>
                                             </a>
                                             <div class="od-dropdown-menu-container od-animate od-slideIn">
-                                                <div class="od-dropdown-menu-content">
-                                                    <ul class="od-dropdown-menu-lists">
+                                                <div class="dropdown-menu-content">
+                                                    <ul class="dropdown-menu-lists">
                                                         <li v-for="lang in locales" :key="lang.id">
                                                             <Link v-if="lang != locale"
                                                                 :href="route('localization', lang)">
@@ -169,8 +172,8 @@ onMounted(() => {
 
                                                     </div>
                                                 </div>
-                                                <nav class="odd-nav od-dropdown-menu-content">
-                                                    <ul class="od-dropdown-menu-lists">
+                                                <nav class="odd-nav dropdown-menu-content">
+                                                    <ul class="dropdown-menu-lists">
                                                         <li>
                                                             <Link :href="route('user.profile')" as="button">
                                                                 <img src="assets/images/editbiodata-ico.svg"
@@ -238,3 +241,11 @@ onMounted(() => {
     </header>
 
 </template>
+
+<style>
+/* @media screen and (min-width: 768px) {
+    .free_registration{
+        display: none !important;
+    }
+} */
+</style>

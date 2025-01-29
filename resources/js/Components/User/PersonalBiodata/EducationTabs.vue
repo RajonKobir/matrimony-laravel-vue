@@ -27,7 +27,7 @@ defineProps({
 // initializing
 const page = usePage();
 const csrf_token = page.props.csrf_token;
-const user_id = page.props.auth.user["id"];
+const user_id = page.props.auth.user.id;
 const single_biodata = ref([]);
 // const selectedEducationTab = ref(0);
 const modalMessage = ref({});

@@ -2,14 +2,22 @@
 import { ref } from 'vue';
 import { Link, usePage, Head } from '@inertiajs/vue3';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
-import Biodata from '../../Components/Admin/Biodata/Biodata.vue';
+import Biodata from '../../Components/Admin/Biodatas/Biodata.vue';
 import AdminLayout from '../../Layouts/AdminLayout.vue';
 import Header from '../../Components/Admin/Header.vue';
-import Content from '../../Components/Admin/Content/Content.vue';
+import Content from '../../Components/Admin/Contents/Content.vue';
+import Proposals from '../../Components/Admin/Proposals/Proposal.vue';
+import Others from '../../Components/Admin/Others/Other.vue';
 
 
 defineProps({
     translations: {
+        type: Object,
+    },
+    front_end_translations: {
+        type: Object,
+    },
+    districts: {
         type: Object,
     },
     locale: {
@@ -33,7 +41,7 @@ defineProps({
 // initializing
 const page = usePage();
 // const csrf_token = page.props.csrf_token;
-// const user_id = page.props.auth.user["id"];
+// const user_id = page.props.auth.user.id;
 // const single_biodata = ref([]);
 const selectedTab = ref(0);
 
@@ -57,7 +65,7 @@ const onUpdateAllBiodatas = (biodatas) => {
 
     <AdminLayout :translations :locale :locales>
 
-        <div class="od-container-main">
+        <div class="shadibari-container-main">
 
             <Header :translations :locale :locales :canLogin :canRegister />
 
@@ -75,25 +83,19 @@ const onUpdateAllBiodatas = (biodatas) => {
                             <Tab v-slot="{ selected }" >
                                 <button
                                     :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
-                                    Users
+                                    Proposals
                                 </button>
                             </Tab>
                             <Tab v-slot="{ selected }" >
                                 <button
                                     :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
-                                    Likes
+                                    Approved
                                 </button>
                             </Tab>
                             <Tab v-slot="{ selected }" >
                                 <button
                                     :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
-                                    Messages
-                                </button>
-                            </Tab>
-                            <Tab v-slot="{ selected }" >
-                                <button
-                                    :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
-                                    Packages
+                                    Others
                                 </button>
                             </Tab>
                             <Tab v-slot="{ selected }" >
@@ -111,14 +113,14 @@ const onUpdateAllBiodatas = (biodatas) => {
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                <Biodata :translations :all_biodatas @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                                <Biodata :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                             </TabPanel>
 
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                Content 2
+                                <Proposals :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                             </TabPanel>
 
@@ -132,14 +134,7 @@ const onUpdateAllBiodatas = (biodatas) => {
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                Content 4
-
-                            </TabPanel>
-
-                            <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
-                            ]">
-
-                                Content 5
+                                <Others :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                             </TabPanel>
 

@@ -41,7 +41,7 @@ onMounted(() => {
 
     document.querySelector(".od-mobile-menu-trigger").addEventListener("click", function (e) {
         e.preventDefault();
-        document.querySelector(".od-menu-lists-container").classList.toggle("active");
+        document.querySelector(".menu-lists-container").classList.toggle("active");
     });
 
 });
@@ -53,7 +53,7 @@ onMounted(() => {
     <header id="main_header">
         <div id="od_header">
             <div id="main_header_inner" class="od-w-100">
-                <div class="od-container">
+                <div class="main-container">
                     <div class="od-row od-align-items-center">
                         <div class="od-col-4 od-col-md-3 md-order-2">
                             <div class="od-site-logo">
@@ -66,7 +66,7 @@ onMounted(() => {
                             <div class="od-mobile-menu-trigger">
                                 <a href="#"><i class="fa fa-bars"></i></a>
                             </div>
-                            <nav class="od-menu-lists-container">
+                            <nav class="menu-lists-container">
                                 <ul class="od-menu-lists ">
                                     <li class="od-menu-list-item od-localization-container hide-od-xl">
                                         <a href="javascript:void(0);">
@@ -81,8 +81,8 @@ onMounted(() => {
                                             </div>
                                         </a>
                                         <div class="od-dropdown-menu-container od-animate od-slideIn">
-                                            <div class="od-dropdown-menu-content">
-                                                <ul class="od-dropdown-menu-lists">
+                                            <div class="dropdown-menu-content">
+                                                <ul class="dropdown-menu-lists">
                                                     <li v-for="lang in locales" :key="lang.id">
                                                         <Link v-if="lang != locale" :href="route('localization', lang)">
                                                         {{ lang == 'en' ? 'English' : 'বাংলা' }}
@@ -123,8 +123,8 @@ onMounted(() => {
                                                 </div>
                                             </a>
                                             <div class="od-dropdown-menu-container od-animate od-slideIn">
-                                                <div class="od-dropdown-menu-content">
-                                                    <ul class="od-dropdown-menu-lists">
+                                                <div class="dropdown-menu-content">
+                                                    <ul class="dropdown-menu-lists">
                                                         <li v-for="lang in locales" :key="lang.id">
                                                             <Link v-if="lang != locale"
                                                                 :href="route('localization', lang)">

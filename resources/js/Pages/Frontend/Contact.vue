@@ -57,7 +57,7 @@ document.body.classList.add("frontend.contact");
 
     <GuestLayout :translations :locale :locales>
 
-        <div class="od-content-main">
+        <div class="content-main">
             <section id="od_contact_us">
                 <div class="od-page-banner">
                     <h1 class="od-banner-text">যোগাযোগ করুন</h1>

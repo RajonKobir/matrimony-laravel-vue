@@ -4,8 +4,28 @@ import { Link, usePage, Head } from '@inertiajs/vue3';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 
 
+const emits = defineEmits([
+    'onUpdateAllBiodatas'
+]);
+
+
 defineProps({
     translations: {
+        type: Object,
+    },
+    front_end_translations: {
+        type: Object,
+    },
+    districts: {
+        type: Object,
+    },
+    locale: {
+        type: String,
+    },
+    locales: {
+        type: Array,
+    },
+    all_biodatas: {
         type: Object,
     },
 });
@@ -14,13 +34,18 @@ defineProps({
 // initializing
 const page = usePage();
 // const csrf_token = page.props.csrf_token;
-// const user_id = page.props.auth.user["id"];
+// const user_id = page.props.auth.user.id;
 // const single_biodata = ref([]);
 const selectedTab = ref(0);
 
 
 function changeTab(index) {
     selectedTab.value = index;
+}
+
+const onUpdateAllBiodatas = (biodatas) => {
+    page.props.all_biodatas = biodatas;
+    emits('onUpdateAllBiodatas', biodatas);
 }
 
 
@@ -38,13 +63,25 @@ function changeTab(index) {
                 <Tab v-slot="{ selected }" :class="['mx-2']">
                     <button
                         :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
-                        Translations
+                        Terms & Conditions
                     </button>
                 </Tab>
                 <Tab v-slot="{ selected }" >
                     <button
                         :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
-                        File Manager
+                        Packages
+                    </button>
+                </Tab>
+                <Tab v-slot="{ selected }" >
+                    <button
+                        :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                        Marriage Stats
+                    </button>
+                </Tab>
+                <Tab v-slot="{ selected }" >
+                    <button
+                        :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-slate-800 hover:bg-white/[0.12] hover:text-white',]">
+                        Top News
                     </button>
                 </Tab>
 
@@ -56,14 +93,28 @@ function changeTab(index) {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <iframe width="100%" src="/translations" class="min-h-screen"></iframe>
+                    Content 1
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <iframe width="100%" src="/filemanager" class="min-h-screen"></iframe>
+                    Content 2
+
+                </TabPanel>
+
+                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                ]">
+
+                    Content 3
+
+                </TabPanel>
+
+                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                ]">
+
+                    Content 4
 
                 </TabPanel>
 

@@ -26,13 +26,13 @@ document.body.classList.add("frontend.about");
 
     <GuestLayout :translations :locale :locales>
 
-        <div class="od-content-main">
+        <div class="content-main">
             <section id="od_page_container">
                 <div class="od-page-banner">
                     <h1 class="od-banner-text">{{ translations.about_page.page_header }}</h1>
                 </div>
                 <div class="od-page-content-main">
-                    <div class="od-container">
+                    <div class="main-container">
                         <div class="od-page-content">
                             <div style="text-align: center;">
                                 <span

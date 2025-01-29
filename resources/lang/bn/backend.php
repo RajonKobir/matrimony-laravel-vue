@@ -19,4 +19,14 @@ return [
         'biodata_error_description' => 'আপনার বায়োডাটা লোড হচ্ছে না।',
         'permanent_address_error' => 'আগে স্থায়ী ঠিকানা সঠিকভাবে নির্বাচন করুন',
     ],
+    'biodata' => [
+        'multiple_selection_options' => [
+            'yes',
+            'no',
+        ],
+        'category_options' => [
+            1 => 'এতিম-অসহায়',
+            2 => 'সহজ বিয়ে',
+        ],
+    ],
 ];

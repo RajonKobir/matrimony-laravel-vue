@@ -17,6 +17,18 @@ defineProps({
     translations: {
         type: Object,
     },
+    front_end_translations: {
+        type: Object,
+    },
+    districts: {
+        type: Object,
+    },
+    locale: {
+        type: String,
+    },
+    locales: {
+        type: Array,
+    },
     all_biodatas: {
         type: Object,
     },
@@ -26,7 +38,7 @@ defineProps({
 // initializing
 const page = usePage();
 // const csrf_token = page.props.csrf_token;
-// const user_id = page.props.auth.user["id"];
+// const user_id = page.props.auth.user.id;
 // const single_biodata = ref([]);
 const selectedTab = ref(0);
 
@@ -85,28 +97,28 @@ const onUpdateAllBiodatas = (biodatas) => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <Aprroved :translations :all_biodatas @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                    <Aprroved :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <CompletedRequests :translations :all_biodatas @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                    <CompletedRequests :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <IncompleteRequests :translations :all_biodatas @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                    <IncompleteRequests :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <Trash :translations :all_biodatas @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                    <Trash :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                 </TabPanel>
 
