@@ -13,12 +13,9 @@ const props = defineProps({
     translations: {
         type: Object,
     },
-    deserved_age_range: {
-        type: String,
-    },
 });
 
-const age_state = ref( props.deserved_age_range == null ? [16, 65] : [parseInt(props.deserved_age_range.split("-")[0].trim()), parseInt(props.deserved_age_range.split("-")[1].trim())] );
+const age_state = ref([16, 65]);
 
 const onChangeSlider = (age_state) => {
     emits('onUpdateAgeSlider', age_state);

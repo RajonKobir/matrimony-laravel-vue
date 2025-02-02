@@ -60,7 +60,7 @@ onMounted(() => {
                     <div class="od-row od-align-items-center">
                         <div class="od-col-4 od-col-md-3 md-order-2">
                             <div class="od-site-logo">
-                                <Link href="/">
+                                <Link :href="route('frontend.home')">
                                 <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
                                 </Link>
                             </div>
@@ -72,22 +72,16 @@ onMounted(() => {
                             <nav class="menu-lists-container">
                                 <ul class="od-menu-lists ">
                                     <li class="od-menu-list-item">
-                                        <Link href="/">{{ translations.main_menu.home }}</Link>
-                                    </li>
-                                    <!-- <li class="od-menu-list-item">
-                                        <Link href="/about">{{ translations.main_menu.about }}</Link>
-                                    </li> -->
-                                    <li class="od-menu-list-item">
-                                        <Link href="/faq">শর্ত ও কার্যাবলী</Link>
+                                        <Link :href="route('frontend.home')" >{{ translations.main_menu.home }}</Link>
                                     </li>
                                     <li class="od-menu-list-item">
-                                        <Link href="/instructions">মতামত</Link>
+                                        <Link :href="route('frontend.terms')" >{{ translations.main_menu.terms }}</Link>
                                     </li>
-                                    <!-- <li class="od-menu-list-item">
-                                        <Link href="/contact">{{ translations.main_menu.contact }}</Link>
-                                    </li> -->
+                                    <li class="od-menu-list-item">
+                                        <Link :href="route('frontend.opinions')" >{{ translations.main_menu.opinions }}</Link>
+                                    </li>
                                     <li v-if="!$page.props.auth.user" class="free_registration od-menu-list-item">
-                                        <Link href="/register">ফ্রি-রেজিষ্ট্রেশন</Link>
+                                        <Link :href="route('register')" >{{ translations.main_menu.free_registration }}</Link>
                                     </li>
                                     <li class="od-menu-list-item od-localization-container hide-od-xl">
                                         <a href="javascript:void(0);">
@@ -182,35 +176,6 @@ onMounted(() => {
                                                             </Link>
                                                         </li>
 
-                                                        <!-- <li>
-                                                            <a href="https://shadibari.com/user/account/short-list">
-                                                                <img src="https://shadibari.com/images/shortlist-ico.svg"
-                                                                    alt="Shortlist-icon">
-                                                                পছন্দের তালিকা
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="https://shadibari.com/user/account/ignore-list">
-                                                                <img src="https://shadibari.com/images/ignorelist-ico.svg"
-                                                                    alt="Ignorelist-icon">
-                                                                অপছন্দের তালিকা
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="https://shadibari.com/user/account/my-purchased">
-                                                                <img src="https://shadibari.com/images/mypurchased-ico.svg"
-                                                                    alt="Mypurchased-icon">
-                                                                আমার ক্রয়সমূহ
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href="https://shadibari.com/user/account/support-report">
-                                                                <img src="https://shadibari.com/images/support-ico.svg"
-                                                                    alt="Support-icon">
-                                                                সাপোর্ট &amp; রিপোর্ট
-                                                            </a>
-                                                        </li> -->
                                                         <li>
                                                             <Link :href="route('user.settings.edit')" as="button">
                                                                 <img src="assets/images/settings-ico.svg"

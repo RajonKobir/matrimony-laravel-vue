@@ -7,6 +7,7 @@ use App\Models\Biodata;
 use App\Models\User;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class BiodataController extends Controller
 {
@@ -260,6 +261,7 @@ class BiodataController extends Controller
         if( count($retrieved_biodata) == 1 ){
             $biodata_update = Biodata::where('user_id', $request->user_id)->update([
                 'birth_date' => $request->birth_date,
+                'age' => Carbon::parse($request->birth_date)->age,
                 'skin_color' => $request->skin_color,
                 'height' => $request->height,
                 'weight' => $request->weight,
@@ -676,7 +678,7 @@ class BiodataController extends Controller
 
         $request->validate([
             'biodata_code' => 'required|string|min:4|max:20',
-            'special_biodata' => 'required|boolean',
+            'free_biodata' => 'required|boolean',
             'biodata_categories' => 'nullable|string|min:4|max:100',
             'biodata_restriction' => 'nullable|string|min:4|max:200',
             'daily_free' => 'required|int|min:0|max:127',
@@ -700,7 +702,7 @@ class BiodataController extends Controller
                 'daily_free' => $request->daily_free,
                 'biodata_restriction' => $request->biodata_restriction,
                 'biodata_categories' => $request->biodata_categories,
-                'special_biodata' => $request->special_biodata,
+                'free_biodata' => $request->free_biodata,
                 'biodata_code' => $request->biodata_code,
             ]);
 

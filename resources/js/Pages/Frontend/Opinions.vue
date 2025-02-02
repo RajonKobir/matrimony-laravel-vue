@@ -30,7 +30,7 @@ onMounted(() => {
 
 
 document.body.classList.remove(...document.body.classList);
-document.body.classList.add("frontend.instructions");
+document.body.classList.add("frontend.opinions");
 
 
 </script>
@@ -38,12 +38,12 @@ document.body.classList.add("frontend.instructions");
 
 <template>
 
-    <Head title="Instructions" />
+    <Head title="Opinions" />
 
     <GuestLayout :translations :locale :locales>
 
         <div class="content-main min-h-screen">
-            <!-- <section id="od_faq_container">
+            <!-- <section id="terms_container">
                 <div class="od-page-banner">
                     <h1 class="od-banner-text">সাধারণ নির্দেশিকা</h1>
                 </div>

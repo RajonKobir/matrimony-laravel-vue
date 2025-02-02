@@ -24,7 +24,7 @@ const isModalOpen = ref(false);
 const form = useForm({
     csrf_token: csrf_token,
     biodata_code: props.modalInner.viewBiodata.biodata_code,
-    special_biodata: props.modalInner.viewBiodata.special_biodata ? props.modalInner.viewBiodata.special_biodata : 0,
+    free_biodata: props.modalInner.viewBiodata.free_biodata ? props.modalInner.viewBiodata.free_biodata : 0,
     biodata_categories: props.modalInner.viewBiodata.biodata_categories,
     biodata_restriction: props.modalInner.viewBiodata.biodata_restriction,
     daily_free: props.modalInner.viewBiodata.daily_free,
@@ -60,6 +60,7 @@ const closeModal = (value) => {
 
 onMounted(() => {
 
+    page.props.flash = [];
 
 })
 
@@ -100,14 +101,14 @@ onMounted(() => {
     </div>
 
     <div class="form_item col-span-6 p-2">
-        <label for="special_biodata" class="text-base">Special Biodata</label>
-        <select v-model="form.special_biodata" id="special_biodata" name="special_biodata"
+        <label for="free_biodata" class="text-base">Free Biodata</label>
+        <select v-model="form.free_biodata" id="free_biodata" name="free_biodata"
             class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <option value="null" disabled selected>Select</option>
             <option value="1">yes</option>
             <option value="0">no</option>
         </select>
-        <InputError class="mt-2" :message="form.errors.special_biodata" />
+        <InputError class="mt-2" :message="form.errors.free_biodata" />
     </div>
 
     <div class="form_item col-span-12 md:col-span-6 p-2">

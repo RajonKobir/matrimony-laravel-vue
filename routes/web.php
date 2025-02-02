@@ -32,11 +32,13 @@ Route::middleware(Localization::class)->group(function(){
 
         Route::get('/about', 'aboutPage')->name('about');
 
-        Route::get('/faq', 'faqPage')->name('faq');
+        Route::get('/terms', 'termsPage')->name('terms');
 
-        Route::get('/instructions', 'instructionsPage')->name('instructions');
+        Route::get('/opinions', 'opinionsPage')->name('opinions');
 
         Route::get('/contact', 'contactPage')->name('contact');
+
+        Route::get('/biodata_search', 'biodataSearch')->name('biodata_search');
 
     });
 

@@ -12,6 +12,9 @@ defineProps({
     locales: {
         type: Array,
     },
+    districts: {
+        type: Object,
+    },
     canLogin: {
         type: Boolean,
     },
@@ -27,7 +30,7 @@ defineProps({
 <template>
 
     <GuestLayout :translations :locale :locales :canLogin :canRegister>
-        <Homepage :translations :locale />
+        <Homepage :translations :locale :districts />
     </GuestLayout>
 
 </template>

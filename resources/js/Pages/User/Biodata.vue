@@ -30,6 +30,9 @@ defineProps({
     districts: {
         type: Object,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 
@@ -37,7 +40,7 @@ defineProps({
 const page = usePage();
 const csrf_token = page.props.csrf_token;
 const user_id = page.props.auth.user.id;
-const single_biodata = ref([]);
+const single_biodata_data = ref([]);
 const selectedTab = ref(0);
 const disableTab1 = ref(true);
 const disableTab2 = ref(true);
@@ -65,19 +68,19 @@ const onUpdateGender = (gender) => {
 
 
 const onUpdateDeservedJobTitles = (deserved_job_titles) => {
-    single_biodata.value.deserved_job_titles = deserved_job_titles;
+    single_biodata_data.value.deserved_job_titles = deserved_job_titles;
 }
 
 
 const onUpdateDeservedMaritialStatuses = (deserved_maritial_statuses) => {
-    single_biodata.value.deserved_maritial_statuses = deserved_maritial_statuses;
+    single_biodata_data.value.deserved_maritial_statuses = deserved_maritial_statuses;
 }
 
 
 const onCompleteTab = (nextIndex, biodataCompletion) => {
-    if( single_biodata.value.biodata_completion < biodataCompletion ){
-        single_biodata.value.biodata_completion = biodataCompletion;
-        emits('loadSingleBiodata', single_biodata.value);
+    if( single_biodata_data.value.biodata_completion < biodataCompletion ){
+        single_biodata_data.value.biodata_completion = biodataCompletion;
+        emits('loadSingleBiodata', single_biodata_data.value);
     }
     switch(nextIndex) {
     case 1:
@@ -120,26 +123,31 @@ const onCompleteTab = (nextIndex, biodataCompletion) => {
 
 onMounted(() => {
 
-    axios.get(route('user.biodata.get', {
-        csrf_token,
-        user_id
-    }))
-    .then(function (response) {
-        if( response.data.length == 0){
-            return;
-        }
-        single_biodata.value = response.data[0];
-        onCompleteTab(single_biodata.value.running_tab, single_biodata.value.biodata_completion);
-        selectedGender.value = single_biodata.value.gender;
-        emits('loadSingleBiodata', single_biodata.value);
-    })
-    .catch(function (error) {
-        modalMessage.value = {
-            modalHeading : page.props.translations.modal_messages.error_heading,
-            modalDescription : page.props.translations.modal_messages.biodata_error_description,
-        }
-        isModalOpen.value = true;
-    });
+    single_biodata_data.value = page.props.single_biodata;
+    onCompleteTab(single_biodata_data.value.running_tab, single_biodata_data.value.biodata_completion);
+    selectedGender.value = single_biodata_data.value.gender;
+    emits('loadSingleBiodata', single_biodata_data.value);
+
+    // axios.get(route('user.biodata.get', {
+    //     csrf_token,
+    //     user_id
+    // }))
+    // .then(function (response) {
+    //     if( response.data.length == 0){
+    //         return;
+    //     }
+        // single_biodata_data.value = response.data[0];
+        // onCompleteTab(single_biodata_data.value.running_tab, single_biodata_data.value.biodata_completion);
+        // selectedGender.value = single_biodata_data.value.gender;
+        // emits('loadSingleBiodata', single_biodata_data.value);
+    // })
+    // .catch(function (error) {
+    //     modalMessage.value = {
+    //         modalHeading : page.props.translations.modal_messages.error_heading,
+    //         modalDescription : page.props.translations.modal_messages.biodata_error_description,
+    //     }
+    //     isModalOpen.value = true;
+    // });
 
 });
 
@@ -188,12 +196,14 @@ onMounted(() => {
                         {{ translations.biodata_form.others_biodata.title }}
                     </button>
                 </Tab>
-                <Tab v-if="single_biodata.is_approved" v-slot="{ selected }" >
+
+                <!-- <Tab v-if="single_biodata_data.is_approved" v-slot="{ selected }" >
                     <button
                         :class="['w-full px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
                         {{ translations.biodata_form.hide_or_delete.hide_or_delete_title }}
                     </button>
-                </Tab>
+                </Tab> -->
+
             </TabList>
 
 
@@ -202,44 +212,44 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <PersonalBiodata :translations :locale :locales :single_biodata :districts @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender" @onUpdateDeservedJobTitles="onUpdateDeservedJobTitles" @onUpdateDeservedMaritialStatuses="onUpdateDeservedMaritialStatuses" />
+                    <PersonalBiodata :translations :locale :locales :single_biodata="single_biodata_data" :districts @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender" @onUpdateDeservedJobTitles="onUpdateDeservedJobTitles" @onUpdateDeservedMaritialStatuses="onUpdateDeservedMaritialStatuses" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <ReligiousBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+                    <ReligiousBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <FamilyBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+                    <FamilyBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <DeservedBiodata :translations :locale :locales :single_biodata :selectedGender :districts @onCompleteTab="onCompleteTab" />
+                    <DeservedBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender :districts @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <OthersBiodata :translations :locale :locales :single_biodata :selectedGender @onCompleteTab="onCompleteTab" />
+                    <OthersBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 
-                <TabPanel v-if="single_biodata.is_approved" :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                <!-- <TabPanel v-if="single_biodata_data.is_approved" :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <HideOrDeleteBiodata :translations :locale :locales :single_biodata :selectedGender />
+                    <HideOrDeleteBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender />
 
-                </TabPanel>
+                </TabPanel> -->
 
             </TabPanels>
 

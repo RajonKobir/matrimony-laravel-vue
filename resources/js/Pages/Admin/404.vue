@@ -39,8 +39,8 @@ defineProps({
                     Sorry! Your desired page has not been found!
                 </h3>
                 <div class="text-center">
-                    <Link :href="route('backend.dashboard')" method="get" as="button" class="bg-green-700 p-2 rounded-lg text-white hover:text-black hover:bg-green-100 transition-all" >
-                        Back To Home
+                    <Link :href="route('backend.dashboard')" method="get" as="button" class="bg-green-700 p-2 rounded-lg text-white hover:text-black hover:bg-green-100 transition-all font-bold" >
+                        BackToHome
                     </Link>
                 </div>
             </div>

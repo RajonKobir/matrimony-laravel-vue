@@ -550,7 +550,7 @@ onMounted(() => {
         <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
             <label for="media_agreement" class="text-base">
                 {{ translations.biodata_form.personal_biodata.media_agreement }}
-                <Link :href="route('frontend.faq')" class="text-base font-bold justify-center" >{{ translations.biodata_form.personal_biodata.media_agreement_1 }}</Link>
+                <Link :href="route('frontend.terms')" class="text-base font-bold justify-center" >{{ translations.biodata_form.personal_biodata.media_agreement_1 }}</Link>
                 {{ translations.biodata_form.personal_biodata.media_agreement_2 }}
             </label>
             <select @change="mediaAgreement" id="media_agreement" name="media_agreement"

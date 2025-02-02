@@ -24,7 +24,7 @@ const props = defineProps({
 
 // initializing
 const innerHTML = ref('');
-const selectedUpazilaAndUnionParishad = ref(props.translations.searchForm.dropdown_3_placeholder);
+const selectedDivisionAndDistrict = ref(props.translations.searchForm.dropdown_3_heading_2);
 const selectCountryInnerHTML = ref(`<div class="odl-head">
         <button action="goBackHandler" class="od-location-picker-previous">
             <i action="goBackHandler" class="fa fa-arrow-left"></i>
@@ -44,7 +44,6 @@ const selectCountryInnerHTML = ref(`<div class="odl-head">
 const selectDivisionInnerHTML = ref('');
 const selectDistrictInnerHTML = ref('');
 const selectUpazilaInnerHTML = ref('');
-const selectUnionParishadInnerHTML = ref('');
 const isHidden = ref(true);
 const isSearchAble = ref(false);
 const currentLayer = ref('');
@@ -52,8 +51,6 @@ const selected_country_id = ref('');
 const selectedCountry = ref('');
 const selectedDivision = ref('');
 const selectedDistrict = ref('');
-const selectedUpazila = ref('');
-const selectedUnionParishad = ref('');
 
 
 
@@ -70,8 +67,6 @@ const addressHandler = (e) => {
                 selectedCountry : selectedCountry.value,
                 selectedDivision : selectedDivision.value,
                 selectedDistrict : selectedDistrict.value,
-                selectedUpazila : selectedUpazila.value,
-                selectedUnionParishad : selectedUnionParishad.value,
             });
         }
     }
@@ -110,8 +105,6 @@ const handleLineClicks = (e) => {
                         selectedCountry : selectedCountry.value,
                         selectedDivision : selectedDivision.value,
                         selectedDistrict : selectedDistrict.value,
-                        selectedUpazila : selectedUpazila.value,
-                        selectedUnionParishad : selectedUnionParishad.value,
                     });
                 }
             }
@@ -126,8 +119,6 @@ const handleLineClicks = (e) => {
                     selectedCountry : selectedCountry.value,
                     selectedDivision : selectedDivision.value,
                     selectedDistrict : selectedDistrict.value,
-                    selectedUpazila : selectedUpazila.value,
-                    selectedUnionParishad : selectedUnionParishad.value,
                 });
             }
         }
@@ -212,85 +203,12 @@ const handleLineClicks = (e) => {
     }
 
     else if( clickedAction === 'districtClick') {
+
         let district_id = e.target.getAttribute('district_id');
         let district_name = e.target.getAttribute('district_name');
         selectedDistrict.value = district_name;
-        axios.post(route('address.getUpazilasByDistrictId', district_id))
-        .then((response) => {
-            selectUpazilaInnerHTML.value = `<div class="odl-head">
-                    <button action="goBackHandler" class="od-location-picker-previous">
-                        <i action="goBackHandler" class="fa fa-arrow-left"></i>
-                    </button>
-                    <h3>${ props.translations.searchForm.select_upazila_heading }</h3>
-                    <button action="onClickClose" class="od-close-panel">
-                        <i action="onClickClose" class="fa fa-times"></i>
-                    </button>
-                </div>
-                <ul class="odl-nav">`;
-                    let upazila_name = '';
-                    response.data.forEach(function(item, index, arr){
-                        if( upazila_name == item["upazila"] ){
-                            return;
-                        }
-                        upazila_name = item["upazila"];
-                        selectUpazilaInnerHTML.value += '<li>';
-                        selectUpazilaInnerHTML.value += '<button action="upazilaClick" upazila_name="'+upazila_name+'" >';
-                        selectUpazilaInnerHTML.value += upazila_name;
-                        selectUpazilaInnerHTML.value += '</button>';
-                        selectUpazilaInnerHTML.value += '</li>';
-                    });
 
-            selectUpazilaInnerHTML.value += `</ul>`;
-            innerHTML.value = selectUpazilaInnerHTML.value;
-            currentLayer.value = 'upazilaClick';
-
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }
-
-    else if( clickedAction === 'upazilaClick') {
-        let upazila_name = e.target.getAttribute('upazila_name');
-        selectedUpazila.value = upazila_name;
-        axios.post(route('address.getUnionParishadsByUpazilaName', upazila_name))
-        .then((response) => {
-            selectUnionParishadInnerHTML.value = `<div class="odl-head">
-                    <button action="goBackHandler" class="od-location-picker-previous">
-                        <i action="goBackHandler" class="fa fa-arrow-left"></i>
-                    </button>
-                    <h3>${ upazila_name.includes("সিটি") ? props.translations.searchForm.select_thana_heading : props.translations.searchForm.select_union_parishad_heading }</h3>
-                    <button action="onClickClose" class="od-close-panel">
-                        <i action="onClickClose" class="fa fa-times"></i>
-                    </button>
-                </div>
-                <ul class="odl-nav">`;
-
-                    let union_parishad = '';
-                    response.data.forEach(function(item, index, arr){
-                        union_parishad = item["union_parishad"];
-                        selectUnionParishadInnerHTML.value += '<li>';
-                        selectUnionParishadInnerHTML.value += '<button action="unionParishadClick" union_parishad="'+union_parishad+'" >';
-                        selectUnionParishadInnerHTML.value += union_parishad;
-                        selectUnionParishadInnerHTML.value += '</button>';
-                        selectUnionParishadInnerHTML.value += '</li>';
-                    });
-
-            selectUnionParishadInnerHTML.value += `</ul>`;
-            innerHTML.value = selectUnionParishadInnerHTML.value;
-            currentLayer.value = 'unionParishadClick';
-
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }
-
-    else if( clickedAction === 'unionParishadClick') {
-        let union_parishad = e.target.getAttribute('union_parishad');
-        selectedUnionParishad.value = union_parishad;
-
-        selectedUpazilaAndUnionParishad.value = selectedUpazila.value + ' - ' + selectedUnionParishad.value;
+        selectedDivisionAndDistrict.value = selectedDivision.value + ' - ' + selectedDistrict.value;
         isHidden.value = true;
         e.target.classList.remove('dropdown_popup_amimation');
         isSearchAble.value = true;
@@ -298,9 +216,8 @@ const handleLineClicks = (e) => {
             selectedCountry : selectedCountry.value,
             selectedDivision : selectedDivision.value,
             selectedDistrict : selectedDistrict.value,
-            selectedUpazila : selectedUpazila.value,
-            selectedUnionParishad : selectedUnionParishad.value,
         });
+
     }
 
 }
@@ -327,13 +244,10 @@ onUpdated(() => {
 <template>
 
     <div class="od-search-fields">
-        <label for="search_location_button" class="text-base">
-            {{ props.translations.searchForm.dropdown_3_heading }}
-        </label>
         <div class="main-search-option-input">
             <div class="od-location-dropdown od-field-type__location od-biodata-search-control">
                 <button @click="addressHandler" id="search_location_button" class="search_location_button text-left !text-gray-950 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                    {{ selectedUpazilaAndUnionParishad }}
+                    {{ selectedDivisionAndDistrict }}
                 </button>
                 <div v-if="!isHidden" v-html="innerHTML" @click="handleLineClicks" class="odl-wrap od-location-panel-wrap active dropdown_popup_amimation" >
 

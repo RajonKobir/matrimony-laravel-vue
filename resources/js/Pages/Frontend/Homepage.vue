@@ -1,10 +1,13 @@
 <script setup>
 
 import { Head } from '@inertiajs/vue3';
-import SearchForm from '../../Components/Frontend/SearchForm.vue';
+import SearchForm from '../../Components/Frontend/Homepage/SearchForm/SearchForm.vue';
 
 const props = defineProps({
     translations: {
+        type: Object,
+    },
+    districts: {
         type: Object,
     },
     locale: {
@@ -58,9 +61,9 @@ document.body.classList.add("frontend.home");
                     </div> -->
 
 
-                    <section class="common_section">
+                    <section id="search_form" class="common_section">
                         <div class="main-container">
-                            <SearchForm :translations :locale />
+                            <SearchForm :translations :locale :districts />
                         </div>
                     </section>
 
