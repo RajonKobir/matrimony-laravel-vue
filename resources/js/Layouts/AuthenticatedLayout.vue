@@ -1,6 +1,5 @@
 <script setup>
 
-import { Head } from '@inertiajs/vue3';
 import Header from '../Components/Frontend/Header.vue';
 import Footer from '../Components/Frontend/Footer.vue';
 
@@ -40,11 +39,6 @@ const current_domain = window.location.host;
 
 <template>
 
-    <Head>
-        <link rel="shortcut icon" :href="`/assets/css/images/favicon.png`">
-        <link rel="stylesheet" :href="`/assets/css/frontend/frontend.css`">
-        <link rel="stylesheet" :href="`/assets/css/frontend/font-awesome.min.css`">
-    </Head>
 
     <div class="shadibari-container-main">
 

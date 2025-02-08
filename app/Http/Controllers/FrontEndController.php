@@ -134,11 +134,23 @@ class FrontEndController extends Controller
         if( $request->searchNumber == 1 ){
             $biodatas = Biodata::where('gender', $request->selectedGender)
             ->where('permanent_district', 'LIKE', '%'.$request->selectedDistricts.'%' )
-            ->where('temporary_district', 'LIKE', '%'.$request->selectedDistricts.'%' )
+            // ->where('temporary_district', 'LIKE', '%'.$request->selectedDistricts.'%' )
             ->where('age', '>=', $lowerAge)
             ->where('age', '<=', $upperAge)
             ->where('maritial_status', 'LIKE', '%'.$request->maritialStatuses.'%' )
             // ->where('free_biodata', '=', $request->selectedCategory)
+            ->when($request->free_biodata, function($query, $free_biodata) {
+                if( $free_biodata == 1 ){
+                    return false;
+                }
+                if( $free_biodata == 2 ){
+                    return $query->where('free_biodata', '=', 1);
+                }
+                if( $free_biodata == 3 ){
+                    return $query->where('free_biodata', '=', 0)->orWhere('free_biodata', '=', null);
+                }
+
+            })
             ->paginate(10)->withQueryString();
         }
 

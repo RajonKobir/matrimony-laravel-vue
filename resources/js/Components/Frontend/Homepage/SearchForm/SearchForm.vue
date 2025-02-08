@@ -271,10 +271,6 @@ onMounted(() => {
             <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
                 <div class="od-search-fields odsf-submit">
                     <div class="od-submit-btn !text-center ">
-                        <!-- <Link :href="route('frontend.biodata_search')" as="button" :data="{ selectedGender: form.selectedGender, selectedDistricts: form.selectedDistricts, ageRange: form.ageRange, maritialStatuses: form.maritialStatuses, selectedCategory: form.selectedCategory }" class="text-white bg-[#ad277c] rounded-xl cursor-pointer p-4 mt-4 text-center transition duration-200 hover:shadow-xl hover:opacity-75 !text-xl"  >
-                            <i class="fa fa-search"></i>
-                            {{ props.translations.searchForm.search_indicator }}
-                        </Link> -->
                         <button type="submit" class="text-white bg-[#ad277c] rounded-xl cursor-pointer p-4 mt-4 text-center transition duration-200 hover:shadow-xl hover:opacity-75 !text-xl" :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing">
                             <i class="fa fa-search"></i>

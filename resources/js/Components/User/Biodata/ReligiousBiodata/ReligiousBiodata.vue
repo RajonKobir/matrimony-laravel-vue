@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import PopupMessage from './PopupMessage.vue';
 import { usePage, useForm } from '@inertiajs/vue3';
-import InputError from '../../InputError.vue';
+import InputError from '../../../InputError.vue';
 import MultipleIslamicStudiesSelection from './MultipleIslamicStudiesSelection.vue';
 
 

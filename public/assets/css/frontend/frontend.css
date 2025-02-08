@@ -2303,15 +2303,13 @@ nav.menu-lists-container .od-menu-list-item a {
   background-repeat:no-repeat;
   background-size:cover;
   /* background-image:url(../images/bg-mobile.svg) */
-  background-color: #FBD5B1;
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
 }
 @media(min-width: 767.9px) {
   .od-home-top-bg {
     padding:0px 30px 75px 30px;
     /* background-image:url(../images/bg.svg) */
-    background-color: #FBD5B1;
-    margin-bottom: 75px;
+    /* margin-bottom: 75px; */
   }
 }
 .main-search-option {

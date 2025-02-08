@@ -3,7 +3,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 const isVisible = ref(false);
 
 const handleScroll = () => {
-  if (window.scrollY > 300) {
+  if (window.scrollY > 100) {
     isVisible.value = true;
   } else {
     isVisible.value = false;

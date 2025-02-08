@@ -1,8 +1,8 @@
 <script setup>
 
-import { ref } from 'vue';
-import { Head } from '@inertiajs/vue3';
 import Footer from '../Components/Admin/Footer.vue';
+import { Head } from '@inertiajs/vue3';
+
 
 const props = defineProps({
     translations: {
@@ -23,10 +23,6 @@ const props = defineProps({
 });
 
 
-// initializing
-const single_biodata = ref([]);
-
-
 function handleImageError() {
     document.getElementById('screenshot-container')?.classList.add('!hidden');
     document.getElementById('docs-card')?.classList.add('!row-span-1');
@@ -34,12 +30,11 @@ function handleImageError() {
     document.getElementById('background')?.classList.add('!hidden');
 }
 
-const current_domain = window.location.host;
-
 
 </script>
 
 <template>
+
 
     <Head>
         <link rel="shortcut icon" :href="`/assets/css/images/favicon.png`">
@@ -47,6 +42,7 @@ const current_domain = window.location.host;
         <link rel="stylesheet" :href="`/assets/css/frontend/font-awesome.min.css`">
         <link rel="stylesheet" :href="`/assets/css/backend/dataTables.min.css`">
     </Head>
+
 
     <div class="shadibari-container-main">
 

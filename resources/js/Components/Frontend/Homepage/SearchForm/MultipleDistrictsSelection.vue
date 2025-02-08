@@ -28,6 +28,7 @@ const props = defineProps({
 const selectedDistricts = ref([]);
 const showPopup = ref(false);
 const newDivisionId = ref('');
+const districts_reversed = ref({});
 const divisionNames = {
     '1' : { "name" : "Barishal", "bn_name" : "বরিশাল", },
     '2' : { "name": "Chattogram", "bn_name": "চট্টগ্রাম", },
@@ -60,6 +61,8 @@ const onClickDistrictsItems = (e) => {
 
 
 onMounted(() => {
+
+    districts_reversed.value = props.districts.reverse();
 
 });
 
@@ -94,9 +97,9 @@ onMounted(() => {
                     </div>
 
 
-                    <template v-for="district in districts" :key="district.id" >
+                    <template v-for="district in districts_reversed" :key="district.id" >
 
-                        <div v-if="[1, 14, 18, 26, 34, 40, 51, 55].includes(district.id)" class="relative flex items-center">
+                        <div v-if="[13, 17, 25, 33, 39, 50, 54, 64].includes(district.id)" class="relative flex items-center">
                             <div class="flex-grow border-t border-gray-400"></div>
                             <span class="flex-shrink mx-4 text-gray-400">
                                 {{ locale == 'bn' ? divisionNames[district.division_id].bn_name + ' বিভাগ' :  divisionNames[district.division_id].name + ' Division' }}

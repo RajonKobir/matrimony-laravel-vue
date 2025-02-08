@@ -341,6 +341,7 @@ const onChangeKowmiItem = (e) => {
 watch(props, async (newValue, oldValue) => {
     if( newValue.single_biodata.user_id ){
         user_id.value = newValue.single_biodata.user_id;
+        form.user_id = newValue.single_biodata.user_id;
     }
 });
 
@@ -352,6 +353,12 @@ onMounted(() => {
         let single_biodata_keys = Object.keys(props.single_biodata);
         single_biodata_keys.forEach(function(item, index, arr){
             switch(item) {
+            case 'user_id':
+                user_id.value = form.user_id = props.single_biodata[item];
+                break;
+            case 'gender':
+                gender.value = props.single_biodata[item];
+                break;
             case 'gender':
                 gender.value = props.single_biodata[item];
                 break;

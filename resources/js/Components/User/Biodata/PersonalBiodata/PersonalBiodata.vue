@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import DatePicker from './DatePicker.vue';
 import PopupMessage from './PopupMessage.vue';
 import { usePage, useForm } from '@inertiajs/vue3';
-import InputError from '../../InputError.vue';
+import InputError from '../../../InputError.vue';
 import PermanentDynamicAddress from './PermanentDynamicAddress.vue';
 import TemporaryDynamicAddress from './TemporaryDynamicAddress.vue';
 import MultipleJobSelection from './MultipleJobSelection.vue';

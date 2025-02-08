@@ -4,6 +4,7 @@ import { onMounted } from "vue";
 import { Link } from '@inertiajs/vue3';
 import ApplicationLogo from '../ApplicationLogo.vue';
 
+
 const props = defineProps({
     translations: {
         type: Object,
@@ -50,6 +51,8 @@ onMounted(() => {
 </script>
 
 <template>
+
+
     <header id="main_header">
         <div id="od_header">
             <div id="main_header_inner" class="od-w-100">

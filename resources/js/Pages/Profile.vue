@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '../Layouts/AuthenticatedLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import Biodata from './User/Biodata.vue';
+import ShowBiodata from './User/ShowBiodata.vue';
 import { ref, onMounted } from "vue";
 
 defineProps({
@@ -32,14 +33,23 @@ defineProps({
 const page = usePage();
 const csrf_token = page.props.csrf_token;
 const single_biodata_data = ref([]);
+const inEditMode = ref(true);
 
 const loadSingleBiodata = (singleBiodata) => {
     single_biodata_data.value = singleBiodata;
 }
 
 
+const onClickEditButton = (clicked_true) => {
+    inEditMode.value = clicked_true;
+}
+
+
 onMounted(() => {
     single_biodata_data.value = page.props.single_biodata;
+    if( page.props.single_biodata.is_approved || page.props.single_biodata.biodata_completion == 100 ){
+        inEditMode.value = false;
+    }
 })
 
 
@@ -54,7 +64,18 @@ document.body.classList.add("user.biodata");
 
     <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister :single_biodata="single_biodata_data" >
 
-        <Biodata :translations :locale :locales :districts :single_biodata="single_biodata_data" @loadSingleBiodata="loadSingleBiodata" />
+        <div v-if="inEditMode"  class="flex justify-center items-center py-4 bg-[#FBD5B1]">
+            <button v-if="$page.props.single_biodata.is_approved" @click="inEditMode = !inEditMode" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                {{ translations.profile_page.edit_request_title }}
+            </button>
+            <button v-if="!$page.props.single_biodata.is_approved" @click="inEditMode = !inEditMode" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                {{ translations.profile_page.edit_done_title }}
+            </button>
+        </div>
+
+        <Biodata v-if="inEditMode" :translations :locale :locales :districts :single_biodata="single_biodata_data" @loadSingleBiodata="loadSingleBiodata" />
+
+        <ShowBiodata v-if="!inEditMode" :translations :locale :locales  :single_biodata="single_biodata_data" @onClickEditButton="onClickEditButton" />
 
     </AuthenticatedLayout>
 

@@ -1,8 +1,21 @@
 <script setup>
 
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { Link } from '@inertiajs/vue3';
 import ApplicationLogo from '../ApplicationLogo.vue';
+import { Head } from '@inertiajs/vue3';
+import { useAddToHomescreen } from '@owliehq/vue-addtohomescreen';
+
+useAddToHomescreen({
+    title: 'Shadibari',
+    titleColor: '#ad277c',
+    contentColor: '#ad277c',
+    buttonColor: '#ad277c',
+    iconPath: '/assets/css/images/favicon.png',
+    background: '#ad277c',
+    expires: 10,
+});
+
 
 const props = defineProps({
     translations: {
@@ -25,6 +38,12 @@ const props = defineProps({
     },
 });
 
+
+//initializing
+const deferredPrompt = ref(null);
+
+
+
 onMounted(() => {
     // smooth sticky header
     let element = document.querySelector('#main_header');
@@ -33,7 +52,7 @@ onMounted(() => {
 
     window.addEventListener("scroll", function (e) {
         e.preventDefault();
-        if (window.scrollY > 200 && !isPositionSticky) {
+        if (window.scrollY > 100 && !isPositionSticky) {
             element.classList.add("amimate_header");
             element2.classList.add("header_transparent_background");
         } else {
@@ -53,6 +72,13 @@ onMounted(() => {
 </script>
 
 <template>
+
+    <Head>
+        <link rel="shortcut icon" :href="`/assets/css/images/favicon.png`">
+        <link rel="stylesheet" :href="`/assets/css/frontend/frontend.css`">
+        <link rel="stylesheet" :href="`/assets/css/frontend/font-awesome.min.css`">
+    </Head>
+
     <header id="main_header">
         <div id="od_header">
             <div id="main_header_inner" class="od-w-100">
@@ -147,16 +173,16 @@ onMounted(() => {
                                             <Link v-if="!$page.props.auth.user" :href="route('login')" class="od-button signin-button">
                                                 <span>{{ translations.main_menu.login }}</span>
                                             </Link>
-                                            <Link v-if="$page.props.auth.user" :href="route('user.profile')" class="od-button signin-button">
+                                            <span v-if="$page.props.auth.user" :href="route('user.profile')" class="od-button signin-button">
                                                 <i class="fa fa-user"></i>
-                                            </Link>
+                                            </span>
 
                                             <div v-if="$page.props.auth.user" class="od-dropdown-menu-container od-animate od-slideIn">
                                                 <div class="odd-user-info">
 
-                                                    <img v-if="single_biodata.gender == 'male'" src="assets/images/male.svg" alt="Male-Avatar" style="margin: 0 auto;">
+                                                    <img v-if="single_biodata.gender == 'male'" src="assets/images/groom.png" alt="Male-Avatar" style="margin: 0 auto;">
 
-                                                    <img v-if="single_biodata.gender == 'female'" src="assets/images/female.svg" alt="Female-Avatar" style="margin: 0 auto;">
+                                                    <img v-if="single_biodata.gender == 'female'" src="assets/images/bride.png" alt="Female-Avatar" style="margin: 0 auto;">
 
                                                     <div class="odd-bio-status-wrap">
                                                         <h3>{{ translations.header.biodata_condition }}</h3>

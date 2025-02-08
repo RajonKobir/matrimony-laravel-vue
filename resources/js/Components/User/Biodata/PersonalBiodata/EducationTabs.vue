@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import PopupMessage from './PopupMessage.vue';
 import { usePage } from '@inertiajs/vue3';
-import InputError from '../../InputError.vue';
+import InputError from '../../../InputError.vue';
 
 
 const emits = defineEmits([
