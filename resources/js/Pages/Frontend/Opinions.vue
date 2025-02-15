@@ -13,6 +13,9 @@ const props = defineProps({
     locales: {
         type: Array,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 onMounted(() => {
@@ -40,7 +43,7 @@ document.body.classList.add("frontend.opinions");
 
     <Head title="Opinions" />
 
-    <GuestLayout :translations :locale :locales>
+    <GuestLayout :translations :locale :locales :single_biodata >
 
         <div class="content-main min-h-screen">
             <section id="opinions_container">
@@ -56,30 +59,6 @@ document.body.classList.add("frontend.opinions");
                                     শীঘ্রই আসছে...
                                 </h1>
 
-                                <!-- <div class="od-accordion">
-                                    <div class="od-group">
-                                        <a class="od-accordion-link" href="#">Shadibari ডটকমে কিভাবে একাউন্ট তৈরি
-                                            করবো?</a>
-                                        <div class="od-body-part">
-                                            <p>১) প্রথমে shadibari.com প্রবেশ করুন এবং হোম পেজের উপরের ডান কোণে থাকা
-                                                ইউজার আইকনে ক্লিক করুন।<br><br>২) Create Account এ ক্লিক করুন।<br>
-                                                <br>৩) রেজিস্ট্রেশন ফর্ম প্রদর্শিত হবে। আপনার নাম লিখুন এবং জেন্ডার
-                                                সিলেক্ট করুন।<br> <br>৪) আপনার ইমেইল লিখে Verify বাটনে ক্লিক করুন। আপনার
-                                                ইমেইল সঠিক হলে সেখানে একটি ভেরিফিকেশন কোড যাবে। নির্ধারিত স্থানে
-                                                ভেরিফিকেশন কোড প্রবেশ করিয়ে Confirm বাটনে ক্লিক করে ইমেইল ভেরিফিকেশন
-                                                সম্পন্ন করুন।<br> <br>৫) আপনার মোবাইল নাম্বার লিখে Verify বাটনে ক্লিক
-                                                করুন। আপনার মোবাইল নাম্বার সঠিক হলে সেখানে একটি ভেরিফিকেশন কোড যাবে।
-                                                নির্ধারিত স্থানে ভেরিফিকেশন কোড প্রবেশ করিয়ে Confirm বাটনে ক্লিক করে
-                                                মোবাইল নাম্বার ভেরিফিকেশন সম্পন্ন করুন।<br> <br>৬) একটি পাসওয়ার্ড
-                                                নির্বাচন করুন।<br> <br>৭) Shadibari -র <a href="/terms-and-conditions"
-                                                    target="_blank">Terms and Condition</a> এবং <a href="
-                                                    /privacy-policy" target="_blank">Privacy Policy</a> এর সাথে একমত
-                                                হলে চেকবক্স চেক করুন। <br><br>৮) Create account বাটনে ক্লিক করে
-                                                অ্যাকাউন্ট তৈরি সম্পন্ন করুন।
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>

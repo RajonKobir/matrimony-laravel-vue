@@ -76,7 +76,7 @@ onMounted(() => {
                     <ListboxOption v-if="gender == 'male'" @click="onClickConditionsItems" v-slot="{ active, selected }" v-for="(job_title, job_title_key) in translations.biodata_form.deserved_biodata.deserved_condition_options_male" :key="job_title_key" :value="job_title" as="template" :disabled="job_title.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',
@@ -96,7 +96,7 @@ onMounted(() => {
                     <ListboxOption v-if="gender == 'female'" @click="onClickConditionsItems" v-slot="{ active, selected }" v-for="(job_title, job_title_key) in translations.biodata_form.deserved_biodata.deserved_condition_options_female" :key="job_title_key" :value="job_title" as="template" :disabled="job_title.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',

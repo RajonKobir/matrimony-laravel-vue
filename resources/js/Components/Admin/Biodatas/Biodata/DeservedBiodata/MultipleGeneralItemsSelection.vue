@@ -78,7 +78,7 @@ onMounted(() => {
                     <ListboxOption @click="onClickGeneralItemsItems" v-slot="{ active, selected }" v-for="(general_item, general_item_key) in translations.biodata_form.deserved_biodata.deserved_general_degrees_options" :key="general_item_key" :value="general_item" as="template" :disabled="general_item.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',

@@ -12,6 +12,9 @@ const props = defineProps({
     locales: {
         type: Array,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 document.body.classList.remove(...document.body.classList);
@@ -24,7 +27,7 @@ document.body.classList.add("frontend.about");
 
     <Head :title="`${translations.about_page.page_header}`" />
 
-    <GuestLayout :translations :locale :locales>
+    <GuestLayout :translations :locale :locales :single_biodata >
 
         <div class="content-main">
             <section id="od_page_container">

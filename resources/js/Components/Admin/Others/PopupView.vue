@@ -58,8 +58,8 @@ function closeModal() {
 }
 
 
-const onClickPermanentDelete = (user_id) => {
-    emits('onClickPermanentDelete', user_id);
+const onClickPermanentDelete = (single_biodata) => {
+    emits('onClickPermanentDelete', single_biodata);
 }
 
 
@@ -106,11 +106,11 @@ watch(props, async (newValue, oldValue) => {
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="mt-20 w-full max-w-xxl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              class="mt-20 w-full max-w-7xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
             >
                 <DialogTitle
                     as="h3"
-                    class="text-lg font-medium leading-6 text-gray-900"
+                    class="text-lg font-medium leading-6 text-gray-900 xl:text-center"
                 >
                     {{ modalInner.modalHeading }}
                     <div class="absolute right-4 top-4">
@@ -129,7 +129,7 @@ watch(props, async (newValue, oldValue) => {
                 </div>
 
                 <div class="mt-8 text-center">
-                    <button type="button" @click="showEdit = !showEdit" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button type="button" @click="showEdit = !showEdit" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                         {{ showEdit ? 'Hide Edit' : 'Edit Biodata' }}
                     </button>
                 </div>
@@ -146,7 +146,7 @@ watch(props, async (newValue, oldValue) => {
                 </div>
 
                 <div class="mt-8 text-center">
-                    <button type="button" @click="showAllData = !showAllData" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button type="button" @click="showAllData = !showAllData" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                         {{ showAllData ? 'HideAllData' : 'showAllData' }}
                     </button>
                 </div>
@@ -156,13 +156,13 @@ watch(props, async (newValue, oldValue) => {
                 </div>
 
                 <div class="mt-8 text-center">
-                    <button type="button" @click="showTakeAction = !showTakeAction" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button type="button" @click="showTakeAction = !showTakeAction" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                         {{ showTakeAction ? 'HideTakeAction' : 'TakeAction' }}
                     </button>
                 </div>
 
                 <div v-if="modalInner.trashPage" class="mt-8 text-center">
-                    <button type="button" @click="onClickPermanentDelete(modalInner.viewBiodata.user_id)" class="text-xs bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                    <button type="button" @click="onClickPermanentDelete(modalInner.viewBiodata)" class="text-xs bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
                         Delete Permanently
                     </button>
                 </div>

@@ -11,6 +11,7 @@ import jszip from 'jszip';
 import pdfmake from 'pdfmake/build/pdfmake';
 import 'datatables.net-buttons/js/buttons.html5';
 import 'datatables.net-buttons/js/buttons.print.min';
+import 'pdfmake/build/vfs_fonts';
 import 'datatables.net-select-dt';
 
 
@@ -137,15 +138,15 @@ const options = ref({
 });
 
 
-const onClickView = (user_id) => {
-    page.props.all_biodatas.forEach(function(item, index, arr){
-        if( item.user_id == user_id ){
-            viewBiodata.value = item;
-        }
-    });
+const onClickView = (single_biodata) => {
+
+    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+
+    viewBiodata.value = single_biodata;
+
     modalInner.value = {
-        modalHeading : 'The Biodata of user_id:' + user_id,
-        modalDescription : 'The Biodata of user_id:' + user_id + ' has been unapproved Successfully.',
+        modalHeading : 'The Biodata of username: ' + username,
+        modalDescription : 'The Biodata of username: ' + username + ' has been unapproved Successfully.',
         viewBiodata,
         showTakeAction: false,
         showAllData: true,
@@ -155,15 +156,15 @@ const onClickView = (user_id) => {
 }
 
 
-const onClickTakeAction = (user_id) => {
-    page.props.all_biodatas.forEach(function(item, index, arr){
-        if( item.user_id == user_id ){
-            viewBiodata.value = item;
-        }
-    });
+const onClickTakeAction = (single_biodata) => {
+
+    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+
+    viewBiodata.value = single_biodata;
+
     modalInner.value = {
-        modalHeading : 'The Biodata of user_id:' + user_id,
-        modalDescription : 'The Biodata of user_id:' + user_id + ' has been unapproved Successfully.',
+        modalHeading : 'The Biodata of username: ' + username,
+        modalDescription : 'The Biodata of username: ' + username + ' has been unapproved Successfully.',
         viewBiodata,
         showTakeAction: true,
         showAllData: false,
@@ -173,30 +174,11 @@ const onClickTakeAction = (user_id) => {
 }
 
 
-const onClickApprove = (user_id) => {
-    if(confirm("Are you sure?")){
-        axios.post(route('backend.biodata.single_approve', {
-            csrf_token,
-            user_id,
-            is_approved : false
-        }))
-        .then((response) => {
-            emits('onUpdateAllBiodatas', response.data);
-            dt.rows( function ( idx, data, node ) {
-                return data[2] == user_id ? true : false;
-            }).remove().draw();
-            modalInner.value = {
-                modalHeading : 'Success!',
-                modalDescription : 'The Biodata of user_id:' + user_id + ' has been unapproved successfully.',
-                showButtons : false
-            }
-            isPopupMessageModalOpen.value = true;
-        });
-    }
-}
+const onClickUnTrash = (single_biodata) => {
 
+    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+    let user_id = single_biodata.user_id;
 
-const onClickUnTrash = (user_id) => {
     if(confirm("Are you sure?")){
         axios.post(route('backend.biodata.single_trash', {
             csrf_token,
@@ -210,7 +192,7 @@ const onClickUnTrash = (user_id) => {
             }).remove().draw();
             modalInner.value = {
                 modalHeading : 'Success!',
-                modalDescription : 'The Biodata of user_id:' + user_id + ' has been untrashed successfully.',
+                modalDescription : 'The Biodata of username: ' + username + ' has been untrashed successfully.',
                 showButtons : false
             }
             isPopupMessageModalOpen.value = true;
@@ -290,7 +272,11 @@ const onClickMultipleUnApprove = (user_ids) => {
     }
 }
 
-const onClickPermanentDelete = (user_id) => {
+const onClickPermanentDelete = (single_biodata) => {
+
+    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+    let user_id = single_biodata.user_id;
+
     if(confirm("Are you sure?")){
         isPopupMessageModalOpen.value = false;
         axios.post(route('backend.biodata.onClickPermanentDelete', {
@@ -302,7 +288,7 @@ const onClickPermanentDelete = (user_id) => {
             dt.rows('.selected').remove().draw();
             modalInner.value = {
                 modalHeading : 'Success!',
-                modalDescription : 'The Biodata of user_id:' + user_id + ' have been deleted permanently!',
+                modalDescription : 'The Biodata of username: ' + username + ' have been deleted permanently!',
                 showButtons : false
             }
             isPopupMessageModalOpen.value = true;
@@ -350,7 +336,7 @@ document.body.classList.add("backend.biodata.approved");
 
 <template>
 
-    <Head title="Approved Biodata" />
+    <Head title="Trashed Biodata" />
 
     <PopupMessage :translations :isPopupMessageModalOpen :modalInner @closeModal=closeModal @onClickMultipleTrash="onClickMultipleTrash" @onClickMultipleAction="onClickMultipleAction" @onClickMultipleUnApprove="onClickMultipleUnApprove" @onClickUntrash="onClickUntrash" />
 
@@ -394,13 +380,13 @@ document.body.classList.add("backend.biodata.approved");
                         <td>{{ single_biodata.user_mobile }}</td>
                         <td>
                             <div class="flex flex-row justify-center items-center gap-1">
-                                <button type="button" @click="onClickView(single_biodata.user_id)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button type="button" @click="onClickView(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                                     View
                                 </button>
-                                <button type="button" @click="onClickTakeAction(single_biodata.user_id)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button type="button" @click="onClickTakeAction(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                                     TakeAction
                                 </button>
-                                <button type="button" @click="onClickUnTrash(single_biodata.user_id)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button type="button" @click="onClickUnTrash(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                                     UnTrash
                                 </button>
                             </div>

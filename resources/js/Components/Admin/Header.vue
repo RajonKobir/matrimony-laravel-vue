@@ -74,18 +74,18 @@ onMounted(() => {
                                     <li class="od-menu-list-item od-localization-container hide-od-xl">
                                         <a href="javascript:void(0);">
                                             <div class="od-localization-content od-display-flex od-align-items-center">
-                                                <div class="od-icon"><i class="fa fa-language"></i></div>
+                                                <div class="od-icon"><i class="fa fa-language text-gray-950"></i></div>
                                                 <div class="od-selected-language">
-                                                    <span>
+                                                    <span class="text-gray-950">
                                                         {{ props.locale == 'en' ? 'Eng' : 'বাংলা' }}
                                                     </span>
-                                                    <i class="fa fa-angle-down"></i>
+                                                    <i class="fa fa-angle-down text-gray-950"></i>
                                                 </div>
                                             </div>
                                         </a>
                                         <div class="od-dropdown-menu-container od-animate od-slideIn">
                                             <div class="dropdown-menu-content">
-                                                <ul class="dropdown-menu-lists">
+                                                <ul class="dropdown-menu-lists text-gray-950">
                                                     <li v-for="lang in locales" :key="lang.id">
                                                         <Link v-if="lang != locale" :href="route('localization', lang)">
                                                         {{ lang == 'en' ? 'English' : 'বাংলা' }}
@@ -98,7 +98,7 @@ onMounted(() => {
 
                                     <li class="od-menu-list-item od-localization-container hide-od-xl">
                                         <a href="javascript:void(0);">
-                                            <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:ml-4" >
+                                            <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:ml-4 text-gray-950" >
                                                 <img width="25" src="assets/images/logout-ico.svg" alt="Logout-icon" class="logout_image">
                                                 Logout
                                             </Link>
@@ -116,19 +116,19 @@ onMounted(() => {
                                             <a href="javascript:void(0);">
                                                 <div
                                                     class="od-localization-content od-display-flex od-align-items-center">
-                                                    <div class="od-icon"><i class="fa fa-language"></i></div>
-                                                    <div class="od-selected-language">
-                                                        <span>
+                                                    <div class="od-icon"><i class="fa fa-language text-gray-950"></i></div>
+                                                    <div class="od-selected-language text-gray-950">
+                                                        <span class="text-gray-950">
                                                             {{ props.locale == 'en' ? 'Eng' : 'বাংলা' }}
                                                         </span>
-                                                        <i class="fa fa-angle-down"></i>
+                                                        <i class="fa fa-angle-down text-gray-950"></i>
                                                     </div>
                                                 </div>
                                             </a>
                                             <div class="od-dropdown-menu-container od-animate od-slideIn">
                                                 <div class="dropdown-menu-content">
-                                                    <ul class="dropdown-menu-lists">
-                                                        <li v-for="lang in locales" :key="lang.id">
+                                                    <ul class="dropdown-menu-lists text-gray-950">
+                                                        <li v-for="lang in locales" :key="lang.id" class=" text-gray-950">
                                                             <Link v-if="lang != locale"
                                                                 :href="route('localization', lang)">
                                                             {{ lang == 'en' ? 'English' : 'বাংলা' }}
@@ -141,7 +141,7 @@ onMounted(() => {
                                     </div>
 
                                     <div class="od-menu-list-item hide-od">
-                                        <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:ml-4" >
+                                        <Link :href="route('backend.logout')" method="post" as="button" class="flex items-center justify-center md:ml-4 text-gray-950" >
                                             <img width="25" src="assets/images/logout-ico.svg" alt="Logout-icon" class="logout_image">
                                             Logout
                                         </Link>

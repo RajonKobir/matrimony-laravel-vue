@@ -139,117 +139,118 @@ onMounted(() => {
 
     <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
+    <div class="main-container">
+        <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
 
-    <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
+            <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
+            <input v-model="form.running_tab" type="hidden" name="running_tab" >
 
-        <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
-        <input v-model="form.running_tab" type="hidden" name="running_tab" >
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="form_holder_desc" class="text-base">
+                    {{ single_biodata.gender == 'male' ? translations.biodata_form.others_biodata.form_holder_desc_title_male : translations.biodata_form.others_biodata.form_holder_desc_title_female }}
+                </label>
+                <textarea v-model="form.form_holder_desc" @input="(e) => { single_biodata.form_holder_desc = e.target.value }" name="form_holder_desc" id="form_holder_desc" rows="3" maxlength="500" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.form_holder_desc" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="form_holder_desc" class="text-base">
-                {{ single_biodata.gender == 'male' ? translations.biodata_form.others_biodata.form_holder_desc_title_male : translations.biodata_form.others_biodata.form_holder_desc_title_female }}
-            </label>
-            <textarea v-model="form.form_holder_desc" @input="(e) => { single_biodata.form_holder_desc = e.target.value }" name="form_holder_desc" id="form_holder_desc" rows="3" maxlength="255" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.form_holder_desc" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="male_guardian_desc" class="text-base">
+                    {{ single_biodata.gender == 'male' ? translations.biodata_form.others_biodata.male_guardian_desc_title_male : translations.biodata_form.others_biodata.male_guardian_desc_title_female }}
+                </label>
+                <textarea v-model="form.male_guardian_desc" @input="(e) => { single_biodata.male_guardian_desc = e.target.value }" name="male_guardian_desc" id="male_guardian_desc" rows="3" maxlength="500" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.male_guardian_desc" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="male_guardian_desc" class="text-base">
-                {{ single_biodata.gender == 'male' ? translations.biodata_form.others_biodata.male_guardian_desc_title_male : translations.biodata_form.others_biodata.male_guardian_desc_title_female }}
-            </label>
-            <textarea v-model="form.male_guardian_desc" @input="(e) => { single_biodata.male_guardian_desc = e.target.value }" name="male_guardian_desc" id="male_guardian_desc" rows="3" maxlength="255" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.male_guardian_desc" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="male_guardian_agreement" class="text-base">
+                    {{ translations.biodata_form.others_biodata.male_guardian_agreement_title }}
+                </label>
+                <select v-model="form.male_guardian_agreement" @change="(e) => { single_biodata.male_guardian_agreement = JSON.parse(e.target.value) }" id="male_guardian_agreement" name="male_guardian_agreement"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
+                    <option v-for="(male_guardian_agreement, male_guardian_agreement_key) in translations.biodata_form.others_biodata.male_guardian_agreement_options" :key="male_guardian_agreement.id" :value="JSON.parse(male_guardian_agreement_key)">{{ male_guardian_agreement }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.male_guardian_agreement" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="male_guardian_agreement" class="text-base">
-                {{ translations.biodata_form.others_biodata.male_guardian_agreement_title }}
-            </label>
-            <select v-model="form.male_guardian_agreement" @change="(e) => { single_biodata.male_guardian_agreement = JSON.parse(e.target.value) }" id="male_guardian_agreement" name="male_guardian_agreement"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
-                <option v-for="(male_guardian_agreement, male_guardian_agreement_key) in translations.biodata_form.others_biodata.male_guardian_agreement_options" :key="male_guardian_agreement.id" :value="JSON.parse(male_guardian_agreement_key)">{{ male_guardian_agreement }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.male_guardian_agreement" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="deserved_money_pay" class="text-base">
+                    {{ translations.biodata_form.others_biodata.deserved_money_pay_title }}
+                </label>
+                <select v-model="form.deserved_money_pay" @change="(e) => { single_biodata.deserved_money_pay = e.target.value }" id="deserved_money_pay" name="deserved_money_pay"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
+                    <option v-for="deserved_money_pay in translations.biodata_form.others_biodata.deserved_money_pay_options" :key="deserved_money_pay.id" :value="deserved_money_pay">{{ deserved_money_pay }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.deserved_money_pay" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="deserved_money_pay" class="text-base">
-                {{ translations.biodata_form.others_biodata.deserved_money_pay_title }}
-            </label>
-            <select v-model="form.deserved_money_pay" @change="(e) => { single_biodata.deserved_money_pay = e.target.value }" id="deserved_money_pay" name="deserved_money_pay"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
-                <option v-for="deserved_money_pay in translations.biodata_form.others_biodata.deserved_money_pay_options" :key="deserved_money_pay.id" :value="deserved_money_pay">{{ deserved_money_pay }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.deserved_money_pay" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="media_terms_one_agreement" class="text-base">
+                    {{ translations.biodata_form.others_biodata.media_terms_one_agreement_title }}
+                </label>
+                <select v-model="form.media_terms_one_agreement" @change="(e) => { single_biodata.media_terms_one_agreement = JSON.parse(e.target.value) }" id="media_terms_one_agreement" name="media_terms_one_agreement"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
+                    <option v-for="(media_terms_one_agreement, media_terms_one_agreement_key) in translations.biodata_form.others_biodata.media_terms_one_agreement_options" :key="media_terms_one_agreement.id" :value="JSON.parse(media_terms_one_agreement_key)">{{ media_terms_one_agreement }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.media_terms_one_agreement" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="media_terms_one_agreement" class="text-base">
-                {{ translations.biodata_form.others_biodata.media_terms_one_agreement_title }}
-            </label>
-            <select v-model="form.media_terms_one_agreement" @change="(e) => { single_biodata.media_terms_one_agreement = JSON.parse(e.target.value) }" id="media_terms_one_agreement" name="media_terms_one_agreement"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
-                <option v-for="(media_terms_one_agreement, media_terms_one_agreement_key) in translations.biodata_form.others_biodata.media_terms_one_agreement_options" :key="media_terms_one_agreement.id" :value="JSON.parse(media_terms_one_agreement_key)">{{ media_terms_one_agreement }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.media_terms_one_agreement" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="hundred_money_pay" class="text-base">
+                    {{ translations.biodata_form.others_biodata.hundred_money_pay_title }}
+                </label>
+                <select v-model="form.hundred_money_pay" @change="(e) => { single_biodata.hundred_money_pay = JSON.parse(e.target.value) }" id="hundred_money_pay" name="hundred_money_pay"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
+                    <option v-for="(hundred_money_pay, hundred_money_pay_key) in translations.biodata_form.others_biodata.hundred_money_pay_options" :key="hundred_money_pay.id" :value="JSON.parse(hundred_money_pay_key)">{{ hundred_money_pay }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.hundred_money_pay" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="hundred_money_pay" class="text-base">
-                {{ translations.biodata_form.others_biodata.hundred_money_pay_title }}
-            </label>
-            <select v-model="form.hundred_money_pay" @change="(e) => { single_biodata.hundred_money_pay = JSON.parse(e.target.value) }" id="hundred_money_pay" name="hundred_money_pay"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
-                <option v-for="(hundred_money_pay, hundred_money_pay_key) in translations.biodata_form.others_biodata.hundred_money_pay_options" :key="hundred_money_pay.id" :value="JSON.parse(hundred_money_pay_key)">{{ hundred_money_pay }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.hundred_money_pay" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="three_hundred_money_pay" class="text-base">
+                    {{ translations.biodata_form.others_biodata.three_hundred_money_pay_title }}
+                </label>
+                <select v-model="form.three_hundred_money_pay" @change="(e) => { single_biodata.three_hundred_money_pay = JSON.parse(e.target.value) }" id="three_hundred_money_pay" name="three_hundred_money_pay"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
+                    <option v-for="(three_hundred_money_pay, three_hundred_money_pay_key) in translations.biodata_form.others_biodata.three_hundred_money_pay_options" :key="three_hundred_money_pay.id" :value="JSON.parse(three_hundred_money_pay_key)">{{ three_hundred_money_pay }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.three_hundred_money_pay" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="three_hundred_money_pay" class="text-base">
-                {{ translations.biodata_form.others_biodata.three_hundred_money_pay_title }}
-            </label>
-            <select v-model="form.three_hundred_money_pay" @change="(e) => { single_biodata.three_hundred_money_pay = JSON.parse(e.target.value) }" id="three_hundred_money_pay" name="three_hundred_money_pay"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
-                <option v-for="(three_hundred_money_pay, three_hundred_money_pay_key) in translations.biodata_form.others_biodata.three_hundred_money_pay_options" :key="three_hundred_money_pay.id" :value="JSON.parse(three_hundred_money_pay_key)">{{ three_hundred_money_pay }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.three_hundred_money_pay" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="media_terms_two_agreement" class="text-base">
+                    {{ translations.biodata_form.others_biodata.media_terms_two_agreement_title }}
+                </label>
+                <select v-model="form.media_terms_two_agreement" @change="(e) => { single_biodata.media_terms_two_agreement = JSON.parse(e.target.value) }" id="media_terms_two_agreement" name="media_terms_two_agreement"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
+                    <option v-for="(media_terms_two_agreement, media_terms_two_agreement_key) in translations.biodata_form.others_biodata.media_terms_two_agreement_options" :key="media_terms_two_agreement.id" :value="JSON.parse(media_terms_two_agreement_key)">{{ media_terms_two_agreement }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.media_terms_two_agreement" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="media_terms_two_agreement" class="text-base">
-                {{ translations.biodata_form.others_biodata.media_terms_two_agreement_title }}
-            </label>
-            <select v-model="form.media_terms_two_agreement" @change="(e) => { single_biodata.media_terms_two_agreement = JSON.parse(e.target.value) }" id="media_terms_two_agreement" name="media_terms_two_agreement"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
-                <option v-for="(media_terms_two_agreement, media_terms_two_agreement_key) in translations.biodata_form.others_biodata.media_terms_two_agreement_options" :key="media_terms_two_agreement.id" :value="JSON.parse(media_terms_two_agreement_key)">{{ media_terms_two_agreement }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.media_terms_two_agreement" />
-        </div>
-
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <label for="reference_code" class="text-base">
-                {{ translations.biodata_form.others_biodata.reference_code_title }}
-            </label>
-            <input type="text" v-model="form.reference_code" @input="(e) => { single_biodata.reference_code = e.target.value }" name="reference_code" id="reference_code" max="50" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
-            <InputError class="mt-2" :message="form.errors.reference_code" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <label for="reference_code" class="text-base">
+                    {{ translations.biodata_form.others_biodata.reference_code_title }}
+                </label>
+                <input type="text" v-model="form.reference_code" @input="(e) => { single_biodata.reference_code = e.target.value }" name="reference_code" id="reference_code"  maxlength="50" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
+                <InputError class="mt-2" :message="form.errors.reference_code" />
+            </div>
 
 
-        <div class="form_item col-span-12 p-2">
-            <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing">
-                {{ translations.biodata_form.submit_button_text }}
-            </button>
-        </div>
+            <div class="form_item col-span-12 p-2">
+                <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing">
+                    {{ translations.biodata_form.submit_button_text }}
+                </button>
+            </div>
 
-    </form>
+        </form>
+    </div>
 
 
 </template>

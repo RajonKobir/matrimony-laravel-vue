@@ -37,11 +37,11 @@ const form = useForm({
     searchNumber: 1,
     selectedGender: null,
     selectedDistricts: null,
-    ageRange: null,
+    ageRange: '16-65',
     maritialStatuses: null,
     selectedCategory: null,
     codeNumber: null,
-    heightRange: null,
+    heightRange: '৪\'৮" এর কম-৭\' এর বেশি',
     skinColors: null,
     akidaMajhabs: null,
     familyConditions: null,
@@ -59,33 +59,33 @@ const submit = (e) => {
         preserveScroll: true,
         // onFinish: () => form.reset('password'),
         onSuccess: (response) => {
-            // setTimeout(() => {
-            //     page.props.flash = [];
-            // }, 3000);
+            setTimeout(() => {
+                page.props.flash = [];
+            }, 3000);
         }
     })
 }
 
 
 const onSelectMaritialStatuses = (selectedMaritialStatusesArray) =>{
-    form.maritialStatuses = selectedMaritialStatusesArray.map((maritial_status) => maritial_status).join(', ');
+    form.maritialStatuses = selectedMaritialStatusesArray.map((maritial_status) => maritial_status).join(',');
 }
 
 
 const onSelectEducationMedium = (selectedEducationMediumArray) =>{
-    form.educationMediums = selectedEducationMediumArray.map((medium_of_study) => medium_of_study).join(', ');
+    form.educationMediums = selectedEducationMediumArray.map((medium_of_study) => medium_of_study).join(',');
 }
 
 const onSelectJobs = (selectedJobTitlesArray) =>{
-    form.selectedJobs = selectedJobTitlesArray.map((job_title) => job_title).join(', ');
+    form.selectedJobs = selectedJobTitlesArray.map((job_title) => job_title).join(',');
 }
 
 const onSelectFamilyConditions = (selectedFamilyConditionsArray) =>{
-    form.familyConditions = selectedFamilyConditionsArray.map((family_condition) => family_condition).join(', ');
+    form.familyConditions = selectedFamilyConditionsArray.map((family_condition) => family_condition).join(',');
 }
 
 const onSelectAkidaMajhabs = (selectedAkidaMajhabsArray) =>{
-    form.akidaMajhabs = selectedAkidaMajhabsArray.map((akida_majhab) => akida_majhab).join(', ');
+    form.akidaMajhabs = selectedAkidaMajhabsArray.map((akida_majhab) => akida_majhab).join(',');
 }
 
 const onUpdateAgeSlider = (slider_state) => {
@@ -93,7 +93,7 @@ const onUpdateAgeSlider = (slider_state) => {
 }
 
 const onSelectDistricts = (districts) => {
-    form.selectedDistricts = districts.map((district) => district).join(', ');
+    form.selectedDistricts = districts.map((district) => district).join(',');
 }
 
 const onUpdateHeightSlider = (slider_state) => {
@@ -102,7 +102,7 @@ const onUpdateHeightSlider = (slider_state) => {
 
 
 const onSelectSkinColors = (selectedSkinColorsArray) =>{
-    form.skinColors = selectedSkinColorsArray.map((skin_color) => skin_color).join(', ');
+    form.skinColors = selectedSkinColorsArray.map((skin_color) => skin_color).join(',');
 }
 
 
@@ -115,6 +115,7 @@ const onSelectSkinColors = (selectedSkinColorsArray) =>{
 
 onMounted(() => {
 
+    page.props.flash = [];
 
 });
 
@@ -152,7 +153,7 @@ onMounted(() => {
                         <InputError class="mt-2" :message="page.props.errors.selectedDistricts" />
                     </div>
 
-                    <div class="form_item col-span-12 md:col-start-5 md:col-span-4 p-2 px-4 pb-4">
+                    <div class="form_item col-span-12 md:col-start-4 md:col-span-6 lg:col-start-5 lg:col-span-4 p-2 px-8 md:px-4 pb-4">
                         <AgeSlider :translations @onUpdateAgeSlider="onUpdateAgeSlider"/>
                         <InputError class="mt-2" :message="page.props.errors.ageRange" />
                     </div>
@@ -184,7 +185,7 @@ onMounted(() => {
 
 
             <template v-if="form.searchNumber == 3">
-                <div class="form_item col-span-6 md:col-start-1 md:col-span-4 p-2">
+                <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
                     <select id="search_gender" v-model="form.selectedGender" name="search_gender" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                         <option value="null" disabled selected>{{ props.translations.searchForm.dropdown_1_heading }}</option>
                         <option value="male">{{ props.translations.searchForm.dropdown_1_option_2 }}</option>
@@ -193,29 +194,34 @@ onMounted(() => {
                     <InputError class="mt-2" :message="page.props.errors.selectedGender" />
                 </div>
 
-                <div class="form_item col-span-6 md:col-span-4 p-2">
+                <div class="form_item col-span-6 lg:col-span-4 p-2">
                     <MultipleDistrictsSelection :translations :locale  :districts="districts" @onSelectDistricts="onSelectDistricts" />
                     <InputError class="mt-2" :message="page.props.errors.selectedDistricts" />
                 </div>
 
-                <div class="form_item col-span-12 md:col-span-4 p-2">
+                <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
                     <MultipleMaritialStatusSelection :translations :gender="form.selectedGender" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
                     <InputError class="mt-2" :message="page.props.errors.maritialStatuses" />
                 </div>
 
-                <div class="form_item col-start-3 col-span-8 lg:col-start-3 lg:col-span-4 p-2 px-4 pb-4">
+                <div class="form_item col-span-6 lg:col-span-4 p-2">
+                    <MultipleAkidaMajhabSelection :translations @onSelectAkidaMajhabs="onSelectAkidaMajhabs" />
+                    <InputError class="mt-2" :message="page.props.errors.akidaMajhabs" />
+                </div>
+
+                <div class="form_item col-span-12 md:col-span-6 lg:col-start-3 lg:col-span-4 p-2 px-8 pb-4">
                     <AgeSlider :translations @onUpdateAgeSlider="onUpdateAgeSlider"/>
                     <InputError class="mt-2" :message="page.props.errors.ageRange" />
                 </div>
 
-                <div class="form_item col-start-3 col-span-8 lg:col-span-4 p-2 px-4 pb-4">
+                <div class="form_item col-span-12 md:col-span-6 lg:col-span-4 p-2 px-8 pb-4">
                     <HeightSlider :translations @onUpdateHeightSlider="onUpdateHeightSlider"/>
                     <InputError class="mt-2" :message="page.props.errors.heightRange" />
                 </div>
 
-                <div class="form_item col-span-6 lg:col-start-1 lg:col-span-4 p-2">
-                    <MultipleAkidaMajhabSelection :translations @onSelectAkidaMajhabs="onSelectAkidaMajhabs" />
-                    <InputError class="mt-2" :message="page.props.errors.akidaMajhabs" />
+                <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
+                    <MultipleJobsSelection :translations :gender="form.selectedGender" @onSelectJobs="onSelectJobs" />
+                    <InputError class="mt-2" :message="page.props.errors.selectedJobs" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-span-4 p-2">
@@ -223,20 +229,14 @@ onMounted(() => {
                     <InputError class="mt-2" :message="page.props.errors.skinColors" />
                 </div>
 
-                <div class="form_item col-span-6 md:col-span-6 lg:col-span-4 p-2">
-                    <MultipleJobsSelection :translations :gender="form.selectedGender" @onSelectJobs="onSelectJobs" />
-                    <InputError class="mt-2" :message="page.props.errors.selectedJobs" />
-                </div>
-
                 <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
-                    <MultipleFamilyConditionsSelection :translations  @onSelectFamilyConditions="onSelectFamilyConditions" />
-                    <InputError class="mt-2" :message="page.props.errors.familyConditions" />
-                </div>
-
-
-                <div class="form_item col-span-12 md:col-span-6 lg:col-span-4 p-2">
                     <MultipleEducationMediumSelection :translations  @onSelectEducationMedium="onSelectEducationMedium"/>
                     <InputError class="mt-2" :message="page.props.errors.educationMediums" />
+                </div>
+
+                <div class="form_item col-span-6 lg:col-span-4 p-2">
+                    <MultipleFamilyConditionsSelection :translations  @onSelectFamilyConditions="onSelectFamilyConditions" />
+                    <InputError class="mt-2" :message="page.props.errors.familyConditions" />
                 </div>
 
             </template>
@@ -248,8 +248,8 @@ onMounted(() => {
                         <option value="null" disabled selected>{{ props.translations.searchForm.dropdown_1_heading }}</option>
                         <option value="male">{{ props.translations.searchForm.dropdown_1_option_2 }}</option>
                         <option value="female">{{ props.translations.searchForm.dropdown_1_option_3 }}</option>
-                        <InputError class="mt-2" :message="page.props.errors.selectedGender" />
                     </select>
+                    <InputError class="mt-2" :message="page.props.errors.selectedGender" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-span-4 p-2">
@@ -269,6 +269,20 @@ onMounted(() => {
             </template>
 
             <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
+
+                <div class="mt-1 od-contact-us-form-top od-text-align-center">
+                    <div v-if="$page.props.flash.success" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert-body">
+                            {{ $page.props.flash.success }}
+                        </div>
+                    </div>
+                    <div v-if="$page.props.flash.error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="alert-body">
+                            {{ $page.props.flash.error }}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="od-search-fields odsf-submit">
                     <div class="od-submit-btn !text-center ">
                         <button type="submit" class="text-white bg-[#ad277c] rounded-xl cursor-pointer p-4 mt-4 text-center transition duration-200 hover:shadow-xl hover:opacity-75 !text-xl" :class="{ 'opacity-25': form.processing }"

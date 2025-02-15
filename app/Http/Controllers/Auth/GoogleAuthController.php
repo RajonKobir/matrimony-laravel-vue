@@ -24,8 +24,6 @@ class GoogleAuthController extends Controller
 
             $user = User::where( 'google_id', $google_user->getId() )->first();
 
-            // dd($google_user->getId());
-
             if (!$user) {
 
                 $new_user = User::create([
@@ -46,7 +44,7 @@ class GoogleAuthController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
-            // dd($th->getMessage());
+            // $th->getMessage();
             // return redirect()->intended(route('login', absolute: false));
             // return redirect()->intended(route('login', absolute: false))->with('error', 'An error occured!');
             return redirect()->back()->with('error', $th->getMessage());

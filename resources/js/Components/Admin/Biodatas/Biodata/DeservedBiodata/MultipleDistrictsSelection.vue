@@ -104,7 +104,7 @@ onMounted(() => {
 
                     <template v-for="district in districts" :key="district.id" >
 
-                        <div v-if="[1, 14, 18, 26, 34, 40, 51, 55].includes(district.id)" class="relative flex items-center">
+                        <div v-if="[1, 14, 25, 35, 39, 47, 55].includes(district.id)" class="relative flex items-center">
                             <div class="flex-grow border-t border-gray-400"></div>
                             <span class="flex-shrink mx-4 text-gray-400">
                                 {{ locale == 'bn' ? divisionNames[district.division_id].bn_name + ' বিভাগ' :  divisionNames[district.division_id].name + ' Division' }}
@@ -115,7 +115,7 @@ onMounted(() => {
                         <ListboxOption @click="onClickDistrictsItems" v-slot="{ active, selected }" :value="locale == 'en' ? district.district_name : district.district_bn_name" as="template" :disabled="district.unavailable" >
                             <li :class="[
                                 active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                                'relative cursor-default select-none py-2 pl-10 pr-4',
+                                'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                             ]">
                                 <span :class="[
                                     selected ? 'font-medium' : 'font-normal',

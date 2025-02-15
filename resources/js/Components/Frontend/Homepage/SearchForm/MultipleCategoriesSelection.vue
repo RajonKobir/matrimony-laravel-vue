@@ -71,7 +71,7 @@ onMounted(() => {
                     <ListboxOption @click="onClickMultipleCategoriesItems" v-slot="{ active, selected }" v-for="(categories, categories_key) in props.translations.searchForm.special_search_4_category_options" :key="categories_key" :value="categories" as="template" :disabled="categories.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',

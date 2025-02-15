@@ -101,7 +101,7 @@ watch(props, async (newValue, oldValue) => {
                     <ListboxOption @click="onClickJobItems" v-slot="{ active, selected }" v-for="(job_title, job_title_key) in translations.biodata_form.personal_biodata.job_title_options" :key="job_title_key" :value="gender == 'female' ? job_title.replace('শিক্ষক', 'শিক্ষিকা') : job_title" as="template" :disabled="job_title.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',

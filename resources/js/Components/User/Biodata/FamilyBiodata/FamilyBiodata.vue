@@ -135,83 +135,84 @@ onMounted(() => {
 
     <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
+    <div class="main-container">
+        <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
 
-    <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
+            <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
+            <input v-model="form.running_tab" type="hidden" name="running_tab" >
 
-        <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
-        <input v-model="form.running_tab" type="hidden" name="running_tab" >
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <input type="text" v-model="form.father_name" @input="(e) => { single_biodata.father_name = e.target.value }" name="father_name" maxlength="50" :placeholder="translations.biodata_form.family_biodata.father_name_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
+                <InputError class="mt-2" :message="form.errors.father_name" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <input type="text" v-model="form.father_name" @input="(e) => { single_biodata.father_name = e.target.value }" name="father_name" :placeholder="translations.biodata_form.family_biodata.father_name_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
-            <InputError class="mt-2" :message="form.errors.father_name" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.father_desc" @input="(e) => { single_biodata.father_desc = e.target.value }" name="father_desc" rows="2" maxlength="300" :placeholder="translations.biodata_form.family_biodata.father_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.father_desc" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.father_desc" @input="(e) => { single_biodata.father_desc = e.target.value }" name="father_desc" rows="2" maxlength="255" :placeholder="translations.biodata_form.family_biodata.father_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.father_desc" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <input type="text" v-model="form.mother_name" @input="(e) => { single_biodata.mother_name = e.target.value }" name="mother_name" maxlength="50" :placeholder="translations.biodata_form.family_biodata.mother_name_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
+                <InputError class="mt-2" :message="form.errors.mother_name" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <input type="text" v-model="form.mother_name" @input="(e) => { single_biodata.mother_name = e.target.value }" name="mother_name" :placeholder="translations.biodata_form.family_biodata.mother_name_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
-            <InputError class="mt-2" :message="form.errors.mother_name" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.mother_desc" @input="(e) => { single_biodata.mother_desc = e.target.value }" name="mother_desc" rows="2" maxlength="300" :placeholder="translations.biodata_form.family_biodata.mother_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.mother_desc" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.mother_desc" @input="(e) => { single_biodata.mother_desc = e.target.value }" name="mother_desc" rows="2" maxlength="255" :placeholder="translations.biodata_form.family_biodata.mother_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.mother_desc" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.brother_sister_desc" @input="(e) => { single_biodata.brother_sister_desc = e.target.value }" name="brother_sister_desc" rows="2" maxlength="3000" :placeholder="translations.biodata_form.family_biodata.brother_sister_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.brother_sister_desc" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.brother_sister_desc" @input="(e) => { single_biodata.brother_sister_desc = e.target.value }" name="brother_sister_desc" rows="2" maxlength="255" :placeholder="translations.biodata_form.family_biodata.brother_sister_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.brother_sister_desc" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.relative_desc" @input="(e) => { single_biodata.relative_desc = e.target.value }" name="relative_desc" rows="2" maxlength="3000" :placeholder="translations.biodata_form.family_biodata.relative_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.relative_desc" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.relative_desc" @input="(e) => { single_biodata.relative_desc = e.target.value }" name="relative_desc" rows="2" maxlength="255" :placeholder="translations.biodata_form.family_biodata.relative_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.relative_desc" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.family_condition" @change="(e) => { single_biodata.family_condition = e.target.value }" id="family_condition" name="family_condition"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.family_biodata.family_condition_title }}</option>
+                    <option v-for="family_condition in translations.biodata_form.family_biodata.family_condition_options" :key="family_condition.id" :value="family_condition">{{ family_condition }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.family_condition" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.family_condition" @change="(e) => { single_biodata.family_condition = e.target.value }" id="family_condition" name="family_condition"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.family_biodata.family_condition_title }}</option>
-                <option v-for="family_condition in translations.biodata_form.family_biodata.family_condition_options" :key="family_condition.id" :value="family_condition">{{ family_condition }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.family_condition" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.property_and_income" @input="(e) => { single_biodata.property_and_income = e.target.value }" name="property_and_income" rows="4" maxlength="1500"  :placeholder="translations.biodata_form.family_biodata.property_and_income_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.property_and_income" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.property_and_income" @input="(e) => { single_biodata.property_and_income = e.target.value }" name="property_and_income" rows="4" maxlength="255" :placeholder="translations.biodata_form.family_biodata.property_and_income_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.property_and_income" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.personal_maritial_agreement" @change="(e) => { single_biodata.personal_maritial_agreement = JSON.parse(e.target.value) }" id="personal_maritial_agreement" name="personal_maritial_agreement"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ selectedGender == 'male' ? translations.biodata_form.family_biodata.personal_maritial_agreement_title_male : translations.biodata_form.family_biodata.personal_maritial_agreement_title_female }}</option>
+                    <option v-for="(personal_maritial_agreement, personal_maritial_agreement_key) in translations.biodata_form.family_biodata.personal_maritial_agreement_options" :key="personal_maritial_agreement.id" :value="JSON.parse(personal_maritial_agreement_key)">{{ personal_maritial_agreement }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.personal_maritial_agreement" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.personal_maritial_agreement" @change="(e) => { single_biodata.personal_maritial_agreement = JSON.parse(e.target.value) }" id="personal_maritial_agreement" name="personal_maritial_agreement"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ selectedGender == 'male' ? translations.biodata_form.family_biodata.personal_maritial_agreement_title_male : translations.biodata_form.family_biodata.personal_maritial_agreement_title_female }}</option>
-                <option v-for="(personal_maritial_agreement, personal_maritial_agreement_key) in translations.biodata_form.family_biodata.personal_maritial_agreement_options" :key="personal_maritial_agreement.id" :value="JSON.parse(personal_maritial_agreement_key)">{{ personal_maritial_agreement }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.personal_maritial_agreement" />
-        </div>
-
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.family_maritial_agreement" @change="(e) => { single_biodata.family_maritial_agreement = JSON.parse(e.target.value) }" id="family_maritial_agreement" name="family_maritial_agreement"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.family_biodata.family_maritial_agreement_title }}</option>
-                <option v-for="(family_maritial_agreement, family_maritial_agreement_key) in translations.biodata_form.family_biodata.family_maritial_agreement_options" :key="family_maritial_agreement.id" :value="JSON.parse(family_maritial_agreement_key)">{{ family_maritial_agreement }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.family_maritial_agreement" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.family_maritial_agreement" @change="(e) => { single_biodata.family_maritial_agreement = JSON.parse(e.target.value) }" id="family_maritial_agreement" name="family_maritial_agreement"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.family_biodata.family_maritial_agreement_title }}</option>
+                    <option v-for="(family_maritial_agreement, family_maritial_agreement_key) in translations.biodata_form.family_biodata.family_maritial_agreement_options" :key="family_maritial_agreement.id" :value="JSON.parse(family_maritial_agreement_key)">{{ family_maritial_agreement }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.family_maritial_agreement" />
+            </div>
 
 
-        <div class="form_item col-span-12 p-2">
-            <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing">
-                {{ translations.biodata_form.submit_button_text }}
-            </button>
-        </div>
+            <div class="form_item col-span-12 p-2">
+                <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing">
+                    {{ translations.biodata_form.submit_button_text }}
+                </button>
+            </div>
 
-    </form>
+        </form>
+    </div>
 
 
 </template>

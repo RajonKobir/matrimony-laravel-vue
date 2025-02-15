@@ -505,177 +505,180 @@ onMounted(() => {
 
     <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
+    <div class="main-container">
 
-    <div class="grid grid-cols-12 gap-0">
-        <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
-            <label for="gender" class="text-base">{{ translations.biodata_form.personal_biodata.gender_title }}</label>
-            <select @change="genderUpdate" id="gender" name="gender"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option  value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
-                <option v-for="(single_gender, gender_key) in translations.biodata_form.personal_biodata.gender_options" :key="single_gender.id" :value="gender_key" :selected="gender_key == gender">{{ single_gender }}</option>
-            </select>
+        <div class="grid grid-cols-12 gap-0">
+            <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
+                <label for="gender" class="text-base">{{ translations.biodata_form.personal_biodata.gender_title }}</label>
+                <select @change="genderUpdate" id="gender" name="gender"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option  value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
+                    <option v-for="(single_gender, gender_key) in translations.biodata_form.personal_biodata.gender_options" :key="single_gender.id" :value="gender_key" :selected="gender_key == gender">{{ single_gender }}</option>
+                </select>
+            </div>
         </div>
+
+
+        <form v-if="gender != null" @submit.prevent="submit" class="grid grid-cols-12 gap-0">
+            <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
+            <input v-model="form.running_tab" type="hidden" name="running_tab" >
+
+            <div class="form_item col-span-6 p-2">
+                <DatePicker :translations :birth_date="form.birth_date" @onUpdateDate="onUpdateDate" />
+                <InputError class="mt-2" :message="form.errors.birth_date" />
+            </div>
+            <div class="form_item col-span-6 p-2">
+                <select v-model="form.skin_color" @change="(e) => { single_biodata.skin_color = e.target.value }" id="skin_color" name="skin_color"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.skin_color_title }}</option>
+                    <option v-for="skin_color in translations.biodata_form.personal_biodata.skin_color_options" :key="skin_color.id" :value="skin_color">{{ skin_color }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.skin_color" />
+            </div>
+            <div class="form_item col-span-6 p-2">
+                <select v-model="form.height" @change="(e) => { single_biodata.height = e.target.value }" id="height" name="height"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.height_title }}</option>
+                    <option v-for="height in translations.biodata_form.personal_biodata.height_options" :key="height.id" :value="height">{{ height }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.height" />
+            </div>
+            <div class="form_item col-span-6 p-2">
+                <select v-model="form.weight" @change="(e) => { single_biodata.weight = e.target.value }" id="weight" name="weight"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.weight_title }}</option>
+                    <option v-for="weight in translations.biodata_form.personal_biodata.weight_options" :key="weight.id" :value="weight">{{ weight }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.weight" />
+            </div>
+            <div class="form_item col-span-6 p-2">
+                <select v-model="form.blood_group" @change="(e) => { single_biodata.blood_group = e.target.value }" id="blood_group" name="blood_group"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.blood_group_title }}</option>
+                    <option v-for="blood_group in translations.biodata_form.personal_biodata.blood_group_options" :key="blood_group.id" :value="blood_group">{{ blood_group }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.blood_group" />
+            </div>
+
+            <div class="form_item col-span-6 p-2">
+                <select v-model="form.maritial_status" @change="(e) => { single_biodata.maritial_status = e.target.value }" id="maritial_status" name="maritial_status"
+                    class="maritial_status block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.maritial_status_title }}</option>
+                    <template v-for="(maritial_status, maritial_status_key) in translations.biodata_form.personal_biodata.maritial_status_options" :key="maritial_status.id">
+                            <option :value="maritial_status_key" v-if="(single_biodata.gender == 'male' && maritial_status_key != 'widow_no_child' && maritial_status_key != 'widow_with_child' ) || (single_biodata.gender == 'female' && maritial_status_key != 'widower_no_child' && maritial_status_key != 'widower_with_child' )" >
+                                {{ maritial_status }}
+                            </option>
+                    </template>
+                </select>
+                <InputError class="mt-2" :message="form.errors.maritial_status" />
+            </div>
+
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <PermanentDynamicAddress :translations :locale :permanentAddress @onUpdatePermanentAddress="onUpdatePermanentAddress" />
+                <InputError v-if="form.errors.permanent_country || form.errors.permanent_division || form.errors.permanent_district || form.errors.permanent_upazila" class="mt-2" :message="translations.biodata_form.personal_biodata.permanent_address_error" />
+            </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <TemporaryDynamicAddress :translations :locale :temporaryAddress @addressAreSame="addressAreSame" @onUpdateTemporaryAddress="onUpdateTemporaryAddress" />
+                <InputError v-if="form.errors.temporary_country || form.errors.temporary_division || form.errors.temporary_district || form.errors.temporary_upazila " class="mt-2" :message="translations.biodata_form.personal_biodata.temporary_address_error" />
+            </div>
+
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleJobSelection :translations :jobTitles="single_biodata.job_title" :gender="single_biodata.gender" @onSelectJobs="onSelectJobs"/>
+                <InputError class="mt-2" :message="form.errors.job_title" />
+            </div>
+
+            <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.job_details" @input="(e) => { single_biodata.job_details = e.target.value }" name="job_details" rows="1" :placeholder="translations.biodata_form.personal_biodata.job_details_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.job_details" />
+            </div>
+
+            <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
+                <input type="text" v-model="form.job_location" @input="(e) => { single_biodata.job_location = e.target.value }" name="job_location" maxlength="100" list="job_location_lists" :placeholder="translations.biodata_form.personal_biodata.job_location_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
+                <datalist id="job_location_lists">
+                    <option v-for="single_district in districts" :key="single_district.id">{{ locale == 'en' ? single_district.district_name : single_district.district_bn_name }}</option>
+                </datalist>
+                <InputError class="mt-2" :message="form.errors.job_location" />
+            </div>
+
+            <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.monthly_income" @change="(e) => { single_biodata.monthly_income = e.target.value }" id="monthly_income" name="monthly_income"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.monthly_income_title }}</option>
+                    <option v-for="monthly_income in translations.biodata_form.personal_biodata.monthly_income_options" :key="monthly_income.id" :value="monthly_income">{{ monthly_income }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.monthly_income" />
+            </div>
+
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleEducationMediumSelection :translations :educationMediums="single_biodata.medium_of_study" @onSelectEducationMedium="onSelectEducationMedium"/>
+                <InputError class="mt-2" :message="form.errors.medium_of_study" />
+            </div>
+
+            <div v-if="form.general_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.general_highest_degree" @change="onChangeGeneralItem" id="general_highest_degree" name="general_highest_degree"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option item_key="0" value="null" disabled selected >{{ translations.biodata_form.personal_biodata.general_highest_degree_title }}</option>
+                    <option v-for="(general_highest_degree, general_highest_degree_key) in translations.biodata_form.personal_biodata.general_highest_degree_options" :key="general_highest_degree_key" :item_key="general_highest_degree_key" :value="general_highest_degree">{{ general_highest_degree }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.general_highest_degree" />
+            </div>
+
+            <div v-if="form.aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.aliya_highest_degree" @change="onChangeAliyaItem" id="aliya_highest_degree" name="aliya_highest_degree"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.aliya_highest_degree_title }}</option>
+                    <option v-for="(aliya_highest_degree, aliya_highest_degree_key) in translations.biodata_form.personal_biodata.aliya_highest_degree_options" :key="aliya_highest_degree_key" :item_key="aliya_highest_degree_key" :value="aliya_highest_degree">{{ aliya_highest_degree }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.aliya_highest_degree" />
+            </div>
+
+            <div v-if="form.kowmi_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.kowmi_highest_degree" @change="onChangeKowmiItem" id="kowmi_highest_degree" name="kowmi_highest_degree"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.kowmi_highest_degree_title }}</option>
+                    <option v-for="(kowmi_highest_degree, kowmi_highest_degree_key) in translations.biodata_form.personal_biodata.kowmi_highest_degree_options" :key="kowmi_highest_degree_key" :item_key="kowmi_highest_degree_key" :value="kowmi_highest_degree">{{ kowmi_highest_degree }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.kowmi_highest_degree" />
+            </div>
+
+            <div v-if="form.study_others_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.study_others_highest_degree" @change="(e) => { single_biodata.study_others_highest_degree = e.target.value }" id="study_others_highest_degree" name="study_others_highest_degree"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.study_others_highest_degree_title }}</option>
+                    <option v-for="(study_others_highest_degree, study_others_highest_degree_key) in translations.biodata_form.personal_biodata.study_others_highest_degree_options" :key="study_others_highest_degree_key" :item_key="study_others_highest_degree_key" :value="study_others_highest_degree">{{ study_others_highest_degree }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.study_others_highest_degree" />
+            </div>
+
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.study_in_details" @input="(e) => { single_biodata.study_in_details = e.target.value }" name="study_in_details" rows="3" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.study_in_details_watermark" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.study_in_details" />
+            </div>
+
+            <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.honorable_degree_details" @input="(e) => { single_biodata.honorable_degree_details = e.target.value }" name="honorable_degree_details" rows="2" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.honorable_degree_details_placeholder" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.honorable_degree_details" />
+            </div>
+
+            <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <select v-model="form.honorable_degree_place" @change="(e) => { single_biodata.honorable_degree_place = e.target.value }" id="honorable_degree_place" name="honorable_degree_place"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.honorable_degree_place_title }}</option>
+                    <option v-for="(honorable_degree_place, honorable_degree_place_key) in translations.biodata_form.personal_biodata.honorable_degree_place_options" :key="honorable_degree_place_key" :value="honorable_degree_place">{{ honorable_degree_place }}</option>
+                </select>
+                <InputError class="mt-2" :message="form.errors.honorable_degree_place" />
+            </div>
+
+            <div class="form_item col-span-12 p-2">
+                <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing">
+                    {{ translations.biodata_form.submit_button_text }}
+                </button>
+            </div>
+
+        </form>
+
     </div>
-
-
-    <form v-if="gender != null" @submit.prevent="submit" class="grid grid-cols-12 gap-0">
-        <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
-        <input v-model="form.running_tab" type="hidden" name="running_tab" >
-
-        <div class="form_item col-span-6 p-2">
-            <DatePicker :translations :birth_date="form.birth_date" @onUpdateDate="onUpdateDate" />
-            <InputError class="mt-2" :message="form.errors.birth_date" />
-        </div>
-        <div class="form_item col-span-6 p-2">
-            <select v-model="form.skin_color" @change="(e) => { single_biodata.skin_color = e.target.value }" id="skin_color" name="skin_color"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.skin_color_title }}</option>
-                <option v-for="skin_color in translations.biodata_form.personal_biodata.skin_color_options" :key="skin_color.id" :value="skin_color">{{ skin_color }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.skin_color" />
-        </div>
-        <div class="form_item col-span-6 p-2">
-            <select v-model="form.height" @change="(e) => { single_biodata.height = e.target.value }" id="height" name="height"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.height_title }}</option>
-                <option v-for="height in translations.biodata_form.personal_biodata.height_options" :key="height.id" :value="height">{{ height }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.height" />
-        </div>
-        <div class="form_item col-span-6 p-2">
-            <select v-model="form.weight" @change="(e) => { single_biodata.weight = e.target.value }" id="weight" name="weight"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.weight_title }}</option>
-                <option v-for="weight in translations.biodata_form.personal_biodata.weight_options" :key="weight.id" :value="weight">{{ weight }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.weight" />
-        </div>
-        <div class="form_item col-span-6 p-2">
-            <select v-model="form.blood_group" @change="(e) => { single_biodata.blood_group = e.target.value }" id="blood_group" name="blood_group"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.blood_group_title }}</option>
-                <option v-for="blood_group in translations.biodata_form.personal_biodata.blood_group_options" :key="blood_group.id" :value="blood_group">{{ blood_group }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.blood_group" />
-        </div>
-
-        <div class="form_item col-span-6 p-2">
-            <select v-model="form.maritial_status" @change="(e) => { single_biodata.maritial_status = e.target.value }" id="maritial_status" name="maritial_status"
-                class="maritial_status block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.maritial_status_title }}</option>
-                <template v-for="(maritial_status, maritial_status_key) in translations.biodata_form.personal_biodata.maritial_status_options" :key="maritial_status.id">
-                        <option :value="maritial_status_key" v-if="(single_biodata.gender == 'male' && maritial_status_key != 'widow_no_child' && maritial_status_key != 'widow_with_child' ) || (single_biodata.gender == 'female' && maritial_status_key != 'widower_no_child' && maritial_status_key != 'widower_with_child' )" >
-                            {{ maritial_status }}
-                        </option>
-                </template>
-            </select>
-            <InputError class="mt-2" :message="form.errors.maritial_status" />
-        </div>
-
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <PermanentDynamicAddress :translations :locale :permanentAddress @onUpdatePermanentAddress="onUpdatePermanentAddress" />
-            <InputError v-if="form.errors.permanent_country || form.errors.permanent_division || form.errors.permanent_district || form.errors.permanent_upazila" class="mt-2" :message="translations.biodata_form.personal_biodata.permanent_address_error" />
-        </div>
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <TemporaryDynamicAddress :translations :locale :temporaryAddress @addressAreSame="addressAreSame" @onUpdateTemporaryAddress="onUpdateTemporaryAddress" />
-            <InputError v-if="form.errors.temporary_country || form.errors.temporary_division || form.errors.temporary_district || form.errors.temporary_upazila " class="mt-2" :message="translations.biodata_form.personal_biodata.temporary_address_error" />
-        </div>
-
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleJobSelection :translations :jobTitles="single_biodata.job_title" :gender="single_biodata.gender" @onSelectJobs="onSelectJobs"/>
-            <InputError class="mt-2" :message="form.errors.job_title" />
-        </div>
-
-        <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.job_details" @input="(e) => { single_biodata.job_details = e.target.value }" name="job_details" rows="1" maxlength="200" :placeholder="translations.biodata_form.personal_biodata.job_details_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.job_details" />
-        </div>
-
-        <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
-            <input type="text" v-model="form.job_location" @input="(e) => { single_biodata.job_location = e.target.value }" name="job_location" list="job_location_lists" :placeholder="translations.biodata_form.personal_biodata.job_location_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
-            <datalist id="job_location_lists">
-                <option v-for="single_district in districts" :key="single_district.id">{{ locale == 'en' ? single_district.district_name : single_district.district_bn_name }}</option>
-            </datalist>
-            <InputError class="mt-2" :message="form.errors.job_location" />
-        </div>
-
-        <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.monthly_income" @change="(e) => { single_biodata.monthly_income = e.target.value }" id="monthly_income" name="monthly_income"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.monthly_income_title }}</option>
-                <option v-for="monthly_income in translations.biodata_form.personal_biodata.monthly_income_options" :key="monthly_income.id" :value="monthly_income">{{ monthly_income }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.monthly_income" />
-        </div>
-
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleEducationMediumSelection :translations :educationMediums="single_biodata.medium_of_study" @onSelectEducationMedium="onSelectEducationMedium"/>
-            <InputError class="mt-2" :message="form.errors.medium_of_study" />
-        </div>
-
-        <div v-if="form.general_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.general_highest_degree" @change="onChangeGeneralItem" id="general_highest_degree" name="general_highest_degree"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option item_key="0" value="null" disabled selected >{{ translations.biodata_form.personal_biodata.general_highest_degree_title }}</option>
-                <option v-for="(general_highest_degree, general_highest_degree_key) in translations.biodata_form.personal_biodata.general_highest_degree_options" :key="general_highest_degree_key" :item_key="general_highest_degree_key" :value="general_highest_degree">{{ general_highest_degree }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.general_highest_degree" />
-        </div>
-
-        <div v-if="form.aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.aliya_highest_degree" @change="onChangeAliyaItem" id="aliya_highest_degree" name="aliya_highest_degree"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.aliya_highest_degree_title }}</option>
-                <option v-for="(aliya_highest_degree, aliya_highest_degree_key) in translations.biodata_form.personal_biodata.aliya_highest_degree_options" :key="aliya_highest_degree_key" :item_key="aliya_highest_degree_key" :value="aliya_highest_degree">{{ aliya_highest_degree }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.aliya_highest_degree" />
-        </div>
-
-        <div v-if="form.kowmi_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.kowmi_highest_degree" @change="onChangeKowmiItem" id="kowmi_highest_degree" name="kowmi_highest_degree"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.kowmi_highest_degree_title }}</option>
-                <option v-for="(kowmi_highest_degree, kowmi_highest_degree_key) in translations.biodata_form.personal_biodata.kowmi_highest_degree_options" :key="kowmi_highest_degree_key" :item_key="kowmi_highest_degree_key" :value="kowmi_highest_degree">{{ kowmi_highest_degree }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.kowmi_highest_degree" />
-        </div>
-
-        <div v-if="form.study_others_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.study_others_highest_degree" @change="(e) => { single_biodata.study_others_highest_degree = e.target.value }" id="study_others_highest_degree" name="study_others_highest_degree"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.study_others_highest_degree_title }}</option>
-                <option v-for="(study_others_highest_degree, study_others_highest_degree_key) in translations.biodata_form.personal_biodata.study_others_highest_degree_options" :key="study_others_highest_degree_key" :item_key="study_others_highest_degree_key" :value="study_others_highest_degree">{{ study_others_highest_degree }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.study_others_highest_degree" />
-        </div>
-
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.study_in_details" @input="(e) => { single_biodata.study_in_details = e.target.value }" name="study_in_details" rows="3" maxlength="255" :placeholder="translations.biodata_form.personal_biodata.study_in_details_watermark" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.study_in_details" />
-        </div>
-
-        <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.honorable_degree_details" @input="(e) => { single_biodata.honorable_degree_details = e.target.value }" name="honorable_degree_details" rows="2" maxlength="255" :placeholder="translations.biodata_form.personal_biodata.honorable_degree_details_placeholder" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.honorable_degree_details" />
-        </div>
-
-        <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <select v-model="form.honorable_degree_place" @change="(e) => { single_biodata.honorable_degree_place = e.target.value }" id="honorable_degree_place" name="honorable_degree_place"
-                class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.honorable_degree_place_title }}</option>
-                <option v-for="(honorable_degree_place, honorable_degree_place_key) in translations.biodata_form.personal_biodata.honorable_degree_place_options" :key="honorable_degree_place_key" :value="honorable_degree_place">{{ honorable_degree_place }}</option>
-            </select>
-            <InputError class="mt-2" :message="form.errors.honorable_degree_place" />
-        </div>
-
-        <div class="form_item col-span-12 p-2">
-            <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing">
-                {{ translations.biodata_form.submit_button_text }}
-            </button>
-        </div>
-
-    </form>
 
 
 </template>

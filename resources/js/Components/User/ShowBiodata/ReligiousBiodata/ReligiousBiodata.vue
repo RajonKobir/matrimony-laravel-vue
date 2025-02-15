@@ -22,154 +22,201 @@ const props = defineProps({
 
 <template>
 
+    <div class="main-container">
 
-    <div class="grid grid-cols-12 gap-0">
+        <div class="grid grid-cols-12 gap-0">
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.five_waqt_salat_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.five_waqt_salat }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.five_waqt_salat_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.five_waqt_salat }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.beard_quantity_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.beard_quantity }}</p>
+            <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.beard_quantity_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.beard_quantity }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.pants_worn_style_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.pants_worn_style }}</p>
+            <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.pants_worn_style_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.pants_worn_style }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.borka_wearing_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.borka_wearing }}</p>
+            <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.borka_wearing_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.borka_wearing }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.nikab_with_borka_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.nikab_with_borka }}</p>
+            <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.nikab_with_borka_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.nikab_with_borka }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.veiling_style_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.veiling_style }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.veiling_style_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.veiling_style }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.islamic_studies_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.islamic_studies }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.islamic_studies_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.islamic_studies }}
+                    </span>
+                </p>
             </div>
-        </div>
 
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.search_page.drugs_taken_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.drugs_taken }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.drugs_taken_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.drugs_taken }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.search_page.dowry_deserve_title_male }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.dowry_deserve_male }}</p>
+            <div v-if="single_biodata.gender == 'male'" class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.dowry_deserve_title_male }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.dowry_deserve_male }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.dowry_deserve_title_female }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.dowry_deserve_female }}</p>
+            <div v-if="single_biodata.gender == 'female'" class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.dowry_deserve_title_female }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.dowry_deserve_female }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.search_page.akida_majhhab_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.akida_majhhab }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.akida_majhhab_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.akida_majhhab }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.family_islam_maintain_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.family_islam_maintain }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.family_islam_maintain_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.family_islam_maintain }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.search_page.three_choosen_alems_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.three_choosen_alems }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.three_choosen_alems_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.three_choosen_alems }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.biodata_form.religious_biodata.physical_weakness_title }}</h1>
-
-                <p class="text-base text-left">{{ translations.biodata_form.religious_biodata.physical_weakness_options[single_biodata.physical_weakness] }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.biodata_form.religious_biodata.physical_weakness_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ translations.biodata_form.religious_biodata.physical_weakness_options[single_biodata.physical_weakness] }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div v-if="single_biodata.physical_weakness" class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.search_page.physical_weakness_desc_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.physical_weakness_desc }}</p>
+            <div v-if="single_biodata.physical_weakness" class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.physical_weakness_desc_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.physical_weakness_desc }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.search_page.good_affairs_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.good_affairs }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.good_affairs_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.good_affairs }}
+                    </span>
+                </p>
             </div>
-        </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <div class="">
-                <h1 class="text-base text-left">{{ translations.search_page.religious_future_plan_title }}</h1>
-
-                <p class="text-base text-left">{{ single_biodata.religious_future_plan }}</p>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.religious_future_plan_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.religious_future_plan }}
+                    </span>
+                </p>
             </div>
+
         </div>
 
     </div>
 
 
 </template>
-
-
-<style>
-.biodata_submit_button{
-    color: #fff !important;
-}
-</style>

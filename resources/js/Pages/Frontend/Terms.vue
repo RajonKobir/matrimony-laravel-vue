@@ -13,6 +13,9 @@ const props = defineProps({
     locales: {
         type: Array,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 onMounted(() => {
@@ -40,7 +43,7 @@ document.body.classList.add("frontend.terms");
 
     <Head :title="`${translations.terms_page.page_header}`" />
 
-    <GuestLayout :translations :locale :locales>
+    <GuestLayout :translations :locale :locales :single_biodata >
 
         <div class="content-main min-h-screen">
             <section id="terms_container">

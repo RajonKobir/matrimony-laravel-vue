@@ -24,8 +24,6 @@ class FacebookAuthController extends Controller
 
             $user = User::where( 'facebook_id', $facebook_user->getId() )->first();
 
-            dd($facebook_user);
-
             if (!$user) {
 
                 $new_user = User::create([
@@ -46,7 +44,6 @@ class FacebookAuthController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
-            // dd($th->getMessage());
             return redirect()->back()->with('error', $th->getMessage());
         }
     }

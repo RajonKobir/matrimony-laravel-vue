@@ -1,6 +1,5 @@
 <script setup>
 
-import { ref } from 'vue';
 import Header from '../Components/Frontend/Header.vue';
 import Footer from '../Components/Frontend/Footer.vue';
 
@@ -20,11 +19,10 @@ const props = defineProps({
     canRegister: {
         type: Boolean,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
-
-
-// initializing
-const single_biodata = ref([]);
 
 
 function handleImageError() {

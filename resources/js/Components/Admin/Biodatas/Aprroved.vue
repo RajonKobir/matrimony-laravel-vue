@@ -11,7 +11,7 @@ import jszip from 'jszip';
 import pdfmake from 'pdfmake/build/pdfmake';
 import 'datatables.net-buttons/js/buttons.html5';
 import 'datatables.net-buttons/js/buttons.print.min';
-// import 'pdfmake/build/vfs_fonts';
+import 'pdfmake/build/vfs_fonts';
 // import 'datatables.net-buttons/js/buttons.html5';
 // import 'datatables.net-responsive-dt';
 // import 'datatables.net-dt';
@@ -141,15 +141,15 @@ const options = ref({
 });
 
 
-const onClickView = (user_id) => {
-    page.props.all_biodatas.forEach(function(item, index, arr){
-        if( item.user_id == user_id ){
-            viewBiodata.value = item;
-        }
-    });
+const onClickView = (single_biodata) => {
+
+    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+
+    viewBiodata.value = single_biodata;
+
     modalInner.value = {
-        modalHeading : 'The Biodata of user_id:' + user_id,
-        modalDescription : 'The Biodata of user_id:' + user_id + ' has been unapproved Successfully.',
+        modalHeading : 'The Biodata of username: ' + username,
+        modalDescription : 'The Biodata of username: ' + username + ' has been unapproved Successfully.',
         viewBiodata,
         showTakeAction: false,
         showAllData: true,
@@ -158,15 +158,15 @@ const onClickView = (user_id) => {
 }
 
 
-const onClickTakeAction = (user_id) => {
-    page.props.all_biodatas.forEach(function(item, index, arr){
-        if( item.user_id == user_id ){
-            viewBiodata.value = item;
-        }
-    });
+const onClickTakeAction = (single_biodata) => {
+
+    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+
+    viewBiodata.value = single_biodata;
+
     modalInner.value = {
-        modalHeading : 'The Biodata of user_id:' + user_id,
-        modalDescription : 'The Biodata of user_id:' + user_id + ' has been unapproved Successfully.',
+        modalHeading : 'The Biodata of username: ' + username,
+        modalDescription : 'The Biodata of username: ' + username + ' has been unapproved Successfully.',
         viewBiodata,
         showTakeAction: true,
         showAllData: false,
@@ -175,30 +175,11 @@ const onClickTakeAction = (user_id) => {
 }
 
 
-const onClickApprove = (user_id) => {
-    if(confirm("Are you sure?")){
-        axios.post(route('backend.biodata.single_approve', {
-            csrf_token,
-            user_id,
-            is_approved : false
-        }))
-        .then((response) => {
-            emits('onUpdateAllBiodatas', response.data);
-            dt.rows( function ( idx, data, node ) {
-                return data[2] == user_id ? true : false;
-            }).remove().draw();
-            modalInner.value = {
-                modalHeading : 'Success!',
-                modalDescription : 'The Biodata of user_id:' + user_id + ' has been unapproved successfully.',
-                showButtons : false
-            }
-            isPopupMessageModalOpen.value = true;
-        });
-    }
-}
+const onClickMoveToTrash = (single_biodata) => {
 
+    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+    let user_id = single_biodata.user_id
 
-const onClickMoveToTrash = (user_id) => {
     if(confirm("Are you sure?")){
         axios.post(route('backend.biodata.single_trash', {
             csrf_token,
@@ -212,7 +193,7 @@ const onClickMoveToTrash = (user_id) => {
             }).remove().draw();
             modalInner.value = {
                 modalHeading : 'Success!',
-                modalDescription : 'The Biodata of user_id:' + user_id + ' has been sent to admin trash successfully.',
+                modalDescription : 'The Biodata of username: ' + username + ' has been sent to admin trash successfully.',
                 showButtons : false
             }
             isPopupMessageModalOpen.value = true;
@@ -354,13 +335,13 @@ document.body.classList.add("backend.biodata.approved");
                         <td>{{ single_biodata.user_mobile }}</td>
                         <td>
                             <div class="flex flex-row justify-center items-center gap-1">
-                                <button type="button" @click="onClickView(single_biodata.user_id)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button type="button" @click="onClickView(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                                     View
                                 </button>
-                                <button type="button" @click="onClickTakeAction(single_biodata.user_id)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button type="button" @click="onClickTakeAction(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                                     TakeAction
                                 </button>
-                                <button type="button" @click="onClickMoveToTrash(single_biodata.user_id)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                                <button type="button" @click="onClickMoveToTrash(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                                     MoveToTrash
                                 </button>
                             </div>

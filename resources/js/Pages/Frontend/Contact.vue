@@ -14,6 +14,9 @@ const props = defineProps({
     locales: {
         type: Array,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 
@@ -55,7 +58,7 @@ document.body.classList.add("frontend.contact");
 
     <Head title="Contact" />
 
-    <GuestLayout :translations :locale :locales>
+    <GuestLayout :translations :locale :locales :single_biodata >
 
         <div class="content-main">
             <section id="od_contact_us">

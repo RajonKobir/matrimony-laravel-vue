@@ -21,6 +21,9 @@ defineProps({
     canRegister: {
         type: Boolean,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 
@@ -29,7 +32,7 @@ defineProps({
 
 <template>
 
-    <GuestLayout :translations :locale :locales :canLogin :canRegister>
+    <GuestLayout :translations :locale :locales :canLogin :canRegister :single_biodata >
         <Homepage :translations :locale :districts />
     </GuestLayout>
 

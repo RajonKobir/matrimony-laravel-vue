@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Models\District;
 use Illuminate\Http\Request;
 use App\Models\Biodata;
+use App\Models\Like;
+use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +26,19 @@ class FrontEndController extends Controller
             'locales' => config('localization.locales'),
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
+            'single_biodata' => [],
         ];
+
+        if (Auth::guard('web')->user()) {
+            $user_id = Auth::guard('web')->user()->id;
+            $single_biodata = Biodata::where('user_id', $user_id)->get();
+            if( $single_biodata ){
+                if( count( $single_biodata ) == 1 ){
+                    $this->pageProps['single_biodata'] = $single_biodata[0];
+                }
+            }
+        }
+
     }
 
     public function homePage(){
@@ -72,7 +86,107 @@ class FrontEndController extends Controller
         }
         $pageProps = $districts_array + $this->pageProps;
 
-        return Inertia::render('Profile', $pageProps);
+        return Inertia::render('User/Profile', $pageProps);
+    }
+
+
+    public function userLikes(){
+
+        $biodatas_array = [
+            'biodatas' => [],
+            'likes' => [],
+            'proposals' => [],
+        ];
+
+        if (Auth::guard('web')->user()) {
+            $user_id = Auth::guard('web')->user()->id;
+            $likes = Like::where('sender_user_id', $user_id)->get();
+            if( $likes ){
+                if( count( $likes ) > 0 ){
+                    $biodatas_array['likes'] = $likes;
+                }
+            }
+            $proposals = Proposal::where('sender_user_id', $user_id)->get();
+            if( $proposals ){
+                if( count( $proposals ) > 0 ){
+                    $biodatas_array['proposals'] = $proposals;
+                }
+            }
+        }
+
+        $likedUserIds = [];
+        foreach ( $biodatas_array['likes'] as $single_like_key => $single_like ){
+            array_push($likedUserIds, $single_like['receiver_user_id']);
+        }
+
+        $biodatas_array['biodatas'] = Biodata::whereIn( 'user_id', $likedUserIds )
+        ->paginate(10)->withQueryString();
+
+        $pageProps = $biodatas_array + $this->pageProps;
+
+        return Inertia::render('User/Likes', $pageProps);
+    }
+
+
+    public function userProposals(){
+
+        $biodatas_array = [
+            'sent_biodatas' => [],
+            'received_biodatas' => [],
+            'sent_proposals' => [],
+            'received_proposals' => [],
+            'likes' => [],
+        ];
+
+        if (Auth::guard('web')->user()) {
+            $user_id = Auth::guard('web')->user()->id;
+
+            $sent_proposals = Proposal::where('sender_user_id', $user_id)->get();
+            if( $sent_proposals ){
+                if( count( $sent_proposals ) > 0 ){
+                    $biodatas_array['sent_proposals'] = $sent_proposals;
+                }
+            }
+
+            $received_proposals = Proposal::where('receiver_user_id', $user_id)->get();
+            if( $received_proposals ){
+                if( count( $received_proposals ) > 0 ){
+                    $biodatas_array['received_proposals'] = $received_proposals;
+                }
+            }
+
+            $likes = Like::where('sender_user_id', $user_id)->get();
+            if( $likes ){
+                if( count( $likes ) > 0 ){
+                    $biodatas_array['likes'] = $likes;
+                }
+            }
+        }
+
+        $sentProposalIds = [];
+        foreach ( $biodatas_array['sent_proposals'] as $single_proposal_key => $single_proposal ){
+            array_push($sentProposalIds, $single_proposal['receiver_user_id']);
+        }
+
+        $receivedProposalIds = [];
+        foreach ( $biodatas_array['received_proposals'] as $single_proposal_key => $single_proposal ){
+            array_push($receivedProposalIds, $single_proposal['sender_user_id']);
+        }
+
+        $biodatas_array['sent_biodatas'] = Biodata::whereIn( 'user_id', $sentProposalIds )
+        ->paginate(10)->withQueryString();
+
+        $biodatas_array['received_biodatas'] = Biodata::whereIn( 'user_id', $receivedProposalIds )
+        ->paginate(10)->withQueryString();
+
+        $pageProps = $biodatas_array + $this->pageProps;
+
+        return Inertia::render('User/Proposals', $pageProps);
+    }
+
+
+    public function userPackages(){
+        return Inertia::render('User/Packages', $this->pageProps);
     }
 
 
@@ -81,45 +195,27 @@ class FrontEndController extends Controller
         return Inertia::render('404',  $this->pageProps);
     }
 
-    public function biodataSearchPost(Request $request)
-    {
-
-        $request->validate([
-            'gender' => 'required|text|max:10',
-        ]);
-
-        $biodatas = Biodata::where('gender', $request->gender)->paginate(1);
-        $biodatas_array = [
-            'biodatas' => $biodatas,
-        ];
-        $pageProps = $biodatas_array + $this->pageProps;
-
-        // return $biodatas;
-
-        return Inertia::render('Frontend/BiodataSearch', $pageProps);
-
-        // return redirect()->route('frontend.biodata_search');
-    }
 
     public function biodataSearch(Request $request){
 
         $request->validate([
             'selectedGender' => $request->searchNumber != 2 ? 'required|string|min:1|max:10' : 'nullable|string|min:1|max:10',
             'selectedDistricts' => $request->searchNumber != 2  ? 'required|string|min:1|max:700' : 'nullable|string|min:1|max:700',
-            'ageRange' => $request->searchNumber == 1 || $request->searchNumber == 3 ? 'required|string|min:1|max:10' : 'nullable|string|min:1|max:10',
-            'maritialStatuses' => $request->searchNumber == 1 || $request->searchNumber == 3 ? 'required|string|min:1|max:200' : 'nullable|string|min:1|max:200',
-            'selectedCategory' => $request->searchNumber == 1  ? 'required|string|min:1|max:1' : 'nullable|string|min:1|max:1',
+            'ageRange' => 'nullable|string|min:1|max:10',
+            'maritialStatuses' => 'nullable|string|min:1|max:200',
+            'selectedCategory' => 'nullable|string|min:1|max:1',
             'codeNumber' => $request->searchNumber == 2  ? 'required|string|min:1|max:20' : 'nullable|string|min:1|max:20',
-            'heightRange' => $request->searchNumber == 3 ? 'required|string|min:1|max:30' : 'nullable|string|min:1|max:30',
-            'skinColors' => $request->searchNumber == 3 ? 'required|string|min:1|max:200' : 'nullable|string|min:1|max:200',
-            'akidaMajhabs' => $request->searchNumber == 3 ? 'required|string|min:1|max:200' : 'nullable|string|min:1|max:200',
-            'familyConditions' => $request->searchNumber == 3 ? 'required|string|min:1|max:200' : 'nullable|string|min:1|max:200',
-            'selectedJobs' => $request->searchNumber == 3 ? 'required|string|min:1|max:300' : 'nullable|string|min:1|max:300',
-            'educationMediums' => $request->searchNumber == 3 ? 'required|string|min:1|max:200' : 'nullable|string|min:1|max:200',
+            'heightRange' => 'nullable|string|min:1|max:30',
+            'skinColors' => 'nullable|string|min:1|max:200',
+            'akidaMajhabs' => 'nullable|string|min:1|max:200',
+            'familyConditions' => 'nullable|string|min:1|max:200',
+            'selectedJobs' => 'nullable|string|min:1|max:300',
+            'educationMediums' => 'nullable|string|min:1|max:200',
             'specialCategory' => $request->searchNumber == 4 ? 'required|string|min:1|max:30' : 'nullable|string|min:1|max:30',
         ]);
 
         // initializing
+        $biodatas = [];
         $lowerAge = '';
         $upperAge = '';
 
@@ -129,35 +225,83 @@ class FrontEndController extends Controller
             $upperAge = trim($ageArray[1]);
         }
 
-        $biodatas = Biodata::paginate(10)->withQueryString();
 
         if( $request->searchNumber == 1 ){
-            $biodatas = Biodata::where('gender', $request->selectedGender)
-            ->where('permanent_district', 'LIKE', '%'.$request->selectedDistricts.'%' )
-            // ->where('temporary_district', 'LIKE', '%'.$request->selectedDistricts.'%' )
-            ->where('age', '>=', $lowerAge)
-            ->where('age', '<=', $upperAge)
-            ->where('maritial_status', 'LIKE', '%'.$request->maritialStatuses.'%' )
-            // ->where('free_biodata', '=', $request->selectedCategory)
-            ->when($request->free_biodata, function($query, $free_biodata) {
-                if( $free_biodata == 1 ){
-                    return false;
-                }
-                if( $free_biodata == 2 ){
-                    return $query->where('free_biodata', '=', 1);
-                }
-                if( $free_biodata == 3 ){
-                    return $query->where('free_biodata', '=', 0)->orWhere('free_biodata', '=', null);
-                }
 
+            $biodatas = Biodata::where([
+                ['is_approved', true],
+                ['gender', $request->selectedGender],
+                ['age', '>=', $lowerAge],
+                ['age', '<=', $upperAge],
+            ])
+            ->when($request->maritialStatuses, function($query, $maritialStatuses) {
+                if( $maritialStatuses ){
+                    return $query->WhereIn( 'maritial_status', explode( ",", trim( $maritialStatuses ) ) );
+                }
+            })
+            ->where(function($query) use ($request) {
+                return $query
+                ->WhereIn( 'permanent_district', explode( ",", trim( $request->selectedDistricts ) ) )
+                ->orWhereIn ( 'temporary_district', explode( ",", trim( $request->selectedDistricts ) ) );
+            })
+            ->when($request->selectedCategory, function($query, $selectedCategory) {
+                if( $selectedCategory ){
+                    if( $selectedCategory == 2 ){
+                        return $query->where('free_biodata', 1);
+                    }
+                    elseif( $selectedCategory == 3 ){
+                        return $query->where(function($query) {
+                            return $query
+                                   ->where('free_biodata', 0)
+                                   ->orWhere('free_biodata', null);
+                           });
+                    }
+                }
             })
             ->paginate(10)->withQueryString();
+
+        }
+
+
+        if( $request->searchNumber == 2 ){
+            $biodatas = Biodata::where([
+                ['is_approved', true],
+            ])
+            ->where('biodata_code', 'LIKE', '%' . $request->codeNumber . '%')
+            ->paginate(10)->withQueryString();
+        }
+
+
+        if( $request->searchNumber == 3 || $request->searchNumber == 4 ){
+            if (Auth::guard('web')->user()) {
+                return back()->with('error', "Whoops! it's a paid service.");
+            }
+            return redirect(route('register'));
         }
 
 
         $biodatas_array = [
             'biodatas' => $biodatas,
+            'likes' => [],
+            'proposals' => [],
         ];
+
+        if (Auth::guard('web')->user()) {
+            $user_id = Auth::guard('web')->user()->id;
+            $likes = Like::where('sender_user_id', $user_id)->get();
+            if( $likes ){
+                if( count( $likes ) > 0 ){
+                    $biodatas_array['likes'] = $likes;
+                }
+            }
+            $proposals = Proposal::where('sender_user_id', $user_id)->get();
+            if( $proposals ){
+                if( count( $proposals ) > 0 ){
+                    $biodatas_array['proposals'] = $proposals;
+                }
+            }
+        }
+
         $pageProps = $biodatas_array + $this->pageProps;
 
         return Inertia::render('Frontend/BiodataSearch', $pageProps);

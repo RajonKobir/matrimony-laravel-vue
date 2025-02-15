@@ -43,9 +43,9 @@ const current_domain = window.location.host;
     <div class="shadibari-container-main">
 
         <Header :translations :locale :locales :canLogin :canRegister :single_biodata />
-        <div class="container max-w-screen-xl mx-auto">
+
             <slot />
-        </div>
+
         <Footer />
 
     </div>

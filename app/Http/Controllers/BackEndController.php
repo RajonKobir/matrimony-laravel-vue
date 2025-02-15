@@ -75,7 +75,7 @@ class BackEndController extends Controller
         Auth::guard('admin')->logout();
         Auth::guard('translations')->logout();
 
-        // $request->session()->invalidate();
+        $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 

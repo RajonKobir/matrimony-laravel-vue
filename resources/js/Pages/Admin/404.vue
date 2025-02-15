@@ -27,7 +27,6 @@ defineProps({
 <template>
 
     <Head title="Page Not Found">
-        <link rel="shortcut icon" :href="`/assets/css/images/favicon.png`">
         <link rel="stylesheet" :href="`/assets/css/frontend/frontend.css`">
         <link rel="stylesheet" :href="`/assets/css/frontend/font-awesome.min.css`">
     </Head>
@@ -39,7 +38,7 @@ defineProps({
                     Sorry! Your desired page has not been found!
                 </h3>
                 <div class="text-center">
-                    <Link :href="route('backend.dashboard')" method="get" as="button" class="bg-green-700 p-2 rounded-lg text-white hover:text-black hover:bg-green-100 transition-all font-bold" >
+                    <Link :href="route('backend.dashboard')" method="get" as="button" class="bg-green-700 p-2 rounded-lg !text-white hover:!text-black hover:bg-green-100 transition-all font-bold" >
                         BackToHome
                     </Link>
                 </div>

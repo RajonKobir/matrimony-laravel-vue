@@ -92,7 +92,7 @@ class BiodataController extends Controller
             'user_id' => 'required|int',
             'media_agreement' => 'required|boolean',
             'user_mobile' => 'nullable|regex:/(01)[0-9]{9}/|max:11',
-            'user_email' => 'nullable|email:rfc,dns|max:50',
+            'user_email' => 'nullable|email|max:50',
         ]);
         $biodata = Biodata::where('user_id', $request->user_id)->get();
         if ($request->media_agreement){
@@ -234,9 +234,9 @@ class BiodataController extends Controller
             'temporary_district' => 'required|string|max:20',
             'temporary_upazila' => 'required|string|max:30',
             'temporary_union_parishad' => 'required|string|max:40',
-            'job_title' => 'required|string|max:100',
-            'job_details' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:10|max:200' : 'required|string|min:10|max:200',
-            'job_location' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:2|max:50' : 'required|string|min:2|max:50',
+            'job_title' => 'required|string|min:2|max:100',
+            'job_details' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:10|max:500' : 'required|string|min:10|max:500',
+            'job_location' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:2|max:100' : 'required|string|min:2|max:100',
             'monthly_income' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:2|max:20' : 'required|string|min:2|max:20',
             'medium_of_study' => 'required|string|min:10|max:100',
             'general_selected' => 'required|boolean',
@@ -250,9 +250,9 @@ class BiodataController extends Controller
             'is_kowmi_honorable_selected' => 'nullable|boolean',
             'study_others_selected' => 'required|boolean',
             'study_others_highest_degree' => $request->study_others_selected ? 'required|string|min:2|max:50' : 'nullable|string|min:2|max:50',
-            'study_in_details' => 'required|string|min:10|max:300',
+            'study_in_details' => 'required|string|min:10|max:500',
             'is_honorable_selected' => 'nullable|boolean',
-            'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:200' : 'nullable|string|min:10|max:200',
+            'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:500' : 'nullable|string|min:10|max:500',
             'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:10|max:100' : 'nullable|string|min:10|max:100',
         ]);
 
@@ -334,14 +334,15 @@ class BiodataController extends Controller
             'dowry_deserve_female' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
             'akida_majhhab' => 'required|string|max:30',
             'family_islam_maintain' => 'required|string|max:20',
-            'three_choosen_alems' => 'required|string|min:10|max:100',
+            'three_choosen_alems' => 'required|string|min:10|max:500',
             'physical_weakness' => 'required|boolean',
-            'physical_weakness_desc' => $request->physical_weakness ? 'required|string|min:2|max:255' : 'nullable|string|min:2|max:255',
-            'good_affairs' => 'required|string|min:10|max:255',
-            'religious_future_plan' => 'required|string|min:10|max:255',
+            'physical_weakness_desc' => $request->physical_weakness ? 'required|string|min:2|max:500' : 'nullable|string|min:2|max:500',
+            'good_affairs' => 'required|string|min:10|max:3000',
+            'religious_future_plan' => 'required|string|min:10|max:3000',
             'borka_wearing' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
             'nikab_with_borka' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
         ]);
+
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
             $biodata_update = Biodata::where('user_id', $request->user_id)->update([
@@ -389,13 +390,13 @@ class BiodataController extends Controller
             'biodata_completion' => 'required|int|max:100',
             'running_tab' => 'required|int|max:6',
             'father_name' => 'required|string|min:2|max:50',
-            'father_desc' => 'required|string|min:10|max:255',
+            'father_desc' => 'required|string|min:10|max:300',
             'mother_name' => 'required|string|min:2|max:50',
-            'mother_desc' => 'required|string|min:10|max:255',
-            'brother_sister_desc' => 'required|string|min:10|max:255',
-            'relative_desc' => 'required|string|min:10|max:255',
+            'mother_desc' => 'required|string|min:10|max:300',
+            'brother_sister_desc' => 'required|string|min:10|max:3000',
+            'relative_desc' => 'required|string|min:10|max:3000',
             'family_condition' => 'required|string|min:4|max:30',
-            'property_and_income' => 'required|string|min:10|max:255',
+            'property_and_income' => 'required|string|min:10|max:1500',
             'personal_maritial_agreement' => 'required|boolean',
             'family_maritial_agreement' => 'required|boolean',
         ]);
@@ -456,7 +457,7 @@ class BiodataController extends Controller
             'deserved_study_others_degrees' => $request->deserved_study_others_selected ? 'required|string|min:2|max:500' : 'nullable|string|min:2|max:500',
             'deserved_maritial_statuses' => 'required|string|min:2|max:200',
             'deserved_conditions' => 'required|string|min:2|max:500',
-            'deserved_others_desc' => 'required|string|min:2|max:255',
+            'deserved_others_desc' => 'required|string|min:2|max:3000',
         ]);
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
@@ -506,15 +507,15 @@ class BiodataController extends Controller
             'user_id' => 'required|int',
             'biodata_completion' => 'required|int|max:100',
             'running_tab' => 'required|int|max:6',
-            'form_holder_desc' => 'required|string|min:10|max:255',
-            'male_guardian_desc' => 'required|string|min:10|max:255',
+            'form_holder_desc' => 'required|string|min:10|max:500',
+            'male_guardian_desc' => 'required|string|min:10|max:500',
             'male_guardian_agreement' => 'required|boolean',
             'deserved_money_pay' => 'required|string|min:2|max:20',
             'media_terms_one_agreement' => 'required|boolean',
             'hundred_money_pay' => 'required|boolean',
             'three_hundred_money_pay' => 'required|boolean',
             'media_terms_two_agreement' => 'required|boolean',
-            'reference_code' => 'nullable|string|min:2|max:20',
+            'reference_code' => 'nullable|string|min:2|max:50',
         ]);
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
@@ -578,6 +579,8 @@ class BiodataController extends Controller
         if( count($biodata) == 1 ){
             $biodata = Biodata::where('user_id', $request->user_id)->update([
                 'is_approved' => $request->is_approved,
+                'approved_date' => $request->is_approved && !$biodata[0]->approved_date ? Carbon::now()->format('Y-m-d') : $biodata[0]->approved_date,
+                'in_admin_trash' => $request->is_approved && $biodata[0]->in_admin_trash ? false : $biodata[0]->in_admin_trash,
             ]);
         }
 
@@ -601,6 +604,7 @@ class BiodataController extends Controller
             if( count($biodata) == 1 ){
                 $biodata = Biodata::where('user_id', $single_user_id)->update([
                     'is_approved' => $request->is_approved,
+                    'approved_date' => $request->is_approved && !$biodata[0]->approved_date ? Carbon::now()->format('Y-m-d') : $biodata[0]->approved_date,
                 ]);
             }
 
@@ -677,7 +681,7 @@ class BiodataController extends Controller
     {
 
         $request->validate([
-            'biodata_code' => 'required|string|min:4|max:20',
+            'biodata_code' => 'required|string|min:3|max:20',
             'free_biodata' => 'required|boolean',
             'biodata_categories' => 'nullable|string|min:4|max:100',
             'biodata_restriction' => 'nullable|string|min:4|max:200',
@@ -687,15 +691,16 @@ class BiodataController extends Controller
             'password' => ['nullable', 'string', Rules\Password::defaults()->min(6)->max(20)],
             'is_approved' => 'required|boolean',
             'user_id' => 'required|integer|min:1|max_digits:10',
+            'admin_comment' => 'nullable|string|min:1|max:250',
         ]);
 
-
-        $biodata = Biodata::where('user_id',  $request->user_id)->get();
+        $biodata = Biodata::where('user_id', trim($request->user_id))->get();
 
         if( count($biodata) == 1 ){
             $biodata = Biodata::where('user_id', $request->user_id)->update([
                 'user_id' => $request->user_id,
                 'is_approved' => $request->is_approved,
+                'approved_date' => $request->is_approved && !$biodata[0]->approved_date ? Carbon::now()->format('Y-m-d') : $biodata[0]->approved_date,
                 'user_mobile' => !filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $biodata[0]->user_mobile,
                 'user_email' => filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $biodata[0]->user_email,
                 'biodata_package' => $request->biodata_package,
@@ -704,9 +709,10 @@ class BiodataController extends Controller
                 'biodata_categories' => $request->biodata_categories,
                 'free_biodata' => $request->free_biodata,
                 'biodata_code' => $request->biodata_code,
+                'admin_comment' => $request->admin_comment,
             ]);
 
-            if($biodata){
+            if( $biodata ){
                 $user = User::where('email', $request->username)->orWhere('mobile', $request->username)->get();
 
                 if( count($user) == 1 ){
@@ -720,7 +726,6 @@ class BiodataController extends Controller
                     }
                 }
             }
-
         }
 
         return redirect()->back()->with('error', 'Something Went Wrong!');

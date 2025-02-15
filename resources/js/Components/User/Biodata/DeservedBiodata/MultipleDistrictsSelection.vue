@@ -31,7 +31,6 @@ const props = defineProps({
 const selectedDistricts = ref([]);
 const showPopup = ref(false);
 const newDivisionId = ref('');
-const districts_reversed = ref({});
 const divisionNames = {
     '1' : { "name" : "Barishal", "bn_name" : "বরিশাল", },
     '2' : { "name": "Chattogram", "bn_name": "চট্টগ্রাম", },
@@ -71,8 +70,6 @@ onMounted(() => {
         }
     }
 
-    districts_reversed.value = props.districts.reverse();
-
 });
 
 
@@ -106,9 +103,9 @@ onMounted(() => {
                     </div>
 
 
-                    <template v-for="district in districts_reversed" :key="district.id" >
+                    <template v-for="district in districts" :key="district.id" >
 
-                        <div v-if="[13, 17, 25, 33, 39, 50, 54, 64].includes(district.id)" class="relative flex items-center">
+                        <div v-if="[1, 14, 25, 35, 39, 47, 55].includes(district.id)" class="relative flex items-center">
                             <div class="flex-grow border-t border-gray-400"></div>
                             <span class="flex-shrink mx-4 text-gray-400">
                                 {{ locale == 'bn' ? divisionNames[district.division_id].bn_name + ' বিভাগ' :  divisionNames[district.division_id].name + ' Division' }}
@@ -119,7 +116,7 @@ onMounted(() => {
                         <ListboxOption @click="onClickDistrictsItems" v-slot="{ active, selected }" :value="locale == 'en' ? district.district_name : district.district_bn_name" as="template" :disabled="district.unavailable" >
                             <li :class="[
                                 active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                                'relative cursor-default select-none py-2 pl-10 pr-4',
+                                'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                             ]">
                                 <span :class="[
                                     selected ? 'font-medium' : 'font-normal',

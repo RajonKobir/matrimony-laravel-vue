@@ -19,6 +19,8 @@ const props = defineProps({
 const page = usePage();
 const csrf_token = page.props.csrf_token;
 const isModalOpen = ref(false);
+const createdAtTimeString = ref('');
+const updatedAtTimeString = ref('');
 
 
 const form = useForm({
@@ -33,6 +35,7 @@ const form = useForm({
     password: null,
     is_approved: props.modalInner.viewBiodata.is_approved,
     user_id: props.modalInner.viewBiodata.user_id,
+    admin_comment: props.modalInner.viewBiodata.admin_comment,
 });
 
 const submit = (e) => {
@@ -61,6 +64,8 @@ const closeModal = (value) => {
 onMounted(() => {
 
     page.props.flash = [];
+    createdAtTimeString.value = (new Date(props.modalInner.viewBiodata.created_at)).toLocaleString('en-US');
+    updatedAtTimeString.value = (new Date(props.modalInner.viewBiodata.updated_at)).toLocaleString('en-US');
 
 })
 
@@ -151,6 +156,33 @@ onMounted(() => {
             <option value="0">no</option>
         </select>
         <InputError class="mt-2" :message="form.errors.is_approved" />
+    </div>
+
+    <div class="form_item col-span-12 md:col-span-6 p-2">
+        <textarea v-model="form.admin_comment" @input="(e) => { single_biodata.admin_comment = e.target.value }" name="admin_comment" rows="2" maxlength="250"  placeholder="Admin Comment" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        <InputError class="mt-2" :message="form.errors.admin_comment" />
+    </div>
+
+    <div class="form_item col-span-12 p-2">
+        <p class="text-base text-left">
+            <span class="text-lg text-left font-bold">
+                Created At:
+            </span>
+            <span class="text-base text-left pl-2">
+                {{createdAtTimeString }}
+            </span>
+        </p>
+    </div>
+
+    <div class="form_item col-span-12 p-2">
+        <p class="text-base text-left">
+            <span class="text-lg text-left font-bold">
+                Updated At:
+            </span>
+            <span class="text-base text-left pl-2">
+                {{ updatedAtTimeString }}
+            </span>
+        </p>
     </div>
 
     <div class="form_item col-span-12 p-2">

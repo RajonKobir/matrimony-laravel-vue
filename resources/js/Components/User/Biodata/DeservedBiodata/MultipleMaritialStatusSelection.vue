@@ -96,7 +96,7 @@ watch(props, async (newValue, oldValue) => {
                         <ListboxOption @click="onClickMaritialStatusesItems" v-slot="{ active, selected }" :value="maritial_status_key" v-if="(gender == 'female' && maritial_status_key != 'widow_no_child' && maritial_status_key != 'widow_with_child' ) || (gender == 'male' && maritial_status_key != 'widower_no_child' && maritial_status_key != 'widower_with_child' )" as="template" :disabled="maritial_status.unavailable" >
                             <li :class="[
                                 active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                                'relative cursor-default select-none py-2 pl-10 pr-4',
+                                'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
                             ]">
                                 <span :class="[
                                     selected ? 'font-medium' : 'font-normal',

@@ -1,9 +1,13 @@
 <script setup>
 
-import { ref } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import GuestLayout from '../../Layouts/GuestLayout.vue';
-import PopupView from '../../Components/Frontend/Homepage/SearchForm/PopupView.vue'
+import PopupView from '../../Components/Frontend/Homepage/ViewDetails/PopupView.vue';
+import PopupMessage from '../../Components/Frontend/Homepage/ViewDetails/PopupMessage.vue';
+import axios from 'axios';
+import 'animate.css';
+
 
 const props = defineProps({
     translations: {
@@ -21,23 +25,211 @@ const props = defineProps({
     biodatas: {
         type: Object,
     },
+    single_biodata: {
+        type: Object,
+    },
+    likes: {
+        type: Object,
+    },
+    proposals: {
+        type: Object,
+    },
 });
 
 
 // initializing
+const page = usePage();
+const csrf_token = page.props.csrf_token;
 const isPopupViewModalOpen = ref(false);
+const isModalOpen = ref(false);
 const modalInner = ref({});
+const modalMessage = ref({});
+const self_likes = ref({});
+const self_proposals = ref({});
+const likeReceiverUserIds = ref([]);
+const proposalReceiverUserIds = ref([]);
 
 
-const onClickSingleViewDetails = (single_biodata) => {
+const onClickLikeBiodata = (single_biodata) => {
+
+    if( single_biodata.user_id == page.props.auth.user.id ){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.self_like_error,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
+    if( !page.props.single_biodata.is_approved ){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.like_unapproved,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
+    if( single_biodata.gender == props.single_biodata.gender ){
+        if( single_biodata.gender == 'male' ){
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.same_gender_like_male,
+            }
+            isModalOpen.value = true;
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.same_gender_like_female,
+            }
+            isModalOpen.value = true;
+        }
+        return;
+    }
+
+    axios.post(route('likes.single_like', {
+        csrf_token,
+        sender_user_id : page.props.auth.user.id,
+        sender_biodata_code : page.props.single_biodata.biodata_code,
+        receiver_user_id : single_biodata.user_id,
+        receiver_biodata_code : single_biodata.biodata_code,
+    }))
+    .then((response) => {
+        if( response.data ){
+            likeReceiverUserIds.value.push( single_biodata.user_id );
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.success_heading,
+                modalDescription : page.props.translations.modal_messages.success_like_message,
+            }
+            isModalOpen.value = true;
+        }
+    });
+}
+
+
+const onClickDisLikeBiodata = (single_biodata) => {
+    if( single_biodata.user_id == page.props.auth.user.id){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.self_like_error,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+    axios.post(route('likes.single_dislike', {
+        csrf_token,
+        sender_user_id : page.props.auth.user.id,
+        sender_biodata_code : page.props.single_biodata.biodata_code,
+        receiver_user_id : single_biodata.user_id,
+        receiver_biodata_code : single_biodata.biodata_code,
+    }))
+    .then((response) => {
+        if( response.data ){
+            likeReceiverUserIds.value = likeReceiverUserIds.value.filter( function(item){
+                return item != single_biodata.user_id;
+            });
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.success_heading,
+                modalDescription : page.props.translations.modal_messages.remove_like_message,
+            }
+            isModalOpen.value = true;
+        }else{
+            likeReceiverUserIds.value = likeReceiverUserIds.value.filter( function(item){
+                return item != single_biodata.user_id;
+            });
+        }
+    });
+}
+
+
+const onClickProposeBiodata = (single_biodata) => {
+    if( single_biodata.user_id == page.props.auth.user.id){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.self_propose_error,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
+    if( !page.props.single_biodata.is_approved ){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.proposal_unapproved,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
+    if( single_biodata.gender == props.single_biodata.gender ){
+        if( single_biodata.gender == 'male' ){
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.same_gender_propose_male,
+            }
+            isModalOpen.value = true;
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.same_gender_propose_female,
+            }
+            isModalOpen.value = true;
+        }
+        return;
+    }
+
+    let both_free = false;
+    if(  page.props.single_biodata.free_biodata && single_biodata.free_biodata ){
+        both_free = true;
+    }
+
+    if(confirm( page.props.translations.modal_messages.proposal_send_confirm )){
+        axios.post(route('proposals.single_propose', {
+            csrf_token,
+            sender_user_id : page.props.auth.user.id,
+            sender_biodata_code : page.props.single_biodata.biodata_code,
+            receiver_user_id : single_biodata.user_id,
+            receiver_biodata_code : single_biodata.biodata_code,
+            both_free
+        }))
+        .then((response) => {
+            if( response.data ){
+                proposalReceiverUserIds.value.push( single_biodata.user_id );
+                modalMessage.value = {
+                    modalHeading : page.props.translations.modal_messages.success_heading,
+                    modalDescription : page.props.translations.modal_messages.success_propose_message,
+                }
+                isModalOpen.value = true;
+            }else{
+                modalMessage.value = {
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.proposal_daily_limit,
+                }
+                isModalOpen.value = true;
+            }
+        });
+    }
+}
+
+
+const onClickSingleViewDetails = (single_biodata, tab_index) => {
+
+    let proposed = false;
+    if( proposalReceiverUserIds.value.includes(single_biodata.user_id) ){
+        proposed = true;
+    }
+
     modalInner.value = {
-        single_biodata
+        single_biodata,
+        tab_index,
+        proposed
     }
     isPopupViewModalOpen.value = true;
 }
 
 const closeModal = (value) => {
     isPopupViewModalOpen.value = value;
+    isModalOpen.value = value;
 }
 
 
@@ -53,6 +245,26 @@ function getAge(dateString) {
 }
 
 
+onMounted(() => {
+
+    setTimeout(() => {
+        self_likes.value = page.props.likes;
+        if( self_likes.value.length > 0 ){
+            self_likes.value.forEach(function(item, index, arr){
+                likeReceiverUserIds.value.push( item.receiver_user_id );
+            })
+        }
+        self_proposals.value = page.props.proposals;
+        if( self_proposals.value.length > 0 ){
+            self_proposals.value.forEach(function(item, index, arr){
+                proposalReceiverUserIds.value.push( item.receiver_user_id );
+            })
+        }
+    }, 500);
+
+})
+
+
 document.body.classList.remove(...document.body.classList);
 document.body.classList.add("frontend.search");
 
@@ -65,93 +277,138 @@ document.body.classList.add("frontend.search");
 
     <Head title="Search" />
 
+    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
+
     <PopupView :translations :locale :locales :isPopupViewModalOpen :modalInner @closeModal="closeModal" />
 
-    <GuestLayout :translations :locale :locales>
-        <div class="content-main ">
-            <section class="od-home-top-bg min-h-screen bg-[#FBD5B1]">
-                <div class="top-bg-content-container pt-[90px] md:pt-[120px]">
-                    <div class="od-top-bg-content">
+    <GuestLayout :translations :locale :locales :single_biodata >
+
+            <div class="content-main">
+            <div class="od-home-top-bg min-h-screen bg-[#FBD5B1]">
+                <div class="top-bg-content-container pt-[30px] md:pt-[40px]">
+                    <div class="main-container">
 
                         <section class="common_section">
-                            <div class="main-container">
-                                <h3 v-if="biodatas.total > 0" class="text-center my-4">
-                                    {{ props.translations.searchForm.biodata_count_title.replace(':count', biodatas.total) }}
-                                </h3>
-                                <div class="grid grid-cols-12 gap-0 text-gray-950 text-base">
-                                    <div v-for="single_biodata in biodatas.data" :key="single_biodata.id" class="biodata_box  col-span-12 md:col-span-6 lg:col-span-4 p-2">
-                                        <div  class="biodata_single_box relative grid grid-cols-12 gap-0 bg-[#ad277c] text-white text-base w-full overflow-hidden p-4 pb-2 shadow-md sm:max-w-md rounded-xl">
-                                            <div class="biodata_single_box_upper col-span-12 p-2 pr-0">
-                                                <h3 class="font-bold text-center">
-                                                    {{ single_biodata.gender == 'male' ? props.translations.searchForm.male_title : props.translations.searchForm.female_title }}
-                                                </h3>
-                                                <p class="truncate font-bold text-center mb-4">
-                                                    {{ props.translations.searchForm.biodata_code_title }} : {{ single_biodata.biodata_code }}
-                                                </p>
+                            <h3 v-if="biodatas.total > 0" class="text-center my-4">
+                                {{ props.translations.searchForm.biodata_count_title.replace(':count', biodatas.total) }}
+                            </h3>
+                            <div class="grid grid-cols-12 gap-0 text-gray-950 text-base">
+                                <div v-for="single_biodata in biodatas.data" :key="single_biodata.id" class="biodata_box  col-span-12 md:col-span-6 lg:col-span-4 p-2">
+                                    <div  class="biodata_single_box relative grid grid-cols-12 gap-0 bg-[#ad277c] text-white text-base w-full overflow-hidden p-4 pb-2 shadow-md sm:max-w-md rounded-xl">
+                                        <div class="biodata_single_box_upper col-span-12 p-2 pr-0">
+                                            <h3 class="font-bold text-center">
+                                                {{ single_biodata.gender == 'male' ? props.translations.searchForm.male_title : props.translations.searchForm.female_title }}
+                                            </h3>
+                                            <p class="truncate font-bold text-center mb-4">
+                                                {{ props.translations.searchForm.biodata_code_title }} : {{ single_biodata.biodata_code }}
+                                            </p>
 
-                                                <img v-if="single_biodata.free_biodata" class="absolute top-4 right-4" src="/assets/images/free.png" alt="free" width="30">
+                                            <img v-if="single_biodata.free_biodata" class="absolute top-4 right-4 animate__animated animate__heartBeat animate__delay-2s animate__infinite infinite" src="/assets/images/free.png" alt="free" width="30">
 
-                                                <div class="leading-8">
-                                                    <p class="truncate">
-                                                        {{ props.translations.searchForm.biodata_age_title.replace(':age', getAge(single_biodata.birth_date)) }}, {{ single_biodata.height }}, {{ single_biodata.skin_color }}
-                                                    </p>
-                                                    <p class="truncate">
-                                                        {{ single_biodata.general_highest_degree }}
-                                                    </p>
-                                                    <p class="truncate">
-                                                        {{ single_biodata.job_title }}({{ single_biodata.monthly_income }})
-                                                    </p>
-                                                    <p class="truncate">
-                                                        {{ single_biodata.permanent_upazila }}, {{ single_biodata.permanent_district }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="biodata_single_box_lower col-span-12 text-center mt-4 ">
+                                            <div class="leading-8">
                                                 <p class="truncate">
-                                                    <i class="fa-regular fa-thumbs-up"></i> {{ translations.profile_page.like_title }} &nbsp;
-                                                    <i class="fa-regular fa-message"></i> {{ translations.profile_page.message_title }} &nbsp;
-                                                    <i class="fa fa-paper-plane"></i>
-                                                    {{ translations.profile_page.interested_title }} &nbsp;
-                                                    <span @click="onClickSingleViewDetails(single_biodata)" class="cursor-pointer">
-                                                        <i class="fa-regular fa-eye"></i>
-                                                        {{ translations.profile_page.details_title }}
-                                                    </span>
-
+                                                    {{ props.translations.searchForm.biodata_age_title.replace(':age', getAge(single_biodata.birth_date)) }}, {{ single_biodata.height }}, {{ single_biodata.skin_color }}
+                                                </p>
+                                                <p class="truncate">
+                                                    {{ single_biodata.general_highest_degree }}
+                                                </p>
+                                                <p class="truncate">
+                                                    {{ single_biodata.job_title }}({{ single_biodata.monthly_income }})
+                                                </p>
+                                                <p class="truncate">
+                                                    {{ single_biodata.permanent_upazila }}, {{ single_biodata.permanent_district }}
                                                 </p>
                                             </div>
                                         </div>
+                                        <div class="biodata_single_box_lower col-span-12 text-center mt-4 ">
+                                            <p class="truncate">
+
+                                                <span v-if="$page.props.auth.user && !likeReceiverUserIds.includes(single_biodata.user_id)" @click="onClickLikeBiodata(single_biodata)" class="cursor-pointer">
+                                                    <i class="fa-regular fa-thumbs-up"></i> {{ translations.profile_page.like_title }} &nbsp;
+                                                </span>
+                                                <span v-if="$page.props.auth.user && likeReceiverUserIds.includes(single_biodata.user_id)" @click="onClickDisLikeBiodata(single_biodata)" class="cursor-pointer">
+                                                    <i class="fa-regular fa-thumbs-down"></i> {{ translations.profile_page.dislike_title }} &nbsp;
+                                                </span>
+                                                <span v-if="!$page.props.auth.user" class="cursor-pointer">
+                                                    <Link :href="route('register')" method="get" >
+                                                        <i class="fa-regular fa-thumbs-up"></i> {{ translations.profile_page.like_title }} &nbsp;
+                                                    </Link>
+                                                </span>
+
+                                                <span v-if="$page.props.auth.user" class="cursor-pointer">
+                                                    <i class="fa-regular fa-message"></i> {{ translations.profile_page.message_title }} &nbsp;
+                                                </span>
+                                                <span v-if="!$page.props.auth.user" class="cursor-pointer">
+                                                    <Link :href="route('register')" method="get" >
+                                                        <i class="fa-regular fa-message"></i> {{ translations.profile_page.message_title }} &nbsp;
+                                                    </Link>
+                                                </span>
+
+                                                <span v-if="$page.props.auth.user && ( ($page.props.single_biodata.free_biodata && single_biodata.free_biodata) || (!$page.props.single_biodata.free_biodata) ) && !proposalReceiverUserIds.includes(single_biodata.user_id)" @click="onClickProposeBiodata(single_biodata)" class="cursor-pointer">
+                                                    <i class="fa fa-paper-plane"></i>
+                                                    {{ translations.profile_page.interested_title }} &nbsp;
+                                                </span>
+                                                <span v-if="$page.props.auth.user &&proposalReceiverUserIds.includes(single_biodata.user_id)" @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
+                                                    <i class="fa fa-paper-plane"></i>
+                                                    {{ translations.profile_page.interested_done_title }} &nbsp;
+                                                </span>
+                                                <span v-if="$page.props.auth.user && $page.props.single_biodata.free_biodata && !single_biodata.free_biodata && !proposalReceiverUserIds.includes(single_biodata.user_id)" class="cursor-pointer">
+                                                    <Link :href="route('user.packages')" method="get" >
+                                                        <i class="fa fa-paper-plane"></i>
+                                                        {{ translations.profile_page.interested_title }} &nbsp;
+                                                    </Link>
+                                                </span>
+                                                <span v-if="!$page.props.auth.user" class="cursor-pointer">
+                                                    <Link :href="route('register')" method="get" >
+                                                        <i class="fa fa-paper-plane"></i>
+                                                        {{ translations.profile_page.interested_title }} &nbsp;
+                                                    </Link>
+                                                </span>
+
+                                                <span v-if="$page.props.auth.user" @click="onClickSingleViewDetails(single_biodata, 0)" class="cursor-pointer">
+                                                    <i class="fa-regular fa-eye"></i>
+                                                    {{ translations.profile_page.details_title }}
+                                                </span>
+                                                <span v-if="!$page.props.auth.user" class="cursor-pointer">
+                                                    <Link :href="route('register')" method="get" >
+                                                        <i class="fa-regular fa-eye"></i>
+                                                        {{ translations.profile_page.details_title }}
+                                                    </Link>
+                                                </span>
+
+                                            </p>
+                                        </div>
                                     </div>
+                                </div>
 
 
-                                    <div class="px-1 pt-10 col-span-12 flex justify-center items-center">
-                                        <template v-if="biodatas.data.length > 0">
-                                            <template v-for=" (link, index) in biodatas.links" :key="index">
-                                                <Link
-                                                    preserve-state
-                                                    v-if="link.url && !link.active"
-                                                    :href="link.url"
-                                                    class="pagination-link px-1 border-2"
-                                                    v-html="link.label"
-                                                />
-                                            </template>
+                                <div class="px-1 pt-10 col-span-12 flex justify-center items-center">
+                                    <template v-if="biodatas.data.length > 0">
+                                        <template v-for=" (link, index) in biodatas.links" :key="index">
+                                            <Link
+                                                preserve-state
+                                                v-if="link.url && !link.active"
+                                                :href="link.url"
+                                                class="pagination-link px-1 border-2"
+                                                v-html="link.label"
+                                            />
                                         </template>
+                                    </template>
 
-                                        <template v-if="biodatas.data.length == 0">
-                                            <h3 class="p-2">
-                                                {{ props.translations.searchForm.no_items_title }}
-                                            </h3>
-                                        </template>
-
-                                    </div>
-
-                                    <div class="px-1 pt-10 col-span-12 flex justify-center items-center">
-                                        <Link :href="route('frontend.home')" method="get"  as="button" class="bg-green-700 p-2 rounded-lg text-white hover:text-black hover:bg-green-100 transition-all font-bold" >
-                                            BackToHome
-                                        </Link>
-                                    </div>
-
+                                    <template v-if="biodatas.data.length == 0">
+                                        <h3 class="p-2">
+                                            {{ props.translations.searchForm.no_items_title }}
+                                        </h3>
+                                    </template>
 
                                 </div>
+
+                                <div class="px-1 pt-10 col-span-12 flex justify-center items-center">
+                                    <Link :href="route('frontend.home')" method="get"  as="button" class="bg-green-700 p-2 rounded-lg !text-white hover:!text-black hover:bg-green-100 transition-all font-bold" >
+                                        BackToHome
+                                    </Link>
+                                </div>
+
 
                             </div>
                         </section>
@@ -160,8 +417,7 @@ document.body.classList.add("frontend.search");
 
                     </div>
                 </div>
-            </section>
-
+            </div>
         </div>
 
     </GuestLayout>

@@ -15,6 +15,9 @@ const props = defineProps({
     locale: {
         type: String,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 document.body.classList.remove(...document.body.classList);
@@ -28,23 +31,21 @@ document.body.classList.add("frontend.home");
 
     <Head title="Home" />
 
-    <div class="content-main ">
-        <section class="od-home-top-bg min-h-screen bg-[#FBD5B1]">
-            <div class="top-bg-content-container pt-[90px] md:pt-[120px]">
-                <div class="od-top-bg-content">
+        <div class="content-main">
+            <div class="od-home-top-bg min-h-screen bg-[#FBD5B1]">
+                <div class="top-bg-content-container pt-[90px] md:pt-[120px]">
+                    <div class="main-container">
 
                     <section class="common_section">
-                        <div class="main-container">
-                            <div class="marquee_mother flex justify-between items-center bg-white">
-                                <div class="marquee_child flex flex-row flex-grow-1 flex-fill justify-center items-center py-2 text-white px-1">
-                                    <span class="d-flex align-items-center">
-                                        {{ translations.homepage.marquee_title }}
-                                    </span>
-                                </div>
-                                <div class="marquee_main">
-                                    <div class="marquee_div">
-                                        {{ translations.homepage.marquee_inner_text }}
-                                    </div>
+                        <div class="marquee_mother flex justify-between items-center bg-white">
+                            <div class="marquee_child flex flex-row flex-grow-1 flex-fill justify-center items-center py-2 text-white px-1">
+                                <span class="d-flex align-items-center">
+                                    {{ translations.homepage.marquee_title }}
+                                </span>
+                            </div>
+                            <div class="marquee_main">
+                                <div class="marquee_div">
+                                    {{ translations.homepage.marquee_inner_text }}
                                 </div>
                             </div>
                         </div>
@@ -59,11 +60,10 @@ document.body.classList.add("frontend.home");
 
 
 
+                    </div>
                 </div>
             </div>
-        </section>
-
-    </div>
+        </div>
 </template>
 
 <style>

@@ -285,96 +285,99 @@ onMounted(() => {
 
     <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
+    <div class="main-container">
 
-    <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
+        <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
 
-        <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
-        <input v-model="form.running_tab" type="hidden" name="running_tab" >
+            <input v-model="form.csrf_token" type="hidden" name="csrf_token" >
+            <input v-model="form.running_tab" type="hidden" name="running_tab" >
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleDistrictsSelection :translations :locale :Districts="single_biodata.deserved_districts" :districts="districts" @onSelectDistricts="onSelectDistricts" />
-            <InputError class="mt-2" :message="form.errors.deserved_districts" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleDistrictsSelection :translations :locale :Districts="single_biodata.deserved_districts" :districts="districts" @onSelectDistricts="onSelectDistricts" />
+                <InputError class="mt-2" :message="form.errors.deserved_districts" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <AgeSlider :translations :deserved_age_range="single_biodata.deserved_age_range" @onUpdateAgeSlider="onUpdateAgeSlider"/>
-            <InputError class="mt-2" :message="form.errors.deserved_age_range" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <AgeSlider :translations :deserved_age_range="single_biodata.deserved_age_range" @onUpdateAgeSlider="onUpdateAgeSlider"/>
+                <InputError class="mt-2" :message="form.errors.deserved_age_range" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <HeightSlider :translations :deserved_height_range="single_biodata.deserved_height_range" @onUpdateHeightSlider="onUpdateHeightSlider"/>
-            <InputError class="mt-2" :message="form.errors.deserved_height_range" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <HeightSlider :translations :deserved_height_range="single_biodata.deserved_height_range" @onUpdateHeightSlider="onUpdateHeightSlider"/>
+                <InputError class="mt-2" :message="form.errors.deserved_height_range" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleSkinColorsSelection :translations :skinColors="single_biodata.deserved_skin_colors" @onSelectSkinColors="onSelectSkinColors" />
-            <InputError class="mt-2" :message="form.errors.deserved_skin_colors" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleSkinColorsSelection :translations :skinColors="single_biodata.deserved_skin_colors" @onSelectSkinColors="onSelectSkinColors" />
+                <InputError class="mt-2" :message="form.errors.deserved_skin_colors" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleMaritialStatusSelection :translations :maritialStatuses="single_biodata.deserved_maritial_statuses" :gender="single_biodata.gender" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
-            <InputError class="mt-2" :message="form.errors.deserved_maritial_statuses" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleMaritialStatusSelection :translations :maritialStatuses="single_biodata.deserved_maritial_statuses" :gender="single_biodata.gender" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
+                <InputError class="mt-2" :message="form.errors.deserved_maritial_statuses" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleAkidaMajhabSelection :translations :akidaMajhabs="single_biodata.deserved_akida_majhhabs" @onSelectAkidaMajhabs="onSelectAkidaMajhabs" />
-            <InputError class="mt-2" :message="form.errors.deserved_akida_majhhabs" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleAkidaMajhabSelection :translations :akidaMajhabs="single_biodata.deserved_akida_majhhabs" @onSelectAkidaMajhabs="onSelectAkidaMajhabs" />
+                <InputError class="mt-2" :message="form.errors.deserved_akida_majhhabs" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleFamilyConditionsSelection :translations :familyConditions="single_biodata.deserved_family_conditions" @onSelectFamilyConditions="onSelectFamilyConditions" />
-            <InputError class="mt-2" :message="form.errors.deserved_family_conditions" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleFamilyConditionsSelection :translations :familyConditions="single_biodata.deserved_family_conditions" @onSelectFamilyConditions="onSelectFamilyConditions" />
+                <InputError class="mt-2" :message="form.errors.deserved_family_conditions" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleJobTitlesSelection :translations :JobTitles="single_biodata.deserved_job_titles" :gender="single_biodata.gender" @onSelectJobTitles="onSelectJobTitles" />
-            <InputError class="mt-2" :message="form.errors.deserved_job_titles" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleJobTitlesSelection :translations :JobTitles="single_biodata.deserved_job_titles" :gender="single_biodata.gender" @onSelectJobTitles="onSelectJobTitles" />
+                <InputError class="mt-2" :message="form.errors.deserved_job_titles" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleEducationMediumSelection :translations :educationMediums="single_biodata.deserved_education_mediums" @onSelectEducationMedium="onSelectEducationMedium"/>
-            <InputError class="mt-2" :message="form.errors.deserved_education_mediums" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleEducationMediumSelection :translations :educationMediums="single_biodata.deserved_education_mediums" @onSelectEducationMedium="onSelectEducationMedium"/>
+                <InputError class="mt-2" :message="form.errors.deserved_education_mediums" />
+            </div>
 
-        <div v-if="form.deserved_general_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleGeneralItemsSelection :translations :GeneralItems="single_biodata.deserved_general_degrees" @onSelectGeneralItems="onSelectGeneralItems" />
-            <InputError class="mt-2" :message="form.errors.deserved_general_degrees" />
-        </div>
+            <div v-if="form.deserved_general_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleGeneralItemsSelection :translations :GeneralItems="single_biodata.deserved_general_degrees" @onSelectGeneralItems="onSelectGeneralItems" />
+                <InputError class="mt-2" :message="form.errors.deserved_general_degrees" />
+            </div>
 
-        <div v-if="form.deserved_aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleAliyaItemsSelection :translations :AliyaItems="single_biodata.deserved_aliya_degrees" @onSelectAliyaItems="onSelectAliyaItems" />
-            <InputError class="mt-2" :message="form.errors.deserved_aliya_degrees" />
-        </div>
+            <div v-if="form.deserved_aliya_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleAliyaItemsSelection :translations :AliyaItems="single_biodata.deserved_aliya_degrees" @onSelectAliyaItems="onSelectAliyaItems" />
+                <InputError class="mt-2" :message="form.errors.deserved_aliya_degrees" />
+            </div>
 
-        <div v-if="form.deserved_kowmi_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleKowmiItemsSelection :translations :KowmiItems="single_biodata.deserved_kowmi_degrees" @onSelectKowmiItems="onSelectKowmiItems" />
-            <InputError class="mt-2" :message="form.errors.deserved_kowmi_degrees" />
-        </div>
+            <div v-if="form.deserved_kowmi_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleKowmiItemsSelection :translations :KowmiItems="single_biodata.deserved_kowmi_degrees" @onSelectKowmiItems="onSelectKowmiItems" />
+                <InputError class="mt-2" :message="form.errors.deserved_kowmi_degrees" />
+            </div>
 
-        <div v-if="form.deserved_study_others_selected" class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleStudyOthersItemsSelection :translations :StudyOthersItems="single_biodata.deserved_study_others_degrees" @onSelectStudyOthersItems="onSelectStudyOthersItems" />
-            <InputError class="mt-2" :message="form.errors.deserved_study_others_degrees" />
-        </div>
+            <div v-if="form.deserved_study_others_selected" class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleStudyOthersItemsSelection :translations :StudyOthersItems="single_biodata.deserved_study_others_degrees" @onSelectStudyOthersItems="onSelectStudyOthersItems" />
+                <InputError class="mt-2" :message="form.errors.deserved_study_others_degrees" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <MultipleConditionsSelection :translations :gender="single_biodata.gender" :conditions="single_biodata.deserved_conditions" @onSelectConditions="onSelectConditions" />
-            <InputError class="mt-2" :message="form.errors.deserved_conditions" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <MultipleConditionsSelection :translations :gender="single_biodata.gender" :conditions="single_biodata.deserved_conditions" @onSelectConditions="onSelectConditions" />
+                <InputError class="mt-2" :message="form.errors.deserved_conditions" />
+            </div>
 
-        <div class="form_item col-span-12 md:col-span-6 p-2">
-            <textarea v-model="form.deserved_others_desc" @input="(e) => { single_biodata.deserved_others_desc = e.target.value }" name="deserved_others_desc" rows="2" maxlength="255" :placeholder="translations.biodata_form.deserved_biodata.deserved_others_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
-            <InputError class="mt-2" :message="form.errors.deserved_others_desc" />
-        </div>
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <textarea v-model="form.deserved_others_desc" @input="(e) => { single_biodata.deserved_others_desc = e.target.value }" name="deserved_others_desc" rows="2" maxlength="3000"  :placeholder="translations.biodata_form.deserved_biodata.deserved_others_desc_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <InputError class="mt-2" :message="form.errors.deserved_others_desc" />
+            </div>
 
 
-        <div class="form_item col-span-12 p-2">
-            <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
-                :disabled="form.processing">
-                {{ translations.biodata_form.submit_button_text }}
-            </button>
-        </div>
+            <div class="form_item col-span-12 p-2">
+                <button class="biodata_submit_button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing">
+                    {{ translations.biodata_form.submit_button_text }}
+                </button>
+            </div>
 
-    </form>
+        </form>
+
+    </div>
 
 
 </template>

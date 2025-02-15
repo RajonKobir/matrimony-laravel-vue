@@ -37,7 +37,6 @@ function handleImageError() {
 
 
     <Head>
-        <link rel="shortcut icon" :href="`/assets/css/images/favicon.png`">
         <link rel="stylesheet" :href="`/assets/css/frontend/frontend.css`">
         <link rel="stylesheet" :href="`/assets/css/frontend/font-awesome.min.css`">
         <link rel="stylesheet" :href="`/assets/css/backend/dataTables.min.css`">

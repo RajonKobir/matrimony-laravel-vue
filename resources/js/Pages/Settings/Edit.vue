@@ -43,15 +43,12 @@ document.body.classList.add("frontend.edit_profile");
     <Head title="Settings" />
 
     <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister :single_biodata >
-        <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
-            >
-                Settings
-            </h2>
-        </template>
 
-        <div class="py-12">
+        <div class="bg-[#3BA038] p-4">
+            <h1 class="od-banner-text">{{ translations.settings_page.page_title }}</h1>
+        </div>
+
+        <div class="py-4">
             <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                 <div
                     class="bg-white p-4 shadow sm:rounded-lg sm:p-8"
@@ -69,11 +66,11 @@ document.body.classList.add("frontend.edit_profile");
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
 
-                <div
+                <!-- <div
                     class="bg-white p-4 shadow sm:rounded-lg sm:p-8"
                 >
                     <DeleteUserForm class="max-w-xl" />
-                </div>
+                </div> -->
             </div>
         </div>
     </AuthenticatedLayout>

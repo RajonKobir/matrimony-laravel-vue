@@ -31,7 +31,7 @@ const diplayAgeItem = (data) => {
 <template>
 
     <div class="mb-6" >
-        <label for="age_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_age_range_title }}-</label>
+        <label for="age_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_age_range_title }}</label>
     </div>
     <Range
         @update:model-value="onChangeSlider"

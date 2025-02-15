@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\Admin\AdminAuthController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\BackEndController;
 use App\Http\Controllers\BiodataController;
@@ -23,6 +25,26 @@ Route::get('/localization/{locale}', LocalizationController::class)->name('local
 
 
 Route::middleware(Localization::class)->group(function(){
+
+
+    // likes routes
+    Route::prefix('/likes')->controller(LikeController::class)->name('likes.')->group(function () {
+
+        Route::post('/single_like', 'singleLike')->name('single_like');
+
+        Route::post('/single_dislike', 'singleDisLike')->name('single_dislike');
+
+    });
+
+
+    // proposals routes
+    Route::prefix('/proposals')->controller(ProposalController::class)->name('proposals.')->group(function () {
+
+        Route::post('/single_propose', 'singlePropose')->name('single_propose');
+
+        Route::post('/single_oppose', 'singleOppose')->name('single_oppose');
+
+    });
 
 
     // unauthenticated frontend routes
@@ -47,6 +69,12 @@ Route::middleware(Localization::class)->group(function(){
     Route::controller(FrontEndController::class)->name('user.')->middleware('auth')->group(function () {
 
         Route::get('/profile', 'userProfile')->middleware('verified')->name('profile');
+
+        Route::get('/likes', 'userLikes')->middleware('verified')->name('likes');
+
+        Route::get('/proposals', 'userProposals')->middleware('verified')->name('proposals');
+
+        Route::get('/packages', 'userPackages')->middleware('verified')->name('packages');
 
         Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
         Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');

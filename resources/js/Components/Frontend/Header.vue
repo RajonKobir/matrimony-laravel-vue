@@ -4,17 +4,7 @@ import { ref, onMounted } from "vue";
 import { Link } from '@inertiajs/vue3';
 import ApplicationLogo from '../ApplicationLogo.vue';
 import { Head } from '@inertiajs/vue3';
-import { useAddToHomescreen } from '@owliehq/vue-addtohomescreen';
-
-useAddToHomescreen({
-    title: 'Shadibari',
-    titleColor: '#ad277c',
-    contentColor: '#ad277c',
-    buttonColor: '#ad277c',
-    iconPath: '/assets/css/images/favicon.png',
-    background: '#ad277c',
-    expires: 10,
-});
+import 'animate.css';
 
 
 const props = defineProps({
@@ -52,7 +42,7 @@ onMounted(() => {
 
     window.addEventListener("scroll", function (e) {
         e.preventDefault();
-        if (window.scrollY > 100 && !isPositionSticky) {
+        if (window.scrollY > 0 && !isPositionSticky) {
             element.classList.add("amimate_header");
             element2.classList.add("header_transparent_background");
         } else {
@@ -74,7 +64,6 @@ onMounted(() => {
 <template>
 
     <Head>
-        <link rel="shortcut icon" :href="`/assets/css/images/favicon.png`">
         <link rel="stylesheet" :href="`/assets/css/frontend/frontend.css`">
         <link rel="stylesheet" :href="`/assets/css/frontend/font-awesome.min.css`">
     </Head>
@@ -96,34 +85,34 @@ onMounted(() => {
                                 <a href="#"><i class="fa fa-bars"></i></a>
                             </div>
                             <nav class="menu-lists-container">
-                                <ul class="od-menu-lists ">
-                                    <li class="od-menu-list-item">
+                                <ul class="od-menu-lists text-gray-950">
+                                    <li class="od-menu-list-item font-bold">
                                         <Link :href="route('frontend.home')" >{{ translations.main_menu.home }}</Link>
                                     </li>
-                                    <li class="od-menu-list-item">
+                                    <li class="od-menu-list-item font-bold">
                                         <Link :href="route('frontend.terms')" >{{ translations.main_menu.terms }}</Link>
                                     </li>
-                                    <li class="od-menu-list-item">
+                                    <li class="od-menu-list-item font-bold">
                                         <Link :href="route('frontend.opinions')" >{{ translations.main_menu.opinions }}</Link>
                                     </li>
-                                    <li v-if="!$page.props.auth.user" class="free_registration od-menu-list-item">
-                                        <Link :href="route('register')" >{{ translations.main_menu.free_registration }}</Link>
+                                    <li v-if="!$page.props.auth.user" class="free_registration od-menu-list-item font-bold text-[#ad277c] animate__animated animate__fadeInLeft">
+                                        <Link :href="route('register')" class="animate__animated animate__pulse animate__delay-2s animate__infinite infinite">{{ translations.main_menu.free_registration }}</Link>
                                     </li>
-                                    <li class="od-menu-list-item od-localization-container hide-od-xl">
+                                    <li class="od-menu-list-item od-localization-container hide-od-xl ">
                                         <a href="javascript:void(0);">
                                             <div class="od-localization-content od-display-flex od-align-items-center">
-                                                <div class="od-icon"><i class="fa fa-language"></i></div>
-                                                <div class="od-selected-language">
+                                                <div class="od-icon"><i class="fa fa-language text-gray-950"></i></div>
+                                                <div class="od-selected-language text-gray-950">
                                                     <span>
                                                         {{ props.locale == 'en' ? 'Eng' : 'বাংলা' }}
                                                     </span>
-                                                    <i class="fa fa-angle-down"></i>
+                                                    <i class="fa fa-angle-down text-gray-950"></i>
                                                 </div>
                                             </div>
                                         </a>
                                         <div class="od-dropdown-menu-container od-animate od-slideIn">
                                             <div class="dropdown-menu-content">
-                                                <ul class="dropdown-menu-lists">
+                                                <ul class="dropdown-menu-lists text-gray-950">
                                                     <li v-for="lang in locales" :key="lang.id">
                                                         <Link v-if="lang != locale" :href="route('localization', lang)">
                                                         {{ lang == 'en' ? 'English' : 'বাংলা' }}
@@ -144,18 +133,18 @@ onMounted(() => {
                                             <a href="javascript:void(0);">
                                                 <div
                                                     class="od-localization-content od-display-flex od-align-items-center">
-                                                    <div class="od-icon"><i class="fa fa-language"></i></div>
-                                                    <div class="od-selected-language">
+                                                    <div class="od-icon"><i class="fa fa-language text-gray-950"></i></div>
+                                                    <div class="od-selected-language text-gray-950">
                                                         <span>
                                                             {{ props.locale == 'en' ? 'Eng' : 'বাংলা' }}
                                                         </span>
-                                                        <i class="fa fa-angle-down"></i>
+                                                        <i class="fa fa-angle-down text-gray-950"></i>
                                                     </div>
                                                 </div>
                                             </a>
                                             <div class="od-dropdown-menu-container od-animate od-slideIn">
                                                 <div class="dropdown-menu-content">
-                                                    <ul class="dropdown-menu-lists">
+                                                    <ul class="dropdown-menu-lists text-gray-950">
                                                         <li v-for="lang in locales" :key="lang.id">
                                                             <Link v-if="lang != locale"
                                                                 :href="route('localization', lang)">
@@ -199,6 +188,32 @@ onMounted(() => {
                                                                 <img src="assets/images/editbiodata-ico.svg"
                                                                     alt="Edit biodata-icon">
                                                                     {{ translations.main_menu.biodata_settings }}
+                                                            </Link>
+                                                        </li>
+
+                                                        <li>
+                                                            <Link :href="route('user.likes')" method="get" as="button">
+                                                                <i class="fa-regular fa-thumbs-up"></i> {{ translations.profile_page.like_title }}
+                                                            </Link>
+                                                        </li>
+
+                                                        <li>
+                                                            <button>
+                                                                <i class="fa-regular fa-message"></i> {{ translations.profile_page.message_title }}
+                                                            </button>
+                                                        </li>
+
+                                                        <li>
+                                                            <Link :href="route('user.proposals')" method="get" as="button">
+                                                                <i class="fa fa-paper-plane"></i>
+                                                                {{ translations.profile_page.proposal_title }}
+                                                            </Link>
+                                                        </li>
+
+                                                        <li>
+                                                            <Link :href="route('user.packages')" method="get" as="button">
+                                                                <i class="fa-solid fa-box"></i>
+                                                                {{ translations.profile_page.package_title }}
                                                             </Link>
                                                         </li>
 
