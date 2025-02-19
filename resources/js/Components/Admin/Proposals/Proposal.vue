@@ -2,10 +2,13 @@
 import { ref, onMounted } from 'vue';
 import { Link, usePage, Head } from '@inertiajs/vue3';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
+import AllProposals from './AllProposals.vue';
+import PendingProposals from './PendingProposals.vue';
+import AutoPendingProposals from './AutoPendingProposals.vue';
 
 
 const emits = defineEmits([
-    'onUpdateAllBiodatas'
+    'onUpdateAllProposals'
 ]);
 
 
@@ -28,6 +31,9 @@ defineProps({
     all_biodatas: {
         type: Object,
     },
+    all_proposals: {
+        type: Object,
+    },
 });
 
 
@@ -43,9 +49,9 @@ function changeTab(index) {
     selectedTab.value = index;
 }
 
-const onUpdateAllBiodatas = (biodatas) => {
-    page.props.all_biodatas = biodatas;
-    emits('onUpdateAllBiodatas', biodatas);
+const onUpdateAllProposals = (proposals) => {
+    page.props.all_proposals = proposals;
+    emits('onUpdateAllProposals', proposals);
 }
 
 
@@ -87,21 +93,21 @@ const onUpdateAllBiodatas = (biodatas) => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    Content 1
+                    <AllProposals :translations :locale :locales :front_end_translations :all_biodatas :all_proposals :districts @onUpdateAllProposals="onUpdateAllProposals" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    Content 2
+                    <PendingProposals :translations :locale :locales :front_end_translations :all_biodatas :all_proposals :districts @onUpdateAllProposals="onUpdateAllProposals" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    Content 3
+                    <AutoPendingProposals :translations :locale :locales :front_end_translations :all_biodatas :all_proposals :districts @onUpdateAllProposals="onUpdateAllProposals" />
 
                 </TabPanel>
 

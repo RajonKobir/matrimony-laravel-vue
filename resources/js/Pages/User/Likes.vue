@@ -1,7 +1,7 @@
 <script setup>
 
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout.vue';
-import { Head, usePage, Link } from '@inertiajs/vue3';
+import { Head, usePage, Link, router } from '@inertiajs/vue3';
 import { ref, onMounted } from "vue";
 import PopupMessage from '../../Components/Frontend/Likes/PopupMessage.vue';
 import PopupView from '../../Components/Frontend/Likes/PopupView.vue';
@@ -99,25 +99,31 @@ const onClickProposeBiodata = (single_biodata) => {
     if(confirm( page.props.translations.modal_messages.proposal_send_confirm )){
         axios.post(route('proposals.single_propose', {
             csrf_token,
-            sender_user_id : page.props.auth.user.id,
+            sender_user_id : page.props.single_biodata.user_id,
             sender_biodata_code : page.props.single_biodata.biodata_code,
             receiver_user_id : single_biodata.user_id,
             receiver_biodata_code : single_biodata.biodata_code,
         }))
         .then((response) => {
-            if( response.data ){
-                proposalReceiverUserIds.value.push( single_biodata.user_id );
-                modalMessage.value = {
-                    modalHeading : page.props.translations.modal_messages.success_heading,
-                    modalDescription : page.props.translations.modal_messages.success_propose_message,
+            if( typeof response.data.message == 'undefined' ){
+                if( response.request.responseURL ){
+                    return router.visit(response.request.responseURL);
                 }
-                isModalOpen.value = true;
             }else{
-                modalMessage.value = {
-                    modalHeading : page.props.translations.modal_messages.error_heading,
-                    modalDescription : page.props.translations.modal_messages.proposal_daily_limit,
+                if( response.data.message == true ){
+                    proposalReceiverUserIds.value.push( single_biodata.user_id );
+                    modalMessage.value = {
+                        modalHeading : page.props.translations.modal_messages.success_heading,
+                        modalDescription : page.props.translations.modal_messages.success_propose_message,
+                    }
+                    isModalOpen.value = true;
+                }else{
+                    modalMessage.value = {
+                        modalHeading : page.props.translations.modal_messages.error_heading,
+                        modalDescription : response.data.message,
+                    }
+                    isModalOpen.value = true;
                 }
-                isModalOpen.value = true;
             }
         });
     }
@@ -151,6 +157,26 @@ function getAge(dateString) {
     return age;
 }
 
+
+const highestDegreeSelection = (single_biodata) => {
+    let highestDegree = '';
+    if( single_biodata.study_others_selected ){
+        highestDegree = single_biodata.study_others_highest_degree;
+    }
+
+    if( single_biodata.kowmi_selected ){
+        highestDegree = single_biodata.kowmi_highest_degree;
+    }
+
+    if( single_biodata.aliya_selected ){
+        highestDegree = single_biodata.aliya_highest_degree;
+    }
+
+    if( single_biodata.general_selected ){
+        highestDegree = single_biodata.general_highest_degree;
+    }
+    return highestDegree;
+}
 
 
 onMounted(() => {
@@ -219,7 +245,7 @@ document.body.classList.add("user.likes");
                                                             {{ props.translations.searchForm.biodata_age_title.replace(':age', getAge(single_biodata.birth_date)) }}, {{ single_biodata.height }}, {{ single_biodata.skin_color }}
                                                         </p>
                                                         <p class="truncate">
-                                                            {{ single_biodata.general_highest_degree }}
+                                                            {{ highestDegreeSelection(single_biodata) }}
                                                         </p>
                                                         <p class="truncate">
                                                             {{ single_biodata.job_title }}({{ single_biodata.monthly_income }})

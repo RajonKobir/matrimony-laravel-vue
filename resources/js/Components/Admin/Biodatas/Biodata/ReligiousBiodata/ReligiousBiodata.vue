@@ -169,7 +169,7 @@ onMounted(() => {
 
     <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
-    <div class="main-container">
+    <div class="container">
 
         <form @submit.prevent="submit" class="grid grid-cols-12 gap-0">
 

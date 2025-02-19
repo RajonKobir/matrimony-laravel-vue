@@ -30,7 +30,7 @@
 
 <body>
 
-    <div class="container">
+    <div class="main-container">
 
         <div class="row">
 

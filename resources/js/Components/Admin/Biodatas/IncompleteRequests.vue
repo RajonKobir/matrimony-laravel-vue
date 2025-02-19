@@ -57,7 +57,7 @@ const modalInner = ref({});
 const viewBiodata = ref({});
 let dt;
 const table = ref();
-const selectedRowIds = ref([]);
+const selectedUsernames = ref([]);
 
 
 const options = ref({
@@ -80,12 +80,12 @@ const options = ref({
             className: 'select-checkbox',
         },
         {
-            targets: 1,
-            responsivePriority: 2,
+            targets: [1,2],
+            visible: false,
         },
         {
-            targets: 6,
-            responsivePriority: 3,
+            targets: 5,
+            responsivePriority: 2,
         },
         {
             targets: -1,
@@ -104,13 +104,13 @@ const options = ref({
                     action: function (e, dt, node, config) {
                         if (dt.rows({ selected: true }).count() > 0) {
                             const selectedData = dt.rows({ selected: true }).data().toArray(); // Get selected rows data
-                            selectedRowIds.value = selectedData.map(row => row[2]); // Extract ids only
+                            selectedUsernames.value = selectedData.map(row => row[2]); // Extract ids only
 
                             modalInner.value = {
                                 modalHeading : 'Take Actions!',
-                                modalDescription : 'The selected UserIDs are: ' + selectedRowIds.value,
+                                modalDescription : 'The selected UserIDs are: ' + selectedUsernames.value,
                                 showButtons : true,
-                                trashIds : selectedRowIds.value,
+                                trashIds : selectedUsernames.value,
                                 approvePage: false,
                                 trashPage: false,
                             }
@@ -354,7 +354,7 @@ document.body.classList.add("backend.biodata.approved");
                     </th>
                     <th>Id</th>
                     <th>User Id</th>
-                    <th>Approved</th>
+                    <!-- <th>Approved</th> -->
                     <th>Biodata Code</th>
                     <th>Biodata Completion</th>
                     <th>Email</th>
@@ -369,21 +369,21 @@ document.body.classList.add("backend.biodata.approved");
                         <td></td>
                         <td>{{ single_biodata.id }}</td>
                         <td>{{ single_biodata.user_id }}</td>
-                        <td>{{ single_biodata.is_approved ? 'yes' : 'no' }}</td>
+                        <!-- <td>{{ single_biodata.is_approved ? 'yes' : 'no' }}</td> -->
                         <td>{{ single_biodata.biodata_code }}</td>
                         <td>{{ single_biodata.biodata_completion }}%</td>
                         <td>{{ single_biodata.user_email }}</td>
                         <td>{{ single_biodata.user_mobile }}</td>
                         <td>
-                            <div class="flex flex-row justify-center items-center gap-1">
+                            <div class="flex flex-col sm:flex-row justify-center items-center gap-1">
                                 <button type="button" @click="onClickView(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
                                     View
                                 </button>
                                 <button type="button" @click="onClickTakeAction(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                                    TakeAction
+                                    Action
                                 </button>
                                 <button type="button" @click="onClickMoveToTrash(single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                                    MoveToTrash
+                                    Trash
                                 </button>
                             </div>
                         </td>
@@ -419,10 +419,7 @@ document.body.classList.add("backend.biodata.approved");
     .action_buttons{
         width: 70% !important;
     }
-    .action_button{
-        padding: .5rem .1rem !important;
-        margin: 0 !important;
-    }
+
 }
 
 .action_button{

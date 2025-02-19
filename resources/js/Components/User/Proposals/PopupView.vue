@@ -12,6 +12,7 @@ import ShowBiodata from './ShowBiodata/ShowBiodata.vue';
 
 const emits = defineEmits([
     'closeModal',
+    'onUpdateReceivedProposals',
 ]);
 
 
@@ -36,6 +37,11 @@ const props = defineProps({
 
 function closeModal() {
     emits('closeModal', false);
+}
+
+
+const onUpdateReceivedProposals = (proposals) => {
+    emits('onUpdateReceivedProposals', proposals);
 }
 
 
@@ -93,7 +99,7 @@ function closeModal() {
                 </DialogTitle>
 
                 <div class="mt-10 text-center">
-                    <ShowBiodata :translations :locale :locales  :single_biodata="modalInner.single_biodata" :tab_index="modalInner.tab_index" />
+                    <ShowBiodata :translations :locale :locales  :single_biodata="modalInner.single_biodata" :tab_index="modalInner.tab_index" :proposal="modalInner.proposal" @onUpdateReceivedProposals="onUpdateReceivedProposals" />
                 </div>
 
               <div class="mt-4">

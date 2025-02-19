@@ -71,29 +71,35 @@ class LikeController extends Controller
             'receiver_biodata_code' => 'required|string|min:3|max:20',
         ]);
 
+        // self like
+        if( $request->sender_user_id == $request->receiver_user_id ){
+            return __('frontend.modal_messages.self_like_error');
+        }
+
         $single_like = Like::where('sender_user_id', $request->sender_user_id)
         ->where('receiver_user_id', $request->receiver_user_id)
         ->get();
 
-        if( count($single_like) == 1 ){
-            $single_like = Like::where('sender_user_id', $request->sender_user_id)
-            ->where('receiver_user_id', $request->receiver_user_id)->update([
-                'like_deleted' => false,
-            ]);
-            return true;
-        }else{
-            $single_like = new Like();
-            $single_like->sender_user_id = $request->sender_user_id;
-            $single_like->receiver_user_id = $request->receiver_user_id;
-            $single_like->sender_biodata_code = $request->sender_biodata_code;
-            $single_like->receiver_biodata_code = $request->receiver_biodata_code;
-            $single_like->save();
-            return true;
+        if( $single_like ){
+            if( count($single_like) == 1 ){
+                $single_like = Like::where('sender_user_id', $request->sender_user_id)
+                ->where('receiver_user_id', $request->receiver_user_id)->update([
+                    'like_deleted' => false,
+                ]);
+                return true;
+            }
         }
 
-        return false;
+        $single_like = new Like();
+        $single_like->sender_user_id = $request->sender_user_id;
+        $single_like->receiver_user_id = $request->receiver_user_id;
+        $single_like->sender_biodata_code = $request->sender_biodata_code;
+        $single_like->receiver_biodata_code = $request->receiver_biodata_code;
+        $single_like->save();
+        return true;
 
     }
+
 
     public function singleDisLike(Request $request){
         $request->validate([

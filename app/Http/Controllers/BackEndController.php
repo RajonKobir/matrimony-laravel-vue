@@ -8,6 +8,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Biodata;
+use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use App\Models\District;
@@ -31,8 +32,10 @@ class BackEndController extends Controller
 
     public function getDashboard(){
         $all_biodatas = Biodata::all();
+        $all_proposals = Proposal::all();
         $all_biodatas_array = [
             'all_biodatas' => $all_biodatas,
+            'all_proposals' => $all_proposals,
             'front_end_translations' => __('frontend'),
             'districts' => District::all(),
         ];

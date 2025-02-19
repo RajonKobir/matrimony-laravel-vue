@@ -49,17 +49,25 @@ const props = defineProps({
 const page = usePage();
 const csrf_token = page.props.csrf_token;
 const single_biodata_data = ref([]);
-const self_likes = ref({});
-const likeReceiverUserIds = ref([]);
 const selectedTab = ref(0);
+const receivedProposals = ref({});
 
 function changeTab(index) {
     selectedTab.value = index;
 }
 
+
+const onUpdateReceivedProposals = (proposals) => {
+    receivedProposals.value = proposals;
+}
+
+
 onMounted(() => {
     setTimeout(() => {
         single_biodata_data.value = page.props.single_biodata;
+
+        receivedProposals.value = props.received_proposals;
+
     }, 500);
 })
 
@@ -106,7 +114,7 @@ onMounted(() => {
                     <TabPanel :class="['rounded-xl bg-white', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                     ]">
 
-                        <ReceivedProposals :translations :locale :locales  :single_biodata="single_biodata_data" :biodatas="received_biodatas" :proposals="received_proposals" :likes />
+                        <ReceivedProposals :translations :locale :locales  :single_biodata="single_biodata_data" :biodatas="received_biodatas" :proposals="receivedProposals" :likes @onUpdateReceivedProposals="onUpdateReceivedProposals" />
 
                     </TabPanel>
 
@@ -120,7 +128,7 @@ onMounted(() => {
                     <TabPanel :class="['rounded-xl bg-white', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                     ]">
 
-                        <DetailedProposals :translations :locale :locales  :single_biodata="single_biodata_data" :biodatas="sent_biodatas" :proposals="sent_proposals" :likes />
+                        <DetailedProposals :translations :locale :locales  :single_biodata="single_biodata_data" :sent_biodatas :received_biodatas :sent_proposals :received_proposals="receivedProposals" :likes @onUpdateReceivedProposals="onUpdateReceivedProposals" />
 
                     </TabPanel>
 

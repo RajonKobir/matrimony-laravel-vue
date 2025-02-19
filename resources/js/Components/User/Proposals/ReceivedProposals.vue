@@ -7,6 +7,11 @@ import PopupView from './PopupView.vue';
 import 'animate.css';
 
 
+const emits = defineEmits([
+    'onUpdateReceivedProposals',
+]);
+
+
 const props = defineProps({
     translations: {
         type: Object,
@@ -67,6 +72,12 @@ const onClickLikeBiodata = (single_biodata) => {
                 modalDescription : page.props.translations.modal_messages.success_like_message,
             }
             isModalOpen.value = true;
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : response.data,
+            }
+            isModalOpen.value = true;
         }
     });
 
@@ -102,10 +113,11 @@ const onClickDisLikeBiodata = (single_biodata) => {
 }
 
 
-const onClickSingleViewDetails = (single_biodata, tab_index) => {
+const onClickSingleViewDetails = (single_biodata, tab_index, proposal = null) => {
     modalInner.value = {
         single_biodata,
-        tab_index
+        tab_index,
+        proposal,
     }
     isPopupViewModalOpen.value = true;
 }
@@ -122,6 +134,31 @@ function getAge(dateString) {
     return age;
 }
 
+
+const highestDegreeSelection = (single_biodata) => {
+    let highestDegree = '';
+    if( single_biodata.study_others_selected ){
+        highestDegree = single_biodata.study_others_highest_degree;
+    }
+
+    if( single_biodata.kowmi_selected ){
+        highestDegree = single_biodata.kowmi_highest_degree;
+    }
+
+    if( single_biodata.aliya_selected ){
+        highestDegree = single_biodata.aliya_highest_degree;
+    }
+
+    if( single_biodata.general_selected ){
+        highestDegree = single_biodata.general_highest_degree;
+    }
+    return highestDegree;
+}
+
+
+const onUpdateReceivedProposals = (proposals) => {
+    emits('onUpdateReceivedProposals', proposals);
+}
 
 
 onMounted(() => {
@@ -152,7 +189,7 @@ document.body.classList.add("user.proposals.received");
 
         <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
-        <PopupView :translations :locale :locales :isPopupViewModalOpen :modalInner @closeModal="closeModal" />
+        <PopupView :translations :locale :locales :isPopupViewModalOpen :modalInner @closeModal="closeModal" @onUpdateReceivedProposals="onUpdateReceivedProposals" />
 
             <div class="content-main">
             <div class="od-home-top-bg min-h-screen bg-[#FBD5B1]">
@@ -165,7 +202,7 @@ document.body.classList.add("user.proposals.received");
                                     {{ props.translations.proposal_page.received_count_title.replace(':count', all_biodatas.total) }}
                                 </h3>
                                 <div class="grid grid-cols-12 gap-0 text-gray-950 text-base">
-                                    <div v-for="single_biodata in all_biodatas.data" :key="single_biodata.id" class="biodata_box  col-span-12 md:col-span-6 lg:col-span-4 p-2">
+                                    <div v-for="(single_biodata, single_biodata_key) in all_biodatas.data" :key="single_biodata.id" class="biodata_box  col-span-12 md:col-span-6 lg:col-span-4 p-2">
                                         <div  class="biodata_single_box relative grid grid-cols-12 gap-0 bg-[#ad277c] text-white text-base w-full overflow-hidden p-4 pb-2 shadow-md sm:max-w-md rounded-xl">
                                             <div class="biodata_single_box_upper col-span-12 p-2 pr-0">
                                                 <h3 class="font-bold text-center">
@@ -182,7 +219,7 @@ document.body.classList.add("user.proposals.received");
                                                         {{ props.translations.searchForm.biodata_age_title.replace(':age', getAge(single_biodata.birth_date)) }}, {{ single_biodata.height }}, {{ single_biodata.skin_color }}
                                                     </p>
                                                     <p class="truncate">
-                                                        {{ single_biodata.general_highest_degree }}
+                                                        {{ highestDegreeSelection(single_biodata) }}
                                                     </p>
                                                     <p class="truncate">
                                                         {{ single_biodata.job_title }}({{ single_biodata.monthly_income }})
@@ -206,12 +243,12 @@ document.body.classList.add("user.proposals.received");
                                                         <i class="fa-regular fa-message"></i> {{ translations.profile_page.message_title }} &nbsp;
                                                     </span>
 
-                                                    <span @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
+                                                    <span @click="onClickSingleViewDetails(single_biodata, 4, proposals[single_biodata_key])" class="cursor-pointer">
                                                         <i class="fa fa-paper-plane"></i>
                                                         {{ translations.profile_page.interested_done_title }} &nbsp;
                                                     </span>
 
-                                                    <span @click="onClickSingleViewDetails(single_biodata, 0)" class="cursor-pointer">
+                                                    <span @click="onClickSingleViewDetails(single_biodata, 0, proposals[single_biodata_key])" class="cursor-pointer">
                                                         <i class="fa-regular fa-eye"></i>
                                                         {{ translations.profile_page.details_title }}
                                                     </span>

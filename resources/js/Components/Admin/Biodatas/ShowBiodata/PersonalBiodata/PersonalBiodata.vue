@@ -61,7 +61,7 @@ onMounted(() => {
 <template>
 
 
-    <div class="main-container">
+    <div class="container">
 
         <div class="grid grid-cols-12 gap-0">
 

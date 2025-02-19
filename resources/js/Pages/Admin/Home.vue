@@ -35,6 +35,9 @@ defineProps({
     all_biodatas: {
         type: Object,
     },
+    all_proposals: {
+        type: Object,
+    },
 });
 
 
@@ -55,11 +58,16 @@ const onUpdateAllBiodatas = (biodatas) => {
     page.props.all_biodatas = biodatas;
 }
 
+const onUpdateAllProposals = (proposals) => {
+    page.props.all_proposals = proposals;
+}
+
 
 </script>
 
 
 <template>
+
 
     <Head title="Dashboard" />
 
@@ -120,7 +128,7 @@ const onUpdateAllBiodatas = (biodatas) => {
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                <Proposals :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                                <Proposals :translations :locale :locales :front_end_translations :all_biodatas :all_proposals :districts @onUpdateAllProposals="onUpdateAllProposals" />
 
                             </TabPanel>
 

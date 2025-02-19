@@ -106,7 +106,9 @@ class FrontEndController extends Controller
                     $biodatas_array['likes'] = $likes;
                 }
             }
-            $proposals = Proposal::where('sender_user_id', $user_id)->get();
+            $proposals = Proposal::where('sender_user_id', $user_id)
+            ->where('in_trash', false)
+            ->get();
             if( $proposals ){
                 if( count( $proposals ) > 0 ){
                     $biodatas_array['proposals'] = $proposals;
@@ -141,14 +143,18 @@ class FrontEndController extends Controller
         if (Auth::guard('web')->user()) {
             $user_id = Auth::guard('web')->user()->id;
 
-            $sent_proposals = Proposal::where('sender_user_id', $user_id)->get();
+            $sent_proposals = Proposal::where('sender_user_id', $user_id)
+            ->where('in_trash', false)
+            ->get();
             if( $sent_proposals ){
                 if( count( $sent_proposals ) > 0 ){
                     $biodatas_array['sent_proposals'] = $sent_proposals;
                 }
             }
 
-            $received_proposals = Proposal::where('receiver_user_id', $user_id)->get();
+            $received_proposals = Proposal::where('receiver_user_id', $user_id)
+            ->where('in_trash', false)
+            ->get();
             if( $received_proposals ){
                 if( count( $received_proposals ) > 0 ){
                     $biodatas_array['received_proposals'] = $received_proposals;
@@ -294,7 +300,9 @@ class FrontEndController extends Controller
                     $biodatas_array['likes'] = $likes;
                 }
             }
-            $proposals = Proposal::where('sender_user_id', $user_id)->get();
+            $proposals = Proposal::where('sender_user_id', $user_id)
+            ->where('in_trash', false)
+            ->get();
             if( $proposals ){
                 if( count( $proposals ) > 0 ){
                     $biodatas_array['proposals'] = $proposals;

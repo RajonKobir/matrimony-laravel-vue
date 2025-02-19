@@ -44,6 +44,10 @@ Route::middleware(Localization::class)->group(function(){
 
         Route::post('/single_oppose', 'singleOppose')->name('single_oppose');
 
+        Route::post('/single_accept', 'singleAccept')->name('single_accept');
+
+        Route::post('/single_cancel', 'singleCancel')->name('single_cancel');
+
     });
 
 

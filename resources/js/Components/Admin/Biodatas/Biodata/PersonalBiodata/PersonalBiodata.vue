@@ -505,7 +505,7 @@ onMounted(() => {
 
     <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
 
-    <div class="main-container">
+    <div class="container">
 
         <div class="grid grid-cols-12 gap-0">
             <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">

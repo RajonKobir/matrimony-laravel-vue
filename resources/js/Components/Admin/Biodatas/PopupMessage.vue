@@ -106,7 +106,7 @@ const onClickApprove = () => {
                   {{ modalInner.modalDescription }}
                 </p>
               </div>
-              <div v-if="modalInner.showButtons" class="mt-2 flex flex-row justify-center items-center gap-1">
+              <div v-if="modalInner.showButtons" class="mt-2 flex flex-col sm:flex-row justify-center items-center gap-1">
                 <button v-if="!modalInner.trashPage && modalInner.approvePage" @click="onClickUnApprove" type="button" id="moveToTrash" class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 >
                     UnApprove
@@ -117,11 +117,11 @@ const onClickApprove = () => {
                 </button>
                 <!-- <button v-if="!modalInner.trashPage" @click="onClickTakeAction" type="button" class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 >
-                    TakeAction
+                    Action
                 </button> -->
                 <button v-if="!modalInner.trashPage" @click="onClickMoveToTrash" type="button" id="moveToTrash" class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 >
-                    MoveToTrash
+                    Trash
                 </button>
                 <button v-if="modalInner.trashPage" @click="onClickUntrash" type="button" id="moveToTrash" class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                 >
