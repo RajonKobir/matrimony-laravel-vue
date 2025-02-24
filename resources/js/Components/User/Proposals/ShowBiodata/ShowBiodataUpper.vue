@@ -34,6 +34,35 @@ function getAge(dateString) {
 }
 
 
+const highestDegreeSelection = (single_biodata) => {
+    let highestDegree = '';
+    if( single_biodata.study_others_selected ){
+        highestDegree = single_biodata.study_others_highest_degree;
+    }
+
+    if( single_biodata.kowmi_selected ){
+        highestDegree = single_biodata.kowmi_highest_degree;
+    }
+
+    if( single_biodata.aliya_selected ){
+        highestDegree = single_biodata.aliya_highest_degree;
+    }
+
+    if( single_biodata.general_selected ){
+        highestDegree = single_biodata.general_highest_degree;
+    }
+
+    if( highestDegree != '' ){
+        highestDegree += ' ';
+        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
+    }else{
+        highestDegree = single_biodata.medium_of_study;
+    }
+
+    return highestDegree;
+}
+
+
 onMounted(() => {
 
     setTimeout(() => {
@@ -52,7 +81,7 @@ onMounted(() => {
 
 
     <div class="bg-[#ad277c] shadow-md rounded-xl">
-        <div class="main-container">
+        <div class="container">
 
             <div class="grid grid-cols-12 gap-0 py-2 text-white text-base overflow-hidden">
 
@@ -72,10 +101,10 @@ onMounted(() => {
                                 {{ translations.searchForm.biodata_age_title.replace(':age', ageString) }}, {{ single_biodata.height }}, {{ single_biodata.skin_color }}
                             </p>
                             <p class="font-bold text-xl">
-                                {{ single_biodata.general_highest_degree }}
+                                {{ highestDegreeSelection(single_biodata) }}
                             </p>
                             <p class="font-bold text-xl">
-                                {{ single_biodata.job_title }} ({{ single_biodata.monthly_income }})
+                                {{ single_biodata.job_title }}{{ ['নাই', 'None', null].includes(single_biodata.monthly_income) ? '' : ' (' + single_biodata.monthly_income + ')' }}
                             </p>
                             <p class="font-bold text-xl">
                                 {{ single_biodata.permanent_upazila }}, {{ single_biodata.permanent_district }}

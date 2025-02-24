@@ -156,12 +156,10 @@ const proposeType = (e) => {
     proposalType.value = e.target.value;
     if( proposalType.value == 1 ){
         all_biodatas.value = props.received_biodatas;
-        all_biodatas.value.total = all_biodatas.value.data.length;
         all_proposals.value = props.received_proposals;
     }
     else if( proposalType.value == 2 ){
         all_biodatas.value = props.sent_biodatas;
-        all_biodatas.value.total = all_biodatas.value.data.length;
         all_proposals.value = props.sent_proposals;
     }
 }
@@ -189,11 +187,9 @@ const freeOrPaid = (e) => {
     //         }
     //     });
     //     all_biodatas.value.data = updated_biodatas;
-    //     all_biodatas.value.total = updated_biodatas.length;
     // }
     // else if( freeOrPaidPrposal.value == 2 ){
     //     all_biodatas.value = props.sent_biodatas;
-    //     all_biodatas.value.total = all_biodatas.value.data.length;
     //     all_proposals.value = props.sent_proposals;
     // }
 }
@@ -301,9 +297,9 @@ document.body.classList.add("user.proposals.detailed");
                                     </tr>
                                 </thead>
                                 <tbody v-if="all_biodatas.total > 0">
-                                    <tr v-for="(single_biodata, single_biodata_key) in all_biodatas.data" :key="single_biodata.id" class="bg-white hover:bg-[#f9e0f0]">
+                                    <tr v-for="(single_biodata, single_biodata_key) in all_biodatas.data" :key="single_biodata_key" class="bg-white hover:bg-[#f9e0f0]">
                                         <td class="py-2 px-3 text-[#ad277c] break-words text-sm sm:text-base">
-                                            {{ single_biodata.id }}
+                                            {{ all_biodatas.data.length - single_biodata_key }}
                                         </td>
                                         <td class="py-2 px-3 text-[#ad277c] break-words text-sm sm:text-base">
                                             {{ single_biodata.biodata_code }}

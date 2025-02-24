@@ -3,8 +3,8 @@
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout.vue';
 import { Head, usePage, Link, router } from '@inertiajs/vue3';
 import { ref, onMounted } from "vue";
-import PopupMessage from '../../Components/Frontend/Likes/PopupMessage.vue';
-import PopupView from '../../Components/Frontend/Likes/PopupView.vue';
+import PopupMessage from '../../Components/User/Likes/PopupMessage.vue';
+import PopupView from '../../Components/User/Likes/PopupView.vue';
 import 'animate.css';
 
 
@@ -175,6 +175,14 @@ const highestDegreeSelection = (single_biodata) => {
     if( single_biodata.general_selected ){
         highestDegree = single_biodata.general_highest_degree;
     }
+
+    if( highestDegree != '' ){
+        highestDegree += ' ';
+        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
+    }else{
+        highestDegree = single_biodata.medium_of_study;
+    }
+
     return highestDegree;
 }
 
@@ -248,7 +256,7 @@ document.body.classList.add("user.likes");
                                                             {{ highestDegreeSelection(single_biodata) }}
                                                         </p>
                                                         <p class="truncate">
-                                                            {{ single_biodata.job_title }}({{ single_biodata.monthly_income }})
+                                                            {{ single_biodata.job_title }}{{ ['নাই', 'None', null].includes(single_biodata.monthly_income) ? '' : ' (' + single_biodata.monthly_income + ')' }}
                                                         </p>
                                                         <p class="truncate">
                                                             {{ single_biodata.permanent_upazila }}, {{ single_biodata.permanent_district }}
@@ -275,7 +283,7 @@ document.body.classList.add("user.likes");
                                                             {{ translations.profile_page.interested_done_title }} &nbsp;
                                                         </span>
 
-                                                        <span @click="onClickSingleViewDetails(single_biodata, 0)" class="cursor-pointer">
+                                                        <span @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
                                                             <i class="fa-regular fa-eye"></i>
                                                             {{ translations.profile_page.details_title }}
                                                         </span>

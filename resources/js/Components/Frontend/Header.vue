@@ -174,7 +174,8 @@ onMounted(() => {
                                                     <img v-if="single_biodata.gender == 'female'" src="assets/images/bride.png" alt="Female-Avatar" style="margin: 0 auto;">
 
                                                     <div class="odd-bio-status-wrap">
-                                                        <h3>{{ translations.header.biodata_condition }}</h3>
+                                                        <h3 v-if="!single_biodata.is_approved">{{ translations.header.biodata_condition }}</h3>
+                                                        <p v-if="single_biodata.is_approved" class="my-2 text-base">কোড : {{ single_biodata.biodata_code }}</p>
                                                         <div class="odd-bio-status">
                                                             <span class="od-incomplete">{{ single_biodata.biodata_completion ? single_biodata.biodata_completion + '%' : '0%' }}</span>
                                                         </div>

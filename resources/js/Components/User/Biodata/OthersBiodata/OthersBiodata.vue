@@ -80,6 +80,15 @@ const closeModal = (value) => {
 }
 
 
+const onClickDisAgree = () => {
+    modalMessage.value = {
+        modalHeading : page.props.translations.modal_messages.error_heading,
+        modalDescription : page.props.translations.modal_messages.others_biodata_error,
+    }
+    isModalOpen.value = true;
+}
+
+
 onMounted(() => {
 
     setTimeout(function(){
@@ -165,7 +174,7 @@ onMounted(() => {
                 <label for="male_guardian_agreement" class="text-base">
                     {{ translations.biodata_form.others_biodata.male_guardian_agreement_title }}
                 </label>
-                <select v-model="form.male_guardian_agreement" @change="(e) => { single_biodata.male_guardian_agreement = JSON.parse(e.target.value) }" id="male_guardian_agreement" name="male_guardian_agreement"
+                <select v-model="form.male_guardian_agreement" @change="(e) => { e.target.value == 0 ? onClickDisAgree() : single_biodata.male_guardian_agreement = JSON.parse(e.target.value) }" id="male_guardian_agreement" name="male_guardian_agreement"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
                     <option v-for="(male_guardian_agreement, male_guardian_agreement_key) in translations.biodata_form.others_biodata.male_guardian_agreement_options" :key="male_guardian_agreement.id" :value="JSON.parse(male_guardian_agreement_key)">{{ male_guardian_agreement }}</option>
@@ -189,7 +198,7 @@ onMounted(() => {
                 <label for="media_terms_one_agreement" class="text-base">
                     {{ translations.biodata_form.others_biodata.media_terms_one_agreement_title }}
                 </label>
-                <select v-model="form.media_terms_one_agreement" @change="(e) => { single_biodata.media_terms_one_agreement = JSON.parse(e.target.value) }" id="media_terms_one_agreement" name="media_terms_one_agreement"
+                <select v-model="form.media_terms_one_agreement" @change="(e) => { e.target.value == 0 ? onClickDisAgree() : single_biodata.media_terms_one_agreement = JSON.parse(e.target.value) }" id="media_terms_one_agreement" name="media_terms_one_agreement"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
                     <option v-for="(media_terms_one_agreement, media_terms_one_agreement_key) in translations.biodata_form.others_biodata.media_terms_one_agreement_options" :key="media_terms_one_agreement.id" :value="JSON.parse(media_terms_one_agreement_key)">{{ media_terms_one_agreement }}</option>
@@ -201,7 +210,7 @@ onMounted(() => {
                 <label for="hundred_money_pay" class="text-base">
                     {{ translations.biodata_form.others_biodata.hundred_money_pay_title }}
                 </label>
-                <select v-model="form.hundred_money_pay" @change="(e) => { single_biodata.hundred_money_pay = JSON.parse(e.target.value) }" id="hundred_money_pay" name="hundred_money_pay"
+                <select v-model="form.hundred_money_pay" @change="(e) => { e.target.value == 0 ? onClickDisAgree() : single_biodata.hundred_money_pay = JSON.parse(e.target.value) }" id="hundred_money_pay" name="hundred_money_pay"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
                     <option v-for="(hundred_money_pay, hundred_money_pay_key) in translations.biodata_form.others_biodata.hundred_money_pay_options" :key="hundred_money_pay.id" :value="JSON.parse(hundred_money_pay_key)">{{ hundred_money_pay }}</option>
@@ -213,7 +222,7 @@ onMounted(() => {
                 <label for="three_hundred_money_pay" class="text-base">
                     {{ translations.biodata_form.others_biodata.three_hundred_money_pay_title }}
                 </label>
-                <select v-model="form.three_hundred_money_pay" @change="(e) => { single_biodata.three_hundred_money_pay = JSON.parse(e.target.value) }" id="three_hundred_money_pay" name="three_hundred_money_pay"
+                <select v-model="form.three_hundred_money_pay" @change="(e) => { e.target.value == 0 ? onClickDisAgree() : single_biodata.three_hundred_money_pay = JSON.parse(e.target.value) }" id="three_hundred_money_pay" name="three_hundred_money_pay"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
                     <option v-for="(three_hundred_money_pay, three_hundred_money_pay_key) in translations.biodata_form.others_biodata.three_hundred_money_pay_options" :key="three_hundred_money_pay.id" :value="JSON.parse(three_hundred_money_pay_key)">{{ three_hundred_money_pay }}</option>
@@ -225,7 +234,7 @@ onMounted(() => {
                 <label for="media_terms_two_agreement" class="text-base">
                     {{ translations.biodata_form.others_biodata.media_terms_two_agreement_title }}
                 </label>
-                <select v-model="form.media_terms_two_agreement" @change="(e) => { single_biodata.media_terms_two_agreement = JSON.parse(e.target.value) }" id="media_terms_two_agreement" name="media_terms_two_agreement"
+                <select v-model="form.media_terms_two_agreement" @change="(e) => { e.target.value == 0 ? onClickDisAgree() : single_biodata.media_terms_two_agreement = JSON.parse(e.target.value) }" id="media_terms_two_agreement" name="media_terms_two_agreement"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.form_basics.select_text }}</option>
                     <option v-for="(media_terms_two_agreement, media_terms_two_agreement_key) in translations.biodata_form.others_biodata.media_terms_two_agreement_options" :key="media_terms_two_agreement.id" :value="JSON.parse(media_terms_two_agreement_key)">{{ media_terms_two_agreement }}</option>

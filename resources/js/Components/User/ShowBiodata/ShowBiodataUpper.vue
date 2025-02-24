@@ -46,6 +46,35 @@ function getAge(dateString) {
 }
 
 
+const highestDegreeSelection = (single_biodata) => {
+    let highestDegree = '';
+    if( single_biodata.study_others_selected ){
+        highestDegree = single_biodata.study_others_highest_degree;
+    }
+
+    if( single_biodata.kowmi_selected ){
+        highestDegree = single_biodata.kowmi_highest_degree;
+    }
+
+    if( single_biodata.aliya_selected ){
+        highestDegree = single_biodata.aliya_highest_degree;
+    }
+
+    if( single_biodata.general_selected ){
+        highestDegree = single_biodata.general_highest_degree;
+    }
+
+    if( highestDegree != '' ){
+        highestDegree += ' ';
+        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
+    }else{
+        highestDegree = single_biodata.medium_of_study;
+    }
+
+    return highestDegree;
+}
+
+
 onMounted(() => {
 
     setTimeout(() => {
@@ -81,10 +110,10 @@ onMounted(() => {
                                 {{ translations.searchForm.biodata_age_title.replace(':age', ageString) }}, {{ single_biodata.height }}, {{ single_biodata.skin_color }}
                             </p>
                             <p class="font-bold text-xl">
-                                {{ single_biodata.general_highest_degree }}
+                                {{ highestDegreeSelection(single_biodata) }}
                             </p>
                             <p class="font-bold text-xl">
-                                {{ single_biodata.job_title }} ({{ single_biodata.monthly_income }})
+                                {{ single_biodata.job_title }}{{ ['নাই', 'None', null].includes(single_biodata.monthly_income) ? '' : ' (' + single_biodata.monthly_income + ')' }}
                             </p>
                             <p class="font-bold text-xl">
                                 {{ single_biodata.permanent_upazila }}, {{ single_biodata.permanent_district }}
@@ -121,13 +150,13 @@ onMounted(() => {
             </div>
         </div>
 
-        <div class="border-t-4">
+        <div v-if="!$page.props.single_biodata.is_approved && $page.props.single_biodata.biodata_completion == 100" class="border-t-4">
 
         </div>
 
         <div class="main-container">
             <div class="grid grid-cols-12 gap-0 py-2 text-white text-base overflow-hidden ">
-                <div class="col-span-12 p-4">
+                <!-- <div class="col-span-12 p-4">
                     <div class="flex justify-center items-center">
                         <div class="package_button_div">
                             <button @click="onClickEdit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
@@ -135,7 +164,7 @@ onMounted(() => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div v-if="!$page.props.single_biodata.is_approved && $page.props.single_biodata.biodata_completion == 100" class="col-span-12 p-2 md:p-4 !pt-0">
                     <div class="flex justify-center items-center">

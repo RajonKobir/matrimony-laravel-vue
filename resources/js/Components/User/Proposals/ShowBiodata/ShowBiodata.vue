@@ -9,6 +9,7 @@ import ShowBiodataUpper from './ShowBiodataUpper.vue';
 import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import PopupMessage from '../PopupMessage.vue';
+import Communication from './Communication.vue';
 
 
 const emits = defineEmits([
@@ -57,69 +58,8 @@ function changeTab(index) {
 }
 
 
-const onClickInterested = (single_proposal) => {
-    if( confirm( props.translations.proposal_page.confirm_accept ) ){
-        axios.post(route('proposals.single_accept', {
-            csrf_token,
-            sender_user_id : single_proposal.sender_user_id,
-            receiver_user_id : single_proposal.receiver_user_id,
-            proposal_accepted : true,
-            user_page : true,
-        }))
-        .then((response) => {
-            if( response.data ){
-                emits('onUpdateReceivedProposals', response.data);
-                updatedProposal.value.proposal_accepted = true;
-                modalMessage.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been accepted successfully.',
-                    showButtons : false
-                }
-                isModalOpen.value = true;
-            }else{
-                modalMessage.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
-                    showButtons : false
-                }
-                isModalOpen.value = true;
-            }
-
-        });
-    }
-}
-
-
-const onClickNotInterested = (single_proposal) => {
-    if(confirm( props.translations.proposal_page.confirm_reject )){
-        axios.post(route('proposals.single_accept', {
-            csrf_token,
-            sender_user_id : single_proposal.sender_user_id,
-            receiver_user_id : single_proposal.receiver_user_id,
-            proposal_rejected : true,
-            user_page : true,
-        }))
-        .then((response) => {
-            if( response.data ){
-                emits('onUpdateReceivedProposals', response.data);
-                updatedProposal.value.proposal_rejected = true;
-                modalMessage.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been rejected successfully.',
-                    showButtons : false
-                }
-                isModalOpen.value = true;
-            }else{
-                modalMessage.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
-                    showButtons : false
-                }
-                isModalOpen.value = true;
-            }
-
-        });
-    }
+const onUpdateReceivedProposals = (proposals) => {
+    emits('onUpdateReceivedProposals', proposals);
 }
 
 
@@ -191,148 +131,35 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <PersonalBiodata :translations :locale :locales :single_biodata="single_biodata" />
+                    <PersonalBiodata :translations :locale :locales :single_biodata />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <ReligiousBiodata :translations :locale :locales :single_biodata="single_biodata" />
+                    <ReligiousBiodata :translations :locale :locales :single_biodata />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <FamilyBiodata :translations :locale :locales :single_biodata="single_biodata" />
+                    <FamilyBiodata :translations :locale :locales :single_biodata />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <DeservedBiodata :translations :locale :locales :single_biodata="single_biodata"  />
+                    <DeservedBiodata :translations :locale :locales :single_biodata  />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <template v-if="$page.props.auth.user.id == updatedProposal.sender_user_id">
-
-                        <template v-if="!updatedProposal.in_trash && !updatedProposal.in_admin_trash">
-
-                            <template v-if="updatedProposal.proposal_accepted">
-
-                                    <h1 v-if="!updatedProposal.auto_received" class="text-center py-4">
-                                        {{ translations.proposal_page.accepted_message }}
-                                    </h1>
-                                    <h1 v-if="updatedProposal.auto_received" class="text-center py-4">
-                                        {{ translations.proposal_page.media_accepted_message }}
-                                    </h1>
-                                    <div class="container">
-                                        <div class="grid grid-cols-12 gap-0">
-                                            <div class="form_item col-span-12 md:col-span-6 p-2">
-                                                <p class="text-base text-left">
-                                                    <span class="text-lg text-left font-bold">
-                                                        {{ single_biodata.gender == 'male' ? translations.biodata_form.others_biodata.form_holder_desc_title_male : translations.biodata_form.others_biodata.form_holder_desc_title_female }}
-                                                    </span>
-                                                    <span class="text-base text-left pl-2">
-                                                        {{ single_biodata.form_holder_desc }}
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                            </template>
-
-                            <template v-if="!updatedProposal.proposal_accepted">
-
-                                <h1 v-if="updatedProposal.proposal_rejected" class="text-center py-4">
-                                    {{ translations.proposal_page.proposal_rejected }}
-                                </h1>
-
-                                <h1 v-if="!updatedProposal.proposal_rejected" class="text-center py-4">
-                                    {{ translations.proposal_page.success_propose_message }}
-                                </h1>
-
-                            </template>
-
-                        </template>
-
-                        <template v-if="updatedProposal.in_trash || updatedProposal.in_admin_trash">
-                            <h1 class="text-center py-4">
-                                Proposal Deleted
-                            </h1>
-                        </template>
-
-                    </template>
-
-                    <template v-if="$page.props.auth.user.id == updatedProposal.receiver_user_id">
-
-                        <template v-if="!updatedProposal.in_trash && !updatedProposal.in_admin_trash">
-
-                            <template v-if="updatedProposal.proposal_accepted">
-
-                                    <h1 v-if="!updatedProposal.auto_received" class="text-center py-4">
-                                        {{ translations.proposal_page.accepted_by_receiver }}
-                                    </h1>
-                                    <h1 v-if="updatedProposal.auto_received" class="text-center py-4">
-                                        {{ translations.proposal_page.media_accepted_message }}
-                                    </h1>
-                                    <div class="container">
-                                        <div class="grid grid-cols-12 gap-0">
-                                            <div class="form_item col-span-12 md:col-span-6 p-2">
-                                                <p class="text-base text-left">
-                                                    <span class="text-lg text-left font-bold">
-                                                        {{ single_biodata.gender == 'male' ? translations.biodata_form.others_biodata.form_holder_desc_title_male : translations.biodata_form.others_biodata.form_holder_desc_title_female }}
-                                                    </span>
-                                                    <span class="text-base text-left pl-2">
-                                                        {{ single_biodata.form_holder_desc }}
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                            </template>
-
-                            <template v-if="!updatedProposal.proposal_accepted">
-
-                                <h1 v-if="updatedProposal.proposal_rejected" class="text-center py-4">
-                                    {{ translations.proposal_page.rejected_message_sender }}
-                                </h1>
-
-                                <template v-if="!updatedProposal.proposal_rejected">
-                                    <h1 class="text-center py-4">
-                                        {{ translations.proposal_page.proposal_received }}
-                                    </h1>
-
-                                    <div class="flex flex-col sm:flex-row justify-center items-center gap-1">
-                                        <button type="button" @click="onClickInterested(updatedProposal)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                                            {{ translations.proposal_page.interested }}
-                                        </button>
-                                        <button type="button" @click="onClickNotInterested(updatedProposal)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                                            {{ translations.proposal_page.not_interested }}
-                                        </button>
-                                    </div>
-
-                                </template>
-
-
-                            </template>
-
-                            </template>
-
-                            <template v-if="updatedProposal.in_trash || updatedProposal.in_admin_trash">
-                            <h1 class="text-center py-4">
-                                Proposal Deleted
-                            </h1>
-                            </template>
-
-                    </template>
+                    <Communication :translations :locale :locales :single_biodata :proposal @onUpdateReceivedProposals="onUpdateReceivedProposals" />
 
                 </TabPanel>
 

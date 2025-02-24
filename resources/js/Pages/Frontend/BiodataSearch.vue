@@ -47,12 +47,12 @@ const modalMessage = ref({});
 const self_likes = ref({});
 const self_proposals = ref({});
 const likeReceiverUserIds = ref([]);
-const proposalReceiverUserIds = ref([]);
+const proposalUserIds = ref([]);
 
 
 const onClickLikeBiodata = (single_biodata) => {
 
-    if( page.props.single_biodata.user_id ==  single_biodata.user_id ){
+    if( props.single_biodata.user_id ==  single_biodata.user_id ){
         modalMessage.value = {
             modalHeading : page.props.translations.modal_messages.error_heading,
             modalDescription : page.props.translations.modal_messages.self_like_error,
@@ -89,7 +89,7 @@ const onClickLikeBiodata = (single_biodata) => {
 
     axios.post(route('likes.single_like', {
         csrf_token,
-        sender_user_id : page.props.auth.user.id,
+        sender_user_id : props.single_biodata.user_id,
         sender_biodata_code : page.props.single_biodata.biodata_code,
         receiver_user_id : single_biodata.user_id,
         receiver_biodata_code : single_biodata.biodata_code,
@@ -114,7 +114,7 @@ const onClickLikeBiodata = (single_biodata) => {
 
 
 const onClickDisLikeBiodata = (single_biodata) => {
-    if( single_biodata.user_id == page.props.auth.user.id){
+    if( single_biodata.user_id == props.single_biodata.user_id){
         modalMessage.value = {
             modalHeading : page.props.translations.modal_messages.error_heading,
             modalDescription : page.props.translations.modal_messages.self_like_error,
@@ -124,7 +124,7 @@ const onClickDisLikeBiodata = (single_biodata) => {
     }
     axios.post(route('likes.single_dislike', {
         csrf_token,
-        sender_user_id : page.props.auth.user.id,
+        sender_user_id : props.single_biodata.user_id,
         sender_biodata_code : page.props.single_biodata.biodata_code,
         receiver_user_id : single_biodata.user_id,
         receiver_biodata_code : single_biodata.biodata_code,
@@ -153,7 +153,7 @@ const onClickProposeBiodata = (single_biodata) => {
     if(confirm( page.props.translations.modal_messages.proposal_send_confirm )){
         axios.post(route('proposals.single_propose', {
             csrf_token,
-            sender_user_id : page.props.single_biodata.user_id,
+            sender_user_id : props.single_biodata.user_id,
             sender_biodata_code : page.props.single_biodata.biodata_code,
             receiver_user_id : single_biodata.user_id,
             receiver_biodata_code : single_biodata.biodata_code,
@@ -165,7 +165,7 @@ const onClickProposeBiodata = (single_biodata) => {
                 }
             }else{
                 if( response.data.message == true ){
-                    proposalReceiverUserIds.value.push( single_biodata.user_id );
+                    proposalUserIds.value.push( single_biodata.user_id );
                     modalMessage.value = {
                         modalHeading : page.props.translations.modal_messages.success_heading,
                         modalDescription : page.props.translations.modal_messages.success_propose_message,
@@ -187,7 +187,7 @@ const onClickProposeBiodata = (single_biodata) => {
 const onClickSingleViewDetails = (single_biodata, tab_index) => {
 
     let proposed = false;
-    if( proposalReceiverUserIds.value.includes(single_biodata.user_id) ){
+    if( proposalUserIds.value.includes(single_biodata.user_id) ){
         proposed = true;
     }
 
@@ -234,6 +234,14 @@ const highestDegreeSelection = (single_biodata) => {
     if( single_biodata.general_selected ){
         highestDegree = single_biodata.general_highest_degree;
     }
+
+    if( highestDegree != '' ){
+        highestDegree += ' ';
+        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
+    }else{
+        highestDegree = single_biodata.medium_of_study;
+    }
+
     return highestDegree;
 }
 
@@ -250,7 +258,11 @@ onMounted(() => {
         self_proposals.value = page.props.proposals;
         if( self_proposals.value.length > 0 ){
             self_proposals.value.forEach(function(item, index, arr){
-                proposalReceiverUserIds.value.push( item.receiver_user_id );
+                if( item.receiver_user_id == props.single_biodata.user_id ){
+                    proposalUserIds.value.push( item.sender_user_id );
+                }else{
+                    proposalUserIds.value.push( item.receiver_user_id );
+                }
             })
         }
     }, 500);
@@ -306,7 +318,7 @@ document.body.classList.add("frontend.search");
                                                     {{ highestDegreeSelection(single_biodata) }}
                                                 </p>
                                                 <p class="truncate">
-                                                    {{ single_biodata.job_title }}({{ single_biodata.monthly_income }})
+                                                    {{ single_biodata.job_title }}{{ ['নাই', 'None', null].includes(single_biodata.monthly_income) ? '' : ' (' + single_biodata.monthly_income + ')' }}
                                                 </p>
                                                 <p class="truncate">
                                                     {{ single_biodata.permanent_upazila }}, {{ single_biodata.permanent_district }}
@@ -337,17 +349,17 @@ document.body.classList.add("frontend.search");
                                                     </Link>
                                                 </span>
 
-                                                <span v-if="$page.props.auth.user && !proposalReceiverUserIds.includes(single_biodata.user_id)" @click="onClickProposeBiodata(single_biodata)" class="cursor-pointer">
+                                                <span v-if="$page.props.auth.user && !proposalUserIds.includes(single_biodata.user_id)" @click="onClickProposeBiodata(single_biodata)" class="cursor-pointer">
                                                     <i class="fa fa-paper-plane"></i>
                                                     {{ translations.profile_page.interested_title }} &nbsp;
                                                 </span>
-                                                <!-- <span v-if="$page.props.auth.user && $page.props.single_biodata.free_biodata && !single_biodata.free_biodata && !proposalReceiverUserIds.includes(single_biodata.user_id)" class="cursor-pointer">
+                                                <!-- <span v-if="$page.props.auth.user && $page.props.single_biodata.free_biodata && !single_biodata.free_biodata && !proposalUserIds.includes(single_biodata.user_id)" class="cursor-pointer">
                                                     <Link :href="route('user.packages')" method="get" >
                                                         <i class="fa fa-paper-plane"></i>
                                                         {{ translations.profile_page.interested_title }} &nbsp;
                                                     </Link>
                                                 </span> -->
-                                                <span v-if="$page.props.auth.user &&proposalReceiverUserIds.includes(single_biodata.user_id)" @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
+                                                <span v-if="$page.props.auth.user &&proposalUserIds.includes(single_biodata.user_id)" @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
                                                     <i class="fa fa-paper-plane"></i>
                                                     {{ translations.profile_page.interested_done_title }} &nbsp;
                                                 </span>

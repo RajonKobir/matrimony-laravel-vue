@@ -63,7 +63,7 @@ class BackEndController extends Controller
             if($user){
                 if( Auth::guard('translations')->attempt( ['email' => $request->input('email'),  'password' => $request->input('password')] ) ){
                     $request->session()->regenerate();
-                    return redirect()->route('backend.dashboard')->with('success','You are Logged in sucessfully.');
+                    return redirect()->route('backend.dashboard');
                 }
             }
         }

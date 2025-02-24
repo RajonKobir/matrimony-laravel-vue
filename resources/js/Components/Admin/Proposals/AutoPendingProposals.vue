@@ -422,7 +422,7 @@ document.body.classList.add("backend.proposals.auto_pending");
         padding: 0 !important;
     }
     table.dataTable > tbody > tr > th, table.dataTable > tbody > tr > td{
-        padding: 8px 0 !important;
+        padding: 0 0 !important;
     }
     .action_buttons{
         width: 70% !important;

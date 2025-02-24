@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'accepted' => ':attribute ক্ষেত্রটি অবশ্যই একসেপ্ট করতে হবে।',
+    // 'accepted' => ':attribute ক্ষেত্রটি অবশ্যই একসেপ্ট করতে হবে।',
+    'accepted' => 'এই তথ্যটি হা বোধক দিয়ে পুরন করতে হবে।',
     'accepted_if' => ':attribute ক্ষেত্রটি অবশ্যই একসেপ্ট করতে হবে যখন :other হল :value।',
     'active_url' => ':attribute ক্ষেত্রটি অবশ্যই একটি বৈধ URL হতে হবে।',
     'after' => ':attribute ক্ষেত্রটি অবশ্যই :date এর পরে একটি তারিখ হতে হবে।',

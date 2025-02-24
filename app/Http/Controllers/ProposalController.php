@@ -6,7 +6,6 @@ use App\Models\Proposal;
 use App\Models\Biodata;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class ProposalController extends Controller
@@ -91,6 +90,14 @@ class ProposalController extends Controller
             return response()->json(['message' =>  __('frontend.modal_messages.already_proposed')]);
         }
 
+        // already recieved propose
+        $already_recieved = Proposal::where('sender_user_id', $request->receiver_user_id)
+        ->where('receiver_user_id', $request->sender_user_id)
+        ->exists();
+        if( $already_recieved ){
+            return response()->json(['message' =>  __('frontend.modal_messages.already_propose_received')]);
+        }
+
         // sender approval
         $proposal_sender_free_biodata = null;
         $proposal_sender_biodata = Biodata::where('user_id', $request->sender_user_id)->get();
@@ -133,10 +140,19 @@ class ProposalController extends Controller
             ->where('free_proposal', true)
             ->where('in_trash', false)
             ->whereDate('created_at', Carbon::today())
-            ->exists();
+            ->get();
 
             if( $single_proposal_today ){
-                return response()->json(['message' =>  __('frontend.modal_messages.proposal_daily_limit')]);
+                if( count( $single_proposal_today ) > 0 ){
+                    $daily_free = $proposal_sender_biodata[0]->daily_free;
+                    if( $daily_free == 1 ){
+                        return response()->json(['message' =>  __('frontend.modal_messages.proposal_daily_limit')]);
+                    }else{
+                        if( count( $single_proposal_today ) == $daily_free || count( $single_proposal_today ) > $daily_free ){
+                            return response()->json(['message' =>  __('frontend.modal_messages.proposal_daily_limit')]);
+                        }
+                    }
+                }
             }
 
             $single_proposal = new Proposal();
@@ -218,6 +234,9 @@ class ProposalController extends Controller
             'proposal_accepted' => 'nullable|boolean',
             'proposal_rejected' => 'nullable|boolean',
             'auto_received' => 'nullable|boolean',
+            'rejected_by_sender' => 'nullable|boolean',
+            'rejected_by_receiver' => 'nullable|boolean',
+            'rejected_by_admin' => 'nullable|boolean',
         ]);
 
         $single_proposal = Proposal::where('sender_user_id', $request->sender_user_id)
@@ -243,12 +262,15 @@ class ProposalController extends Controller
             $single_accept = Proposal::where('sender_user_id', $request->sender_user_id)
             ->where('receiver_user_id', $request->receiver_user_id)
             ->update([
-                'proposal_accepted' => $request->proposal_accepted ? $request->proposal_accepted : $single_proposal[0]->proposal_accepted,
+                'proposal_accepted' => isset($request->proposal_accepted) ? $request->proposal_accepted : $single_proposal[0]->proposal_accepted,
                 'proposal_accepted_datetime' => $request->proposal_accepted ? Carbon::now() : $single_proposal[0]->proposal_accepted_datetime,
-                'proposal_rejected' => $request->proposal_rejected ? $request->proposal_rejected : $single_proposal[0]->proposal_rejected,
+                'proposal_rejected' => isset($request->proposal_rejected) ? $request->proposal_rejected : $single_proposal[0]->proposal_rejected,
                 'proposal_rejected_datetime' => $request->proposal_rejected ? Carbon::now() : $single_proposal[0]->proposal_rejected_datetime,
-                'auto_received' => $request->auto_received ? $request->auto_received : $single_proposal[0]->auto_received,
+                'auto_received' => isset($request->auto_received) ? $request->auto_received : $single_proposal[0]->auto_received,
                 'auto_received_datetime' => $request->auto_received ? Carbon::now() : $single_proposal[0]->auto_received_datetime,
+                'rejected_by_sender' => isset($request->rejected_by_sender) ? $request->rejected_by_sender : $single_proposal[0]->rejected_by_sender,
+                'rejected_by_receiver' => isset($request->rejected_by_receiver) ? $request->rejected_by_receiver : $single_proposal[0]->rejected_by_receiver,
+                'rejected_by_admin' => isset($request->rejected_by_admin) ? $request->rejected_by_admin : $single_proposal[0]->rejected_by_admin,
                 'proposal_status' => $proposal_status,
             ]);
 
@@ -259,7 +281,7 @@ class ProposalController extends Controller
                 $user_id = Auth::guard('web')->user()->id;
                 return Proposal::where('receiver_user_id', $user_id)
                 ->where('in_trash', false)
-                ->get();
+                ->paginate(10)->withQueryString();
             }
         }
 

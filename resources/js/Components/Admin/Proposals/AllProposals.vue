@@ -179,6 +179,7 @@ const onClickNotInterested = (single_proposal) => {
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
             proposal_rejected : true,
+            proposal_accepted : false,
         }))
         .then((response) => {
             if( response.data ){
@@ -422,7 +423,7 @@ document.body.classList.add("backend.proposals.all");
         padding: 0 !important;
     }
     table.dataTable > tbody > tr > th, table.dataTable > tbody > tr > td{
-        padding: 8px 0 !important;
+        padding: 0 0 !important;
     }
     .action_buttons{
         width: 70% !important;

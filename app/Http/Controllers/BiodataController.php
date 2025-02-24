@@ -238,7 +238,7 @@ class BiodataController extends Controller
             'job_details' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:10|max:500' : 'required|string|min:10|max:500',
             'job_location' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:2|max:100' : 'required|string|min:2|max:100',
             'monthly_income' => trim($request->job_title) == 'নাই' || trim($request->job_title) == 'None' ? 'nullable|string|min:2|max:20' : 'required|string|min:2|max:20',
-            'medium_of_study' => 'required|string|min:10|max:100',
+            'medium_of_study' => 'required|string|min:2|max:100',
             'general_selected' => 'required|boolean',
             'general_highest_degree' => $request->general_selected ? 'required|string|min:2|max:50' : 'nullable|string|min:2|max:50',
             'is_general_honorable_selected' => 'nullable|boolean',
@@ -253,7 +253,7 @@ class BiodataController extends Controller
             'study_in_details' => 'required|string|min:10|max:500',
             'is_honorable_selected' => 'nullable|boolean',
             'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:500' : 'nullable|string|min:10|max:500',
-            'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:10|max:100' : 'nullable|string|min:10|max:100',
+            'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:2|max:100' : 'nullable|string|min:2|max:100',
         ]);
 
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
@@ -509,12 +509,12 @@ class BiodataController extends Controller
             'running_tab' => 'required|int|max:6',
             'form_holder_desc' => 'required|string|min:10|max:500',
             'male_guardian_desc' => 'required|string|min:10|max:500',
-            'male_guardian_agreement' => 'required|boolean',
+            'male_guardian_agreement' => 'accepted',
             'deserved_money_pay' => 'required|string|min:2|max:20',
-            'media_terms_one_agreement' => 'required|boolean',
-            'hundred_money_pay' => 'required|boolean',
-            'three_hundred_money_pay' => 'required|boolean',
-            'media_terms_two_agreement' => 'required|boolean',
+            'media_terms_one_agreement' => 'accepted',
+            'hundred_money_pay' => 'accepted',
+            'three_hundred_money_pay' => 'accepted',
+            'media_terms_two_agreement' => 'accepted',
             'reference_code' => 'nullable|string|min:2|max:50',
         ]);
         $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();

@@ -145,6 +145,7 @@ class FrontEndController extends Controller
 
             $sent_proposals = Proposal::where('sender_user_id', $user_id)
             ->where('in_trash', false)
+            ->orderBy('created_at', 'desc')
             ->get();
             if( $sent_proposals ){
                 if( count( $sent_proposals ) > 0 ){
@@ -154,6 +155,7 @@ class FrontEndController extends Controller
 
             $received_proposals = Proposal::where('receiver_user_id', $user_id)
             ->where('in_trash', false)
+            ->orderBy('created_at', 'desc')
             ->get();
             if( $received_proposals ){
                 if( count( $received_proposals ) > 0 ){
@@ -180,10 +182,12 @@ class FrontEndController extends Controller
         }
 
         $biodatas_array['sent_biodatas'] = Biodata::whereIn( 'user_id', $sentProposalIds )
-        ->paginate(10)->withQueryString();
+        ->orderBy('created_at', 'desc')
+        ->paginate(30)->withQueryString();
 
         $biodatas_array['received_biodatas'] = Biodata::whereIn( 'user_id', $receivedProposalIds )
-        ->paginate(10)->withQueryString();
+        ->orderBy('created_at', 'desc')
+        ->paginate(30)->withQueryString();
 
         $pageProps = $biodatas_array + $this->pageProps;
 
@@ -301,6 +305,7 @@ class FrontEndController extends Controller
                 }
             }
             $proposals = Proposal::where('sender_user_id', $user_id)
+            ->orWhere('receiver_user_id', $user_id)
             ->where('in_trash', false)
             ->get();
             if( $proposals ){

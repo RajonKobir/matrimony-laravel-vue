@@ -1,7 +1,7 @@
 <script setup>
 
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout.vue';
-import { usePage } from '@inertiajs/vue3';
+import { usePage, router } from '@inertiajs/vue3';
 import { ref, onMounted } from "vue";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import ReceivedProposals from '../../Components/User/Proposals/ReceivedProposals.vue';
@@ -52,8 +52,15 @@ const single_biodata_data = ref([]);
 const selectedTab = ref(0);
 const receivedProposals = ref({});
 
+const tabMapping = {
+  1: 'received',
+  2: 'sent',
+  3: 'detailed',
+};
+
 function changeTab(index) {
     selectedTab.value = index;
+    router.get(route('user.proposals'), { index }, { preserveState: true, replace: true });
 }
 
 
@@ -63,7 +70,14 @@ const onUpdateReceivedProposals = (proposals) => {
 
 
 onMounted(() => {
+
+    const urlTab = parseInt(new URLSearchParams(window.location.search).get('index')) || 0;
+    if (tabMapping[urlTab]) {
+        selectedTab.value = urlTab;
+    }
+
     setTimeout(() => {
+
         single_biodata_data.value = page.props.single_biodata;
 
         receivedProposals.value = props.received_proposals;

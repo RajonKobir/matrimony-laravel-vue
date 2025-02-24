@@ -139,7 +139,9 @@ onMounted(() => {
                 <TabPanel v-if="proposed" :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    {{ translations.modal_messages.success_propose_message }}
+                    <h1 class="text-center py-4">
+                        শীঘ্রই আসছে...
+                    </h1>
 
                 </TabPanel>
 

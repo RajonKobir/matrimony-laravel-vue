@@ -332,7 +332,7 @@ document.body.classList.add("backend.biodata.approved");
                         <!-- <td>{{ single_biodata.is_approved ? 'yes' : 'no' }}</td> -->
                         <td>{{ single_biodata.biodata_code }}</td>
                         <!-- <td>{{ single_biodata.biodata_completion }}%</td> -->
-                        <td>{{ single_biodata.user_email }}</td>
+                        <td class="truncate">{{ single_biodata.user_email }}</td>
                         <td>{{ single_biodata.user_mobile }}</td>
                         <td>
                             <div class="flex flex-col sm:flex-row justify-center items-center gap-1">
@@ -374,7 +374,7 @@ document.body.classList.add("backend.biodata.approved");
         padding: 0 !important;
     }
     table.dataTable > tbody > tr > th, table.dataTable > tbody > tr > td{
-        padding: 8px 0 !important;
+        padding: 0 0 !important;
     }
     .action_buttons{
         width: 70% !important;

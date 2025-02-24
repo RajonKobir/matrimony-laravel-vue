@@ -30,10 +30,32 @@ const props = defineProps({
             <div class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.father_name_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.father_name }}
+                    </span>
+                </p>
+            </div>
+
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
                         {{ translations.search_page.father_desc_title }}
                     </span>
                     <span class="text-base text-left pl-2">
                         {{ single_biodata.father_desc }}
+                    </span>
+                </p>
+            </div>
+
+            <div class="form_item col-span-12 md:col-span-6 p-2">
+                <p class="text-base text-left">
+                    <span class="text-lg text-left font-bold">
+                        {{ translations.search_page.mother_name_title }}
+                    </span>
+                    <span class="text-base text-left pl-2">
+                        {{ single_biodata.mother_name }}
                     </span>
                 </p>
             </div>

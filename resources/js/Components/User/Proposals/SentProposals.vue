@@ -147,6 +147,14 @@ const highestDegreeSelection = (single_biodata) => {
     if( single_biodata.general_selected ){
         highestDegree = single_biodata.general_highest_degree;
     }
+
+    if( highestDegree != '' ){
+        highestDegree += ' ';
+        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
+    }else{
+        highestDegree = single_biodata.medium_of_study;
+    }
+
     return highestDegree;
 }
 
@@ -212,7 +220,7 @@ document.body.classList.add("user.proposals.sent");
                                                         {{ highestDegreeSelection(single_biodata) }}
                                                     </p>
                                                     <p class="truncate">
-                                                        {{ single_biodata.job_title }}({{ single_biodata.monthly_income }})
+                                                        {{ single_biodata.job_title }}{{ ['নাই', 'None', null].includes(single_biodata.monthly_income) ? '' : ' (' + single_biodata.monthly_income + ')' }}
                                                     </p>
                                                     <p class="truncate">
                                                         {{ single_biodata.permanent_upazila }}, {{ single_biodata.permanent_district }}
