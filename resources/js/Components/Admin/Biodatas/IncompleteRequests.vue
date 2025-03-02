@@ -296,28 +296,33 @@ const onClickMultipleApprove = (user_ids) => {
 const closeModal = (value) => {
     isPopupMessageModalOpen.value = value;
     isPopupViewModalOpen.value = value;
-    modalInner.value = [];
+    modalInner.value = {};
     page.props.flash = [];
 }
 
 
 onMounted(() => {
 
-    dt = table.value.dt;
-
-    // Handle the Select All checkbox functionality
-    document.getElementById('selectAll').addEventListener('change', function () {
-        if (this.checked) {
-            dt.rows().select();
-        } else {
-            dt.rows().deselect();
+    setTimeout(() => {
+        if( table.value ){
+            dt = table.value.dt;
         }
-    });
+        // Handle the Select All checkbox functionality
+        if( document.getElementById('selectAll') ){
+            document.getElementById('selectAll').addEventListener('change', function () {
+                if (this.checked) {
+                    dt.rows().select();
+                } else {
+                    dt.rows().deselect();
+                }
+            });
+        }
+
+    }, 1000);
 
     // document.addEventListener('DOMContentLoaded', function () {
 
     // });
-
 
 });
 
@@ -340,7 +345,7 @@ document.body.classList.add("backend.biodata.approved");
 
     <div class="biodata_main w-full min-h-screen">
 
-        <DataTable ref="table" id="myTable" :options="options" class="display responsive  stripe row-border hover order-column nowrap" style="width:100%">
+        <DataTable v-if="all_biodatas.length > 0" ref="table" id="myTable" :options="options" class="display responsive  stripe row-border hover order-column nowrap" style="width:100%">
             <caption>
                 <!-- Table Title -->
                 <h2 class="text-center text-xl font-bold text-gray-800 my-4">

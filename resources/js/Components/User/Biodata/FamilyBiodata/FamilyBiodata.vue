@@ -26,6 +26,9 @@ const props = defineProps({
     selectedGender: {
         type: String,
     },
+    editRequest: {
+        type: Boolean,
+    },
 });
 
 
@@ -38,6 +41,7 @@ const isModalOpen = ref(false);
 
 
 const form = useForm({
+    editRequest: props.editRequest,
     csrf_token: csrf_token,
     biodata_completion: 60,
     running_tab: 3,

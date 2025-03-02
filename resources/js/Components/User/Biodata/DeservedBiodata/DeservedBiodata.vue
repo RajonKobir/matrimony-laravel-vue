@@ -38,6 +38,9 @@ const props = defineProps({
     districts: {
         type: Object,
     },
+    editRequest: {
+        type: Boolean,
+    },
 });
 
 
@@ -59,6 +62,7 @@ const deservedHigherHeight = ref(65);
 
 
 const form = useForm({
+    editRequest: props.editRequest,
     csrf_token: csrf_token,
     biodata_completion: 80,
     running_tab: 4,

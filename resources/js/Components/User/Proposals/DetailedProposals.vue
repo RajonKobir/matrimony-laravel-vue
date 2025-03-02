@@ -65,7 +65,7 @@ const closeModal = (value) => {
 
 const onClickInterested = (single_proposal) => {
     if( confirm( props.translations.proposal_page.confirm_accept ) ){
-        axios.post(route('proposals.single_accept', {
+        axios.post(route('user.proposals.single_accept', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -98,7 +98,7 @@ const onClickInterested = (single_proposal) => {
 
 const onClickNotInterested = (single_proposal) => {
     if(confirm( props.translations.proposal_page.confirm_reject )){
-        axios.post(route('proposals.single_accept', {
+        axios.post(route('user.proposals.single_accept', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -129,11 +129,11 @@ const onClickNotInterested = (single_proposal) => {
 }
 
 
-const onClickSingleViewDetails = (single_biodata, tab_index, proposal = null) => {
+const onClickSingleViewDetails = (single_biodata, tab_index) => {
     modalInner.value = {
         single_biodata,
         tab_index,
-        proposal,
+        proposals : all_proposals.value,
     }
     isPopupViewModalOpen.value = true;
 }
@@ -168,30 +168,6 @@ const proposeType = (e) => {
 const freeOrPaid = (e) => {
     e.preventDefault();
     freeOrPaidPrposal.value = e.target.value;
-    // if( freeOrPaidPrposal.value == 1 ){
-    //     let updated_biodatas = [];
-    //     all_proposals.value = all_proposals.value.map(single_proposal => {
-    //         if( single_proposal.free_proposal ){
-    //             all_biodatas.value.data.map( single_biodata => {
-    //                 if( proposalType.value == 1 ){
-    //                     if( single_biodata.user_id == single_proposal.receiver_user_id ){
-    //                         updated_biodatas.push(single_biodata);
-    //                     }
-    //                 }else{
-    //                     if( single_biodata.user_id == single_proposal.sender_user_id ){
-    //                         updated_biodatas.push(single_biodata);
-    //                     }
-    //                 }
-    //             });
-    //             return single_proposal;
-    //         }
-    //     });
-    //     all_biodatas.value.data = updated_biodatas;
-    // }
-    // else if( freeOrPaidPrposal.value == 2 ){
-    //     all_biodatas.value = props.sent_biodatas;
-    //     all_proposals.value = props.sent_proposals;
-    // }
 }
 
 
@@ -256,7 +232,7 @@ document.body.classList.add("user.proposals.detailed");
                             <div class="grid grid-cols-12 gap-0">
 
                                 <div class="form_item col-span-6 md:col-start-3 md:col-span-4 p-2">
-                                    <select @change="proposeType" id="propose_type" name="propose_type" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                                    <select v-model="proposalType" @change="proposeType" id="propose_type" name="propose_type" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                                         <option value="1">
                                             {{ translations.proposal_page.received_title }}
                                         </option>
@@ -267,7 +243,7 @@ document.body.classList.add("user.proposals.detailed");
                                 </div>
 
                                 <div class="form_item col-span-6 md:col-span-4 p-2">
-                                    <select @change="freeOrPaid" id="free_or_paid" name="free_or_paid" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                                    <select v-model="freeOrPaidPrposal" @change="freeOrPaid" id="free_or_paid" name="free_or_paid" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                                         <option value="1">
                                             {{ translations.proposal_page.free_text }}
                                         </option>
@@ -298,6 +274,7 @@ document.body.classList.add("user.proposals.detailed");
                                 </thead>
                                 <tbody v-if="all_biodatas.total > 0">
                                     <tr v-for="(single_biodata, single_biodata_key) in all_biodatas.data" :key="single_biodata_key" class="bg-white hover:bg-[#f9e0f0]">
+                                    <template v-if="(freeOrPaidPrposal == 1 && all_proposals[single_biodata_key].free_proposal) || (freeOrPaidPrposal == 2 && !all_proposals[single_biodata_key].free_proposal)">
                                         <td class="py-2 px-3 text-[#ad277c] break-words text-sm sm:text-base">
                                             {{ all_biodatas.data.length - single_biodata_key }}
                                         </td>
@@ -316,7 +293,7 @@ document.body.classList.add("user.proposals.detailed");
                                                     <button type="button" @click="onClickNotInterested(all_proposals[single_biodata_key])" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">
                                                         {{ translations.proposal_page.not_interested }}
                                                     </button>
-                                                    <button type="button" @click="onClickSingleViewDetails(single_biodata, 0, all_proposals[single_biodata_key])" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">
+                                                    <button type="button" @click="onClickSingleViewDetails(single_biodata, 0)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">
                                                         {{ translations.profile_page.details_title }}
                                                     </button>
                                                 </div>
@@ -325,6 +302,7 @@ document.body.classList.add("user.proposals.detailed");
                                                 {{ all_proposals[single_biodata_key].proposal_status }}
                                             </template>
                                         </td>
+                                    </template>
                                     </tr>
                                 </tbody>
 
@@ -340,6 +318,7 @@ document.body.classList.add("user.proposals.detailed");
                                             <div class="px-1 pt-10 col-span-12 flex justify-center items-center">
                                                 <template v-for=" (link, index) in all_biodatas.links" :key="index">
                                                     <Link
+                                                        preserve-state
                                                         v-if="link.url && !link.active"
                                                         :href="link.url"
                                                         class="pagination-link px-1 border-2"

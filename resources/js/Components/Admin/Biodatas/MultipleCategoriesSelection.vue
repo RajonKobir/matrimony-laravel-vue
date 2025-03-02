@@ -73,7 +73,7 @@ onMounted(() => {
                     <ListboxOption @click="onClickCategoriesItems" v-slot="{ active, selected }" v-for="(category, category_key) in translations.biodata.category_options" :key="category_key" :value="category" as="template" :disabled="category.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',

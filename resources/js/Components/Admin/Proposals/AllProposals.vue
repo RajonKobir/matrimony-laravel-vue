@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import PopupMessage from './PopupMessage.vue';
-// import PopupView from './PopupView.vue';
 import axios from 'axios';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-dt';
@@ -142,7 +141,7 @@ const options = ref({
 const onClickInterested = (single_proposal) => {
 
     if(confirm("Are you sure?")){
-        axios.post(route('proposals.single_accept', {
+        axios.post(route('backend.proposals.single_accept', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -174,7 +173,7 @@ const onClickInterested = (single_proposal) => {
 const onClickNotInterested = (single_proposal) => {
 
     if(confirm("Are you sure?")){
-        axios.post(route('proposals.single_accept', {
+        axios.post(route('backend.proposals.single_accept', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -207,7 +206,7 @@ const onClickNotInterested = (single_proposal) => {
 const onClickCancel = (single_proposal) => {
 
     if(confirm("Are you sure?")){
-        axios.post(route('proposals.single_cancel', {
+        axios.post(route('backend.proposals.single_cancel', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -289,7 +288,7 @@ const onClickMultipleUnApprove = (user_ids) => {
 const closeModal = (value) => {
     isPopupMessageModalOpen.value = value;
     isPopupViewModalOpen.value = value;
-    modalInner.value = [];
+    modalInner.value = {};
     page.props.flash = [];
 }
 
@@ -310,21 +309,26 @@ function calculateHoursSince(startTime) {
 
 onMounted(() => {
 
-    dt = table.value.dt;
-
-    // Handle the Select All checkbox functionality
-    document.getElementById('selectAll').addEventListener('change', function () {
-        if (this.checked) {
-            dt.rows().select();
-        } else {
-            dt.rows().deselect();
+    setTimeout(() => {
+        if( table.value ){
+            dt = table.value.dt;
         }
-    });
+        // Handle the Select All checkbox functionality
+        if( document.getElementById('selectAll') ){
+            document.getElementById('selectAll').addEventListener('change', function () {
+                if (this.checked) {
+                    dt.rows().select();
+                } else {
+                    dt.rows().deselect();
+                }
+            });
+        }
+
+    }, 1000);
 
     // document.addEventListener('DOMContentLoaded', function () {
 
     // });
-
 
 });
 
@@ -345,7 +349,7 @@ document.body.classList.add("backend.proposals.all");
 
     <div class="biodata_main w-full min-h-screen">
 
-        <DataTable ref="table" id="myTable" :options="options" class="display responsive  stripe row-border hover order-column nowrap" style="width:100%">
+        <DataTable v-if="all_proposals.length > 0" ref="table" id="myTable" :options="options" class="display responsive  stripe row-border hover order-column nowrap" style="width:100%">
             <caption>
                 <!-- Table Title -->
                 <h2 class="text-center text-xl font-bold text-gray-800 my-4">

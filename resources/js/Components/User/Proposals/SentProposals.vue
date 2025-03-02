@@ -52,7 +52,7 @@ const closeModal = (value) => {
 
 const onClickLikeBiodata = (single_biodata) => {
 
-    axios.post(route('likes.single_like', {
+    axios.post(route('user.likes.single_like', {
         csrf_token,
         sender_user_id : page.props.auth.user.id,
         sender_biodata_code : page.props.single_biodata.biodata_code,
@@ -81,7 +81,7 @@ const onClickLikeBiodata = (single_biodata) => {
 
 const onClickDisLikeBiodata = (single_biodata) => {
 
-    axios.post(route('likes.single_dislike', {
+    axios.post(route('user.likes.single_dislike', {
         csrf_token,
         sender_user_id : page.props.auth.user.id,
         sender_biodata_code : page.props.single_biodata.biodata_code,
@@ -108,11 +108,11 @@ const onClickDisLikeBiodata = (single_biodata) => {
 }
 
 
-const onClickSingleViewDetails = (single_biodata, tab_index, proposal = null) => {
+const onClickSingleViewDetails = (single_biodata, tab_index) => {
     modalInner.value = {
         single_biodata,
         tab_index,
-        proposal,
+        proposals : props.proposals,
     }
     isPopupViewModalOpen.value = true;
 }
@@ -132,27 +132,50 @@ function getAge(dateString) {
 
 const highestDegreeSelection = (single_biodata) => {
     let highestDegree = '';
-    if( single_biodata.study_others_selected ){
-        highestDegree = single_biodata.study_others_highest_degree;
+    if( single_biodata.medium_of_study ){
+        if( single_biodata.medium_of_study != '' ){
+            let educationMediumArray = single_biodata.medium_of_study.split(",").map(item => item.trim());
+            educationMediumArray.forEach(function(item, index, arr){
+                const wordBeforeBracket = item.split("(")[0].trim().toLowerCase();
+                if( index > 0 ){
+                    highestDegree += ', ';
+                }
+                switch(wordBeforeBracket) {
+                    case 'জেনারেল' || 'general':
+                        if( single_biodata.general_selected ){
+                            highestDegree += single_biodata.general_highest_degree;
+                        }
+                        break;
+                    case 'আলিয়া' || 'aliya':
+                        if( single_biodata.aliya_selected ){
+                            highestDegree += single_biodata.aliya_highest_degree;
+                        }
+                        break;
+                    case 'ক্বওমী' || 'kowmi':
+                        if( single_biodata.kowmi_selected ){
+                            highestDegree += single_biodata.kowmi_highest_degree;
+                        }
+                        break;
+                    case 'অন্যান্য' || 'others' || 'other':
+                        if( single_biodata.study_others_selected ){
+                            highestDegree += single_biodata.study_others_highest_degree;
+                        }
+                        break;
+                }
+
+                if( highestDegree != '' ){
+                    highestDegree += ' ';
+                    highestDegree += item.match(/\(.*?\)/)[0];
+                }
+
+            });
+        }
     }
 
-    if( single_biodata.kowmi_selected ){
-        highestDegree = single_biodata.kowmi_highest_degree;
-    }
-
-    if( single_biodata.aliya_selected ){
-        highestDegree = single_biodata.aliya_highest_degree;
-    }
-
-    if( single_biodata.general_selected ){
-        highestDegree = single_biodata.general_highest_degree;
-    }
-
-    if( highestDegree != '' ){
-        highestDegree += ' ';
-        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
-    }else{
-        highestDegree = single_biodata.medium_of_study;
+    if( highestDegree == '' ){
+        if( single_biodata.medium_of_study ){
+            highestDegree = single_biodata.medium_of_study;
+        }
     }
 
     return highestDegree;
@@ -241,12 +264,12 @@ document.body.classList.add("user.proposals.sent");
                                                         <i class="fa-regular fa-message"></i> {{ translations.profile_page.message_title }} &nbsp;
                                                     </span>
 
-                                                    <span @click="onClickSingleViewDetails(single_biodata, 4, proposals[single_biodata_key])" class="cursor-pointer">
+                                                    <span @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
                                                         <i class="fa fa-paper-plane"></i>
                                                         {{ translations.profile_page.interested_done_title }} &nbsp;
                                                     </span>
 
-                                                    <span @click="onClickSingleViewDetails(single_biodata, 0, proposals[single_biodata_key])" class="cursor-pointer">
+                                                    <span @click="onClickSingleViewDetails(single_biodata, 0)" class="cursor-pointer">
                                                         <i class="fa-regular fa-eye"></i>
                                                         {{ translations.profile_page.details_title }}
                                                     </span>

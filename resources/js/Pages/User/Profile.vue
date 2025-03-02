@@ -4,6 +4,8 @@ import { Head, usePage } from '@inertiajs/vue3';
 import Biodata from '../../Components/User/Biodata/Biodata.vue';
 import ShowBiodata from '../../Components/User/ShowBiodata/ShowBiodata.vue';
 import { ref, onMounted } from "vue";
+import PopupMessage from '../../Components/User/PopupMessage.vue';
+import axios from 'axios';
 
 defineProps({
     translations: {
@@ -34,6 +36,10 @@ const page = usePage();
 const csrf_token = page.props.csrf_token;
 const single_biodata_data = ref([]);
 const inEditMode = ref(true);
+const isModalOpen = ref(false);
+const modalMessage = ref({});
+const editRequest = ref(false);
+
 
 const loadSingleBiodata = (singleBiodata) => {
     single_biodata_data.value = singleBiodata;
@@ -41,7 +47,64 @@ const loadSingleBiodata = (singleBiodata) => {
 
 
 const onClickEditButton = (clicked_true) => {
-    inEditMode.value = clicked_true;
+
+    if( !page.props.single_biodata.is_approved ){
+        inEditMode.value = clicked_true;
+        return;
+    }
+
+    if(confirm( page.props.translations.profile_page.edit_confirm )){
+        axios.post(route('user.biodata.post.biodata_duplication', {
+            user_id : page.props.single_biodata.user_id,
+        }))
+        .then((response) => {
+            if( response.data ){
+                single_biodata_data.value = response.data;
+                inEditMode.value = clicked_true;
+                editRequest.value = clicked_true;
+                modalMessage.value = {
+                    modalHeading : page.props.translations.modal_messages.success_heading,
+                    modalDescription : page.props.translations.modal_messages.edit_request_message,
+                }
+                isModalOpen.value = true;
+            }else{
+                modalMessage.value = {
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.edit_request_failed,
+                }
+                isModalOpen.value = true;
+            }
+        });
+    }
+}
+
+
+const onClickEditRequest = () => {
+    axios.post(route('user.biodata.post.edit_request', {
+        user_id : page.props.single_biodata.user_id,
+    }))
+    .then((response) => {
+        if( response.data ){
+            single_biodata_data.value.in_edit_request = true;
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.success_heading,
+                modalDescription : page.props.translations.modal_messages.edit_request_sent,
+            }
+            isModalOpen.value = true;
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.edit_request_failed,
+            }
+            isModalOpen.value = true;
+        }
+        inEditMode.value = !inEditMode.value;
+    });
+}
+
+
+const closeModal = (value) => {
+    isModalOpen.value = value;
 }
 
 
@@ -66,18 +129,20 @@ document.body.classList.add("user.biodata");
 
     <Head title="Profile"/>
 
+    <PopupMessage :translations :isModalOpen :modalMessage @closeModal=closeModal />
+
     <AuthenticatedLayout :translations :locale :locales :canLogin :canRegister :single_biodata="single_biodata_data" >
 
-        <div v-if="(inEditMode && $page.props.single_biodata.is_approved) || ( inEditMode && $page.props.single_biodata.biodata_completion == 100)"  class="flex justify-center items-center py-4 bg-[#FBD5B1]">
-            <button v-if="$page.props.single_biodata.is_approved" @click="inEditMode = !inEditMode" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <div v-if="(inEditMode && single_biodata.is_approved) || ( inEditMode && single_biodata.biodata_completion == 100)"  class="flex justify-center items-center py-4 bg-[#FBD5B1]">
+            <button v-if="single_biodata.is_approved" @click="onClickEditRequest" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                 {{ translations.profile_page.edit_request_title }}
             </button>
-            <button v-if="inEditMode && !$page.props.single_biodata.is_approved" @click="inEditMode = !inEditMode" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+            <button v-if="inEditMode && !single_biodata.is_approved" @click="inEditMode = !inEditMode" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                 {{ translations.profile_page.edit_done_title }}
             </button>
         </div>
 
-        <Biodata v-if="inEditMode" :translations :locale :locales :districts :single_biodata="single_biodata_data" @loadSingleBiodata="loadSingleBiodata" />
+        <Biodata v-if="inEditMode" :translations :locale :locales :districts :editRequest :single_biodata="single_biodata_data" @loadSingleBiodata="loadSingleBiodata" />
 
         <ShowBiodata v-if="!inEditMode" :translations :locale :locales  :single_biodata="single_biodata_data" @onClickEditButton="onClickEditButton" />
 

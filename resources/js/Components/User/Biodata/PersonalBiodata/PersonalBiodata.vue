@@ -36,6 +36,9 @@ const props = defineProps({
     districts: {
         type: Object,
     },
+    editRequest: {
+        type: Boolean,
+    },
 });
 
 
@@ -56,6 +59,7 @@ const isKowmiHonorable = ref(false);
 
 
 const form = useForm({
+    editRequest: props.editRequest,
     csrf_token: csrf_token,
     biodata_completion: 20,
     running_tab: 1,
@@ -182,20 +186,21 @@ const mediaAgreement = (e) => {
 const genderUpdate = (e) => {
     e.preventDefault();
     let genderValue = e.target.value;
-    let modalDescription = '';
-    if( gender.value == 'male' ){
-        modalDescription = page.props.translations.modal_messages.gender_update_message_male;
-    }else{
-        modalDescription = page.props.translations.modal_messages.gender_update_message_female;
-    }
     axios.post(route('user.biodata.post.update_gender', {
         csrf_token,
         user_id,
-        gender: genderValue
+        gender: genderValue,
+        editRequest : props.editRequest
     } ))
     .then(function (response) {
         if( response.data ){
-            gender.value = genderValue;
+            gender.value = response.data.gender;
+            let modalDescription = '';
+            if( gender.value == 'male' ){
+                modalDescription = page.props.translations.modal_messages.gender_update_message_male;
+            }else{
+                modalDescription = page.props.translations.modal_messages.gender_update_message_female;
+            }
             emits('onUpdateGender', gender.value);
             props.single_biodata.gender = gender.value;
             form.maritial_status = props.single_biodata.maritial_status = response.data.maritial_status;

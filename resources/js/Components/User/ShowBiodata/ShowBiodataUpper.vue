@@ -48,27 +48,50 @@ function getAge(dateString) {
 
 const highestDegreeSelection = (single_biodata) => {
     let highestDegree = '';
-    if( single_biodata.study_others_selected ){
-        highestDegree = single_biodata.study_others_highest_degree;
+    if( single_biodata.medium_of_study ){
+        if( single_biodata.medium_of_study != '' ){
+            let educationMediumArray = single_biodata.medium_of_study.split(",").map(item => item.trim());
+            educationMediumArray.forEach(function(item, index, arr){
+                const wordBeforeBracket = item.split("(")[0].trim().toLowerCase();
+                if( index > 0 ){
+                    highestDegree += ', ';
+                }
+                switch(wordBeforeBracket) {
+                    case 'জেনারেল' || 'general':
+                        if( single_biodata.general_selected ){
+                            highestDegree += single_biodata.general_highest_degree;
+                        }
+                        break;
+                    case 'আলিয়া' || 'aliya':
+                        if( single_biodata.aliya_selected ){
+                            highestDegree += single_biodata.aliya_highest_degree;
+                        }
+                        break;
+                    case 'ক্বওমী' || 'kowmi':
+                        if( single_biodata.kowmi_selected ){
+                            highestDegree += single_biodata.kowmi_highest_degree;
+                        }
+                        break;
+                    case 'অন্যান্য' || 'others' || 'other':
+                        if( single_biodata.study_others_selected ){
+                            highestDegree += single_biodata.study_others_highest_degree;
+                        }
+                        break;
+                }
+
+                if( highestDegree != '' ){
+                    highestDegree += ' ';
+                    highestDegree += item.match(/\(.*?\)/)[0];
+                }
+
+            });
+        }
     }
 
-    if( single_biodata.kowmi_selected ){
-        highestDegree = single_biodata.kowmi_highest_degree;
-    }
-
-    if( single_biodata.aliya_selected ){
-        highestDegree = single_biodata.aliya_highest_degree;
-    }
-
-    if( single_biodata.general_selected ){
-        highestDegree = single_biodata.general_highest_degree;
-    }
-
-    if( highestDegree != '' ){
-        highestDegree += ' ';
-        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
-    }else{
-        highestDegree = single_biodata.medium_of_study;
+    if( highestDegree == '' ){
+        if( single_biodata.medium_of_study ){
+            highestDegree = single_biodata.medium_of_study;
+        }
     }
 
     return highestDegree;
@@ -150,13 +173,13 @@ onMounted(() => {
             </div>
         </div>
 
-        <div v-if="!$page.props.single_biodata.is_approved && $page.props.single_biodata.biodata_completion == 100" class="border-t-4">
+        <div class="border-t-4">
 
         </div>
 
         <div class="main-container">
             <div class="grid grid-cols-12 gap-0 py-2 text-white text-base overflow-hidden ">
-                <!-- <div class="col-span-12 p-4">
+                <div v-if="single_biodata.biodata_completion == 100" class="col-span-12 p-4">
                     <div class="flex justify-center items-center">
                         <div class="package_button_div">
                             <button @click="onClickEdit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
@@ -164,13 +187,23 @@ onMounted(() => {
                             </button>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
-                <div v-if="!$page.props.single_biodata.is_approved && $page.props.single_biodata.biodata_completion == 100" class="col-span-12 p-2 md:p-4 !pt-0">
+                <div v-if="!single_biodata.is_approved && single_biodata.biodata_completion == 100" class="col-span-12 p-2 md:p-4 !pt-0">
                     <div class="flex justify-center items-center">
                         <div class="text-center">
                             <p class="text-white text-base md:text-lg">
                                 {{ translations.profile_page.approve_message }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="single_biodata.is_approved && single_biodata.in_edit_request" class="col-span-12 p-2 md:p-4 !pt-0">
+                    <div class="flex justify-center items-center">
+                        <div class="text-center">
+                            <p class="text-white text-base md:text-lg">
+                                {{ translations.modal_messages.edit_request_sent }}
                             </p>
                         </div>
                     </div>

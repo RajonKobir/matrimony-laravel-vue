@@ -175,7 +175,7 @@ onMounted(() => {
 
                                                     <div class="odd-bio-status-wrap">
                                                         <h3 v-if="!single_biodata.is_approved">{{ translations.header.biodata_condition }}</h3>
-                                                        <p v-if="single_biodata.is_approved" class="my-2 text-base">কোড : {{ single_biodata.biodata_code }}</p>
+                                                        <h3 v-if="single_biodata.is_approved" class="my-2 text-base">কোড : {{ single_biodata.biodata_code }}</h3>
                                                         <div class="odd-bio-status">
                                                             <span class="od-incomplete">{{ single_biodata.biodata_completion ? single_biodata.biodata_completion + '%' : '0%' }}</span>
                                                         </div>

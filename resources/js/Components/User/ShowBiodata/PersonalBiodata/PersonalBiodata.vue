@@ -19,15 +19,6 @@ const props = defineProps({
 });
 
 
-// initializing
-const birthDay = ref(null);
-const shortMonth = ref(null);
-const fullYear = ref(null);
-const calculatedAge = ref(null);
-const birthDayString = ref('');
-const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
-
 function getAge(dateString) {
     var today = new Date();
     var birthDate = new Date(dateString);
@@ -40,16 +31,20 @@ function getAge(dateString) {
 }
 
 
+const birthDayString = (birth_date) => {
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    let birthDay = new Date(birth_date);
+    let shortMonth = month[birthDay.getMonth()].slice(0, 3);
+    let fullYear = birthDay.getFullYear();
+    let calculatedAge =  getAge(birth_date);
+    return shortMonth + ', ' + fullYear + ' (' + calculatedAge + ')';
+}
+
+
 onMounted(() => {
 
     setTimeout(() => {
-        if( props.single_biodata.birth_date ){
-            birthDay.value = new Date(props.single_biodata.birth_date);
-            shortMonth.value = month[birthDay.value.getMonth()].slice(0, 3);
-            fullYear.value = birthDay.value.getFullYear();
-            calculatedAge.value =  getAge(props.single_biodata.birth_date);
-            birthDayString.value = shortMonth.value + ', ' + fullYear.value + ' (' + calculatedAge.value + ')';
-        }
+
     }, 500);
 
 });
@@ -74,7 +69,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.birth_date_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ birthDayString }}
+                        {{ birthDayString( single_biodata.birth_date ) }}
                     </span>
                 </p>
             </div>
@@ -167,7 +162,7 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.job_title && single_biodata.job_title.trim() != '' && !single_biodata.job_title.includes('নাই') && !single_biodata.job_title.includes('None')" class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.job_details_title_2 }}
@@ -178,7 +173,7 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.job_title && single_biodata.job_title.trim() != '' && !single_biodata.job_title.includes('নাই') && !single_biodata.job_title.includes('None')"  class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.job_location_title_2 }}
@@ -189,7 +184,7 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.job_title && single_biodata.job_title.trim() != '' && !single_biodata.job_title.includes('নাই') && !single_biodata.job_title.includes('None')"  class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.monthly_income_title }}

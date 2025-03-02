@@ -7,6 +7,7 @@ import FamilyBiodata from './FamilyBiodata/FamilyBiodata.vue';
 import DeservedBiodata from './DeservedBiodata/DeservedBiodata.vue';
 import ShowBiodataUpper from './ShowBiodataUpper.vue';
 import { usePage } from '@inertiajs/vue3';
+import Communication from './Communication.vue';
 
 
 const props = defineProps({
@@ -25,8 +26,8 @@ const props = defineProps({
     tab_index: {
         type: Number,
     },
-    proposed: {
-        type: Boolean,
+    proposals: {
+        type: Object,
     },
 });
 
@@ -36,6 +37,8 @@ const page = usePage();
 const csrf_token = page.props.csrf_token;
 const selectedTab = ref(0);
 const isModalOpen = ref(false);
+const proposed = ref(false);
+const singleProposal = ref({});
 
 
 const closeModal = (value) => {
@@ -50,10 +53,19 @@ function changeTab(index) {
 
 onMounted(() => {
 
+    const filteredProposals = props.proposals.filter(p => p.sender_user_id == props.single_biodata.user_id || p.receiver_user_id == props.single_biodata.user_id);
+
+    if( filteredProposals.length == 1 ){
+        singleProposal.value = filteredProposals[0];
+        proposed.value = true;
+    }
+
     setTimeout(() => {
+
         if( typeof props.tab_index !== 'undefined' ){
             selectedTab.value =  props.tab_index;
         }
+
     }, 500);
 
 });
@@ -111,37 +123,35 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <PersonalBiodata :translations :locale :locales :single_biodata="single_biodata" />
+                    <PersonalBiodata :translations :locale :locales :single_biodata />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <ReligiousBiodata :translations :locale :locales :single_biodata="single_biodata" />
+                    <ReligiousBiodata :translations :locale :locales :single_biodata />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <FamilyBiodata :translations :locale :locales :single_biodata="single_biodata" />
+                    <FamilyBiodata :translations :locale :locales :single_biodata />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <DeservedBiodata :translations :locale :locales :single_biodata="single_biodata"  />
+                    <DeservedBiodata :translations :locale :locales :single_biodata />
 
                 </TabPanel>
 
                 <TabPanel v-if="proposed" :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <h1 class="text-center py-4">
-                        শীঘ্রই আসছে...
-                    </h1>
+                    <Communication :translations :locale :locales :single_biodata :proposal="singleProposal"   />
 
                 </TabPanel>
 

@@ -106,14 +106,6 @@ class FrontEndController extends Controller
                     $biodatas_array['likes'] = $likes;
                 }
             }
-            $proposals = Proposal::where('sender_user_id', $user_id)
-            ->where('in_trash', false)
-            ->get();
-            if( $proposals ){
-                if( count( $proposals ) > 0 ){
-                    $biodatas_array['proposals'] = $proposals;
-                }
-            }
         }
 
         $likedUserIds = [];
@@ -123,6 +115,16 @@ class FrontEndController extends Controller
 
         $biodatas_array['biodatas'] = Biodata::whereIn( 'user_id', $likedUserIds )
         ->paginate(10)->withQueryString();
+
+        $proposals = Proposal::whereIn('sender_user_id', $likedUserIds)
+        ->orWhereIn('receiver_user_id', $likedUserIds)
+        ->where('in_trash', false)
+        ->get();
+        if( $proposals ){
+            if( count( $proposals ) > 0 ){
+                $biodatas_array['proposals'] = $proposals;
+            }
+        }
 
         $pageProps = $biodatas_array + $this->pageProps;
 

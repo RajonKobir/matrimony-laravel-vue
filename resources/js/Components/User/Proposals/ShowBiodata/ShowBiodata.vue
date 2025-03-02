@@ -33,7 +33,7 @@ const props = defineProps({
     tab_index: {
         type: Number,
     },
-    proposal: {
+    proposals: {
         type: Object,
     },
 });
@@ -45,7 +45,8 @@ const csrf_token = page.props.csrf_token;
 const selectedTab = ref(0);
 const isModalOpen = ref(false);
 const modalMessage = ref({});
-const updatedProposal = ref({});
+const proposed = ref(false);
+const singleProposal = ref({});
 
 
 const closeModal = (value) => {
@@ -65,12 +66,18 @@ const onUpdateReceivedProposals = (proposals) => {
 
 onMounted(() => {
 
+    const filteredProposals = props.proposals.filter(p => p.sender_user_id == props.single_biodata.user_id || p.receiver_user_id == props.single_biodata.user_id);
+
+    if( filteredProposals.length == 1 ){
+        singleProposal.value = filteredProposals[0];
+        proposed.value = true;
+    }
+
     setTimeout(() => {
+
         if( typeof props.tab_index !== 'undefined' ){
             selectedTab.value =  props.tab_index;
         }
-
-        updatedProposal.value = props.proposal;
 
     }, 500);
 
@@ -116,7 +123,7 @@ onMounted(() => {
                         {{ translations.biodata_form.deserved_biodata.title }}
                     </button>
                 </Tab>
-                <Tab v-slot="{ selected }" >
+                <Tab v-if="proposed" v-slot="{ selected }" >
                     <button
                         :class="['w-full px-1 md:px-4 rounded-lg py-2.5 text-sm font-medium leading-5', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2', selected ? 'bg-white text-blue-700 shadow' : 'text-blue-100 hover:bg-white/[0.12] hover:text-white',]">
                         {{ translations.profile_page.interested_done_title }}
@@ -156,10 +163,10 @@ onMounted(() => {
 
                 </TabPanel>
 
-                <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
+                <TabPanel v-if="proposed" :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <Communication :translations :locale :locales :single_biodata :proposal @onUpdateReceivedProposals="onUpdateReceivedProposals" />
+                    <Communication :translations :locale :locales :single_biodata :proposal="singleProposal" @onUpdateReceivedProposals="onUpdateReceivedProposals" />
 
                 </TabPanel>
 

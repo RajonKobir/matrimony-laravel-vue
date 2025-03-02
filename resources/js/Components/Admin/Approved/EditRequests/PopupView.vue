@@ -8,13 +8,11 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/vue';
-import TakeAction from './TakeAction.vue';
-import Biodata from './Biodata/Biodata.vue';
+import ShowBiodata from './ShowBiodata/ShowBiodata.vue';
 
 
 const emits = defineEmits([
     'closeModal',
-    'onClickPermanentDelete',
 ]);
 
 
@@ -45,30 +43,11 @@ const props = defineProps({
 
 // initializing
 const page = usePage();
-const showAllData = ref(false);
-const showTakeAction = ref(false);
-const showEdit = ref(false);
 
 
 function closeModal() {
-    showEdit.value = false;
-    showAllData.value = false;
-    showTakeAction.value = false;
     emits('closeModal', false);
 }
-
-
-const onClickPermanentDelete = (single_biodata) => {
-    emits('onClickPermanentDelete', single_biodata);
-}
-
-
-watch(props, async (newValue, oldValue) => {
-    if( page.props.flash.success == null && page.props.flash.error == null ){
-        showAllData.value = newValue.modalInner.showAllData;
-        showTakeAction.value = newValue.modalInner.showTakeAction;
-    }
-});
 
 
 </script>
@@ -124,47 +103,8 @@ watch(props, async (newValue, oldValue) => {
                     </div>
                 </DialogTitle>
 
-                <div v-if="showEdit" class="mt-8">
-                    <Biodata :translations="front_end_translations" :locale :locales :districts :user_id="modalInner.viewBiodata.user_id" />
-                </div>
-
                 <div class="mt-8 text-center">
-                    <button type="button" @click="showEdit = !showEdit" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                        {{ showEdit ? 'Hide Edit' : 'Edit Biodata' }}
-                    </button>
-                </div>
-
-                <div v-if="showAllData" class="mt-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-                        <div v-for="single_entity in Object.keys(modalInner.viewBiodata)" :key="single_entity.id" class="">
-                            <p class="text-sm text-gray-500">
-                                <span class="font-bold">{{ single_entity }} : </span>
-                                {{ modalInner.viewBiodata[single_entity] }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 text-center">
-                    <button type="button" @click="showAllData = !showAllData" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                        {{ showAllData ? 'HideAllData' : 'showAllData' }}
-                    </button>
-                </div>
-
-                <div v-if="showTakeAction" class="mt-8">
-                    <TakeAction :translations :modalInner />
-                </div>
-
-                <div class="mt-8 text-center">
-                    <button type="button" @click="showTakeAction = !showTakeAction" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                        {{ showTakeAction ? 'HideTakeAction' : 'TakeAction' }}
-                    </button>
-                </div>
-
-                <div v-if="modalInner.trashPage" class="mt-8 text-center">
-                    <button type="button" @click="onClickPermanentDelete(modalInner.viewBiodata)" class="text-xs bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
-                        Delete Permanently
-                    </button>
+                    <ShowBiodata :translations="front_end_translations" :locale :locales  :single_biodata="modalInner.viewBiodata" :biodata_update="modalInner.biodata_update"  />
                 </div>
 
               <div class="mt-4">

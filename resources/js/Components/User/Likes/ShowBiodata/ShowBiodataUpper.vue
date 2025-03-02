@@ -36,27 +36,50 @@ function getAge(dateString) {
 
 const highestDegreeSelection = (single_biodata) => {
     let highestDegree = '';
-    if( single_biodata.study_others_selected ){
-        highestDegree = single_biodata.study_others_highest_degree;
+    if( single_biodata.medium_of_study ){
+        if( single_biodata.medium_of_study != '' ){
+            let educationMediumArray = single_biodata.medium_of_study.split(",").map(item => item.trim());
+            educationMediumArray.forEach(function(item, index, arr){
+                const wordBeforeBracket = item.split("(")[0].trim().toLowerCase();
+                if( index > 0 ){
+                    highestDegree += ', ';
+                }
+                switch(wordBeforeBracket) {
+                    case 'জেনারেল' || 'general':
+                        if( single_biodata.general_selected ){
+                            highestDegree += single_biodata.general_highest_degree;
+                        }
+                        break;
+                    case 'আলিয়া' || 'aliya':
+                        if( single_biodata.aliya_selected ){
+                            highestDegree += single_biodata.aliya_highest_degree;
+                        }
+                        break;
+                    case 'ক্বওমী' || 'kowmi':
+                        if( single_biodata.kowmi_selected ){
+                            highestDegree += single_biodata.kowmi_highest_degree;
+                        }
+                        break;
+                    case 'অন্যান্য' || 'others' || 'other':
+                        if( single_biodata.study_others_selected ){
+                            highestDegree += single_biodata.study_others_highest_degree;
+                        }
+                        break;
+                }
+
+                if( highestDegree != '' ){
+                    highestDegree += ' ';
+                    highestDegree += item.match(/\(.*?\)/)[0];
+                }
+
+            });
+        }
     }
 
-    if( single_biodata.kowmi_selected ){
-        highestDegree = single_biodata.kowmi_highest_degree;
-    }
-
-    if( single_biodata.aliya_selected ){
-        highestDegree = single_biodata.aliya_highest_degree;
-    }
-
-    if( single_biodata.general_selected ){
-        highestDegree = single_biodata.general_highest_degree;
-    }
-
-    if( highestDegree != '' ){
-        highestDegree += ' ';
-        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
-    }else{
-        highestDegree = single_biodata.medium_of_study;
+    if( highestDegree == '' ){
+        if( single_biodata.medium_of_study ){
+            highestDegree = single_biodata.medium_of_study;
+        }
     }
 
     return highestDegree;

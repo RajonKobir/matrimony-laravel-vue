@@ -78,7 +78,7 @@ onMounted(() => {
                     <ListboxOption @click="onClickIslamicStudiesItems" v-slot="{ active, selected }" v-for="(islamic_study, islamic_study_key) in translations.biodata_form.religious_biodata.islamic_studies_options" :key="islamic_study_key" :value="islamic_study" as="template" :disabled="islamic_study.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',

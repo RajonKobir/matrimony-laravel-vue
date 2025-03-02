@@ -8,13 +8,13 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/vue';
-import TakeAction from './TakeAction.vue';
-import Biodata from './Biodata/Biodata.vue';
+import TermsForm from './TermsForm.vue';
+import TermsView from './TermsView.vue';
 
 
 const emits = defineEmits([
     'closeModal',
-    'onClickPermanentDelete',
+    'onAddedSingleTerm',
 ]);
 
 
@@ -46,29 +46,19 @@ const props = defineProps({
 // initializing
 const page = usePage();
 const showAllData = ref(false);
-const showTakeAction = ref(false);
 const showEdit = ref(false);
 
 
 function closeModal() {
     showEdit.value = false;
     showAllData.value = false;
-    showTakeAction.value = false;
     emits('closeModal', false);
 }
 
 
-const onClickPermanentDelete = (single_biodata) => {
-    emits('onClickPermanentDelete', single_biodata);
+const onAddedSingleTerm = (term) => {
+    emits('onAddedSingleTerm', term);
 }
-
-
-watch(props, async (newValue, oldValue) => {
-    if( page.props.flash.success == null && page.props.flash.error == null ){
-        showAllData.value = newValue.modalInner.showAllData;
-        showTakeAction.value = newValue.modalInner.showTakeAction;
-    }
-});
 
 
 </script>
@@ -124,47 +114,18 @@ watch(props, async (newValue, oldValue) => {
                     </div>
                 </DialogTitle>
 
-                <div v-if="showEdit" class="mt-8">
-                    <Biodata :translations="front_end_translations" :locale :locales :districts :user_id="modalInner.viewBiodata.user_id" />
+                <div v-if="modalInner.addNew || modalInner.onEdit" class="mt-12 text-center">
+                    <h1 class="text-center">
+                        Add New Term
+                    </h1>
+                    <TermsForm :translations :single_term="modalInner.single_term" :on_edit="modalInner.onEdit" @onAddedSingleTerm="onAddedSingleTerm"/>
                 </div>
 
-                <div class="mt-8 text-center">
-                    <button type="button" @click="showEdit = !showEdit" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                        {{ showEdit ? 'Hide Edit' : 'Edit Biodata' }}
-                    </button>
-                </div>
-
-                <div v-if="showAllData" class="mt-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-                        <div v-for="single_entity in Object.keys(modalInner.viewBiodata)" :key="single_entity.id" class="">
-                            <p class="text-sm text-gray-500">
-                                <span class="font-bold">{{ single_entity }} : </span>
-                                {{ modalInner.viewBiodata[single_entity] }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 text-center">
-                    <button type="button" @click="showAllData = !showAllData" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                        {{ showAllData ? 'HideAllData' : 'showAllData' }}
-                    </button>
-                </div>
-
-                <div v-if="showTakeAction" class="mt-8">
-                    <TakeAction :translations :modalInner />
-                </div>
-
-                <div class="mt-8 text-center">
-                    <button type="button" @click="showTakeAction = !showTakeAction" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-2 px-4 rounded-full">
-                        {{ showTakeAction ? 'HideTakeAction' : 'TakeAction' }}
-                    </button>
-                </div>
-
-                <div v-if="modalInner.trashPage" class="mt-8 text-center">
-                    <button type="button" @click="onClickPermanentDelete(modalInner.viewBiodata)" class="text-xs bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
-                        Delete Permanently
-                    </button>
+                <div v-if="modalInner.onView" class="mt-12 text-center">
+                    <h1 class="text-center mt-12">
+                        Details of the term id: {{ modalInner.single_term.id }}
+                    </h1>
+                    <TermsView :translations :single_term="modalInner.single_term" />
                 </div>
 
               <div class="mt-4">

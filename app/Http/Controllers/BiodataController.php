@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Biodata;
+use App\Models\BiodataUpdate;
 use App\Models\User;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
@@ -127,8 +129,17 @@ class BiodataController extends Controller
         $request->validate([
             'user_id' => 'required|int',
             'gender' => 'required|string|max:10',
+            'editRequest' => 'nullable|boolean',
         ]);
-        $biodata = Biodata::where('user_id', $request->user_id)->get();
+
+        // initializing
+        $biodata_class = \App\Models\Biodata::class;
+
+        if( $request->editRequest ){
+            $biodata_class = \App\Models\BiodataUpdate::class;
+        }
+
+        $biodata = $biodata_class::where('user_id', $request->user_id)->get();
         if ($request->gender){
             if( count($biodata) == 1 ){
                 $retrieved_biodata = $biodata[0];
@@ -190,7 +201,7 @@ class BiodataController extends Controller
                 //modifying deserved_maritial_statuses ends here
 
                 // updating biodata
-                $updated_biodata = Biodata::where('user_id', $request->user_id)->update([
+                $updated_biodata = $biodata_class::where('user_id', $request->user_id)->update([
                     'gender' => $request->gender,
                     'maritial_status' =>  $maritial_status,
                     'job_title' =>  $job_title,
@@ -199,7 +210,7 @@ class BiodataController extends Controller
                 ]);
                 // if succeed
                 if( $updated_biodata ){
-                    $biodata = Biodata::where('user_id', $request->user_id)->get();
+                    $biodata = $biodata_class::where('user_id', $request->user_id)->get();
                     return $biodata[0];
                 }
             }
@@ -254,12 +265,20 @@ class BiodataController extends Controller
             'is_honorable_selected' => 'nullable|boolean',
             'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:500' : 'nullable|string|min:10|max:500',
             'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:2|max:100' : 'nullable|string|min:2|max:100',
+            'editRequest' => 'nullable|boolean',
         ]);
 
-        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+        // initializing
+        $biodata_class = \App\Models\Biodata::class;
+
+        if( $request->editRequest ){
+            $biodata_class = \App\Models\BiodataUpdate::class;
+        }
+
+        $retrieved_biodata = $biodata_class::where('user_id', $request->user_id)->get();
 
         if( count($retrieved_biodata) == 1 ){
-            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+            $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                 'birth_date' => $request->birth_date,
                 'age' => Carbon::parse($request->birth_date)->age,
                 'skin_color' => $request->skin_color,
@@ -302,12 +321,12 @@ class BiodataController extends Controller
             if($biodata_update){
                 $retrieved_biodata = $retrieved_biodata[0];
                 if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'running_tab' => $request->running_tab,
                     ]);
                 }
                 if( (int)$retrieved_biodata->biodata_completion < (int)$request->biodata_completion ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'biodata_completion' => $request->biodata_completion,
                     ]);
                 }
@@ -341,11 +360,19 @@ class BiodataController extends Controller
             'religious_future_plan' => 'required|string|min:10|max:3000',
             'borka_wearing' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
             'nikab_with_borka' => $request->gender == 'female' ? 'required|string|max:30' : 'nullable|string|max:30',
+            'editRequest' => 'nullable|boolean',
         ]);
 
-        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+        // initializing
+        $biodata_class = \App\Models\Biodata::class;
+
+        if( $request->editRequest ){
+            $biodata_class = \App\Models\BiodataUpdate::class;
+        }
+
+        $retrieved_biodata = $biodata_class::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
-            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+            $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                 'five_waqt_salat' => $request->five_waqt_salat,
                 'beard_quantity' => $request->beard_quantity,
                 'pants_worn_style' => $request->pants_worn_style,
@@ -367,12 +394,12 @@ class BiodataController extends Controller
             if($biodata_update){
                 $retrieved_biodata = $retrieved_biodata[0];
                 if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'running_tab' => $request->running_tab,
                     ]);
                 }
                 if( (int)$retrieved_biodata->biodata_completion < (int)$request->biodata_completion ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'biodata_completion' => $request->biodata_completion,
                     ]);
                 }
@@ -399,10 +426,19 @@ class BiodataController extends Controller
             'property_and_income' => 'required|string|min:10|max:1500',
             'personal_maritial_agreement' => 'required|boolean',
             'family_maritial_agreement' => 'required|boolean',
+            'editRequest' => 'nullable|boolean',
         ]);
-        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+
+        // initializing
+        $biodata_class = \App\Models\Biodata::class;
+
+        if( $request->editRequest ){
+            $biodata_class = \App\Models\BiodataUpdate::class;
+        }
+
+        $retrieved_biodata = $biodata_class::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
-            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+            $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                 'father_name' => $request->father_name,
                 'father_desc' => $request->father_desc,
                 'mother_name' => $request->mother_name,
@@ -417,12 +453,12 @@ class BiodataController extends Controller
             if($biodata_update){
                 $retrieved_biodata = $retrieved_biodata[0];
                 if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'running_tab' => $request->running_tab,
                     ]);
                 }
                 if( (int)$retrieved_biodata->biodata_completion < (int)$request->biodata_completion ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'biodata_completion' => $request->biodata_completion,
                     ]);
                 }
@@ -458,10 +494,19 @@ class BiodataController extends Controller
             'deserved_maritial_statuses' => 'required|string|min:2|max:200',
             'deserved_conditions' => 'required|string|min:2|max:500',
             'deserved_others_desc' => 'required|string|min:2|max:3000',
+            'editRequest' => 'nullable|boolean',
         ]);
-        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+
+        // initializing
+        $biodata_class = \App\Models\Biodata::class;
+
+        if( $request->editRequest ){
+            $biodata_class = \App\Models\BiodataUpdate::class;
+        }
+
+        $retrieved_biodata = $biodata_class::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
-            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+            $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                 'deserved_districts' => $request->deserved_districts,
                 'deserved_age_range' => $request->deserved_age_range,
                 'deserved_skin_colors' => $request->deserved_skin_colors,
@@ -485,12 +530,12 @@ class BiodataController extends Controller
             if($biodata_update){
                 $retrieved_biodata = $retrieved_biodata[0];
                 if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'running_tab' => $request->running_tab,
                     ]);
                 }
                 if( (int)$retrieved_biodata->biodata_completion < (int)$request->biodata_completion ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'biodata_completion' => $request->biodata_completion,
                     ]);
                 }
@@ -516,10 +561,19 @@ class BiodataController extends Controller
             'three_hundred_money_pay' => 'accepted',
             'media_terms_two_agreement' => 'accepted',
             'reference_code' => 'nullable|string|min:2|max:50',
+            'editRequest' => 'nullable|boolean',
         ]);
-        $retrieved_biodata = Biodata::where('user_id', $request->user_id)->get();
+
+        // initializing
+        $biodata_class = \App\Models\Biodata::class;
+
+        if( $request->editRequest ){
+            $biodata_class = \App\Models\BiodataUpdate::class;
+        }
+
+        $retrieved_biodata = $biodata_class::where('user_id', $request->user_id)->get();
         if( count($retrieved_biodata) == 1 ){
-            $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+            $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                 'form_holder_desc' => $request->form_holder_desc,
                 'male_guardian_desc' => $request->male_guardian_desc,
                 'male_guardian_agreement' => $request->male_guardian_agreement,
@@ -533,12 +587,12 @@ class BiodataController extends Controller
             if($biodata_update){
                 $retrieved_biodata = $retrieved_biodata[0];
                 if( (int)$retrieved_biodata->running_tab < (int)$request->running_tab ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'running_tab' => $request->running_tab,
                     ]);
                 }
                 if( (int)$retrieved_biodata->biodata_completion < (int)$request->biodata_completion ){
-                    $biodata_update = Biodata::where('user_id', $request->user_id)->update([
+                    $biodata_update = $biodata_class::where('user_id', $request->user_id)->update([
                         'biodata_completion' => $request->biodata_completion,
                     ]);
                 }
@@ -681,13 +735,28 @@ class BiodataController extends Controller
     {
 
         $request->validate([
-            'biodata_code' => 'required|string|min:3|max:20',
+            'biodata_code' => [
+                'required',
+                'string',
+                'min:3',
+                'max:20',
+                Rule::unique('biodatas', 'biodata_code')->ignore($request->user_id, 'user_id'),
+            ],
             'free_biodata' => 'required|boolean',
             'biodata_categories' => 'nullable|string|min:4|max:100',
             'biodata_restriction' => 'nullable|string|min:4|max:200',
             'daily_free' => 'required|int|min:0|max:127',
             'biodata_package' => 'required|int|min:0|max:32767',
-            'username' => 'required|string|min:4|max:50',
+            'username' => [
+                'required',
+                'string',
+                'min:4',
+                'max:50',
+                Rule::unique('biodatas', 'user_email')->ignore($request->user_id, 'user_id'),
+                Rule::unique('biodatas', 'user_mobile')->ignore($request->user_id, 'user_id'),
+                Rule::unique('users', 'email')->ignore($request->user_id, 'id'),
+                Rule::unique('users', 'mobile')->ignore($request->user_id, 'id'),
+            ],
             'password' => ['nullable', 'string', Rules\Password::defaults()->min(6)->max(20)],
             'is_approved' => 'required|boolean',
             'user_id' => 'required|integer|min:1|max_digits:10',
@@ -697,7 +766,7 @@ class BiodataController extends Controller
         $biodata = Biodata::where('user_id', trim($request->user_id))->get();
 
         if( count($biodata) == 1 ){
-            $biodata = Biodata::where('user_id', $request->user_id)->update([
+            $biodata = Biodata::where('user_id', trim($request->user_id))->update([
                 'user_id' => $request->user_id,
                 'is_approved' => $request->is_approved,
                 'approved_date' => $request->is_approved && !$biodata[0]->approved_date ? Carbon::now()->format('Y-m-d') : $biodata[0]->approved_date,
@@ -713,10 +782,12 @@ class BiodataController extends Controller
             ]);
 
             if( $biodata ){
-                $user = User::where('email', $request->username)->orWhere('mobile', $request->username)->get();
+
+                $user = User::where('id', trim($request->user_id))->get();
 
                 if( count($user) == 1 ){
-                    $user = User::where('email',  $request->username)->orWhere('mobile', $request->username)->update([
+
+                    $user = User::where('id',  trim($request->user_id))->update([
                         'email' => filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $user[0]->email,
                         'mobile' => !filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $user[0]->mobile,
                         'password' => !$request->password || $request->password == '' ? $user[0]->password : Hash::make($request->password),
@@ -732,6 +803,134 @@ class BiodataController extends Controller
 
     }
     // backend ends here
+
+
+    public function biodataDuplication(Request $request){
+        $request->validate([
+            'user_id' => 'required|integer|min:1|max_digits:10',
+        ]);
+
+        $biodataUpdate = BiodataUpdate::where('user_id', $request->user_id )->get();
+        if( $biodataUpdate ){
+            if( count($biodataUpdate) == 1 ){
+                return $biodataUpdate[0];
+            }
+        }
+
+        $biodata = Biodata::where('user_id', $request->user_id )->get();
+        if( $biodata ){
+            if( count($biodata) == 1 ){
+                $newBiodataUpdate = BiodataUpdate::create($biodata[0]->toArray());
+                if( $newBiodataUpdate ){
+                    return $newBiodataUpdate;
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+
+    public function onClickEditRequest(Request $request){
+        $request->validate([
+            'user_id' => 'required|integer|min:1|max_digits:10',
+        ]);
+
+        // initializing
+        $biodata_array = [];
+        $biodataUpdate_array = [];
+
+        $biodata = Biodata::where('user_id', $request->user_id )->get();
+        if( $biodata ){
+            if( count($biodata) == 1 ){
+                $biodata_array = $biodata[0]->toArray();
+            }
+        }
+
+        $biodataUpdate = BiodataUpdate::where('user_id', $request->user_id )->get();
+        if( $biodataUpdate ){
+            if( count($biodataUpdate) == 1 ){
+                $biodataUpdate_array = $biodataUpdate[0]->toArray();
+            }
+        }
+
+        // Remove keys
+        unset($biodata_array['id'], $biodata_array['in_edit_request'], $biodata_array['in_admin_trash'], $biodata_array['created_at'], $biodata_array['updated_at']);
+
+        unset($biodataUpdate_array['id'], $biodataUpdate_array['in_edit_request'], $biodataUpdate_array['in_admin_trash'], $biodataUpdate_array['created_at'], $biodataUpdate_array['updated_at']);
+
+        if ( $biodata_array == $biodataUpdate_array ) {
+            return false;
+        }else{
+            $biodata_update = Biodata::where('user_id', trim($request->user_id))->update([
+                'in_edit_request' => true,
+            ]);
+            if( $biodata_update ){
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+
+    public function onClickApproveEditRequest(Request $request){
+        $request->validate([
+            'user_id' => 'required|integer|min:1|max_digits:10',
+        ]);
+
+        // initializing
+        $biodataUpdate_array = [];
+
+        $biodataUpdate = BiodataUpdate::where('user_id', $request->user_id )->get();
+        if( $biodataUpdate ){
+            if( count($biodataUpdate) == 1 ){
+                $biodataUpdate_array = $biodataUpdate[0]->toArray();
+            }
+        }
+
+        unset($biodataUpdate_array['id'], $biodataUpdate_array['created_at'], $biodataUpdate_array['updated_at']);
+
+        $biodataUpdate_array['in_edit_request'] = false;
+
+        $biodata = Biodata::where('user_id', $request->user_id )->get();
+        if( $biodata ){
+            if( count($biodata) == 1 ){
+                $biodata_update = Biodata::where('user_id', trim($request->user_id))->update( $biodataUpdate_array );
+                if( $biodata_update ){
+                    $biodataDelete = BiodataUpdate::where('user_id', $request->user_id )->delete();
+                    if( $biodataDelete ){
+                        return Biodata::all();
+                    }
+                }
+            }
+        }
+
+        return false;
+
+    }
+
+
+    public function onClickCancelEditRequest(Request $request){
+        $request->validate([
+            'user_id' => 'required|integer|min:1|max_digits:10',
+        ]);
+
+        $biodataDelete = BiodataUpdate::where('user_id', $request->user_id )->delete();
+        if( $biodataDelete ){
+            $biodata = Biodata::where('user_id', $request->user_id )->update([
+                'in_edit_request' => false,
+            ]);
+            if( $biodata ){
+                return Biodata::all();
+            }
+        }
+
+        return false;
+
+    }
 
 
 }

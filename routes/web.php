@@ -7,6 +7,7 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\TermsController;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\BackEndController;
 use App\Http\Controllers\BiodataController;
@@ -25,30 +26,6 @@ Route::get('/localization/{locale}', LocalizationController::class)->name('local
 
 
 Route::middleware(Localization::class)->group(function(){
-
-
-    // likes routes
-    Route::prefix('/likes')->controller(LikeController::class)->name('likes.')->group(function () {
-
-        Route::post('/single_like', 'singleLike')->name('single_like');
-
-        Route::post('/single_dislike', 'singleDisLike')->name('single_dislike');
-
-    });
-
-
-    // proposals routes
-    Route::prefix('/proposals')->controller(ProposalController::class)->name('proposals.')->group(function () {
-
-        Route::post('/single_propose', 'singlePropose')->name('single_propose');
-
-        Route::post('/single_oppose', 'singleOppose')->name('single_oppose');
-
-        Route::post('/single_accept', 'singleAccept')->name('single_accept');
-
-        Route::post('/single_cancel', 'singleCancel')->name('single_cancel');
-
-    });
 
 
     // unauthenticated frontend routes
@@ -97,6 +74,29 @@ Route::middleware(Localization::class)->group(function(){
             Route::post('/update_family_biodata', 'updateFamilyBiodata')->middleware('verified')->name('post.update_family_biodata');
             Route::post('/update_deserved_biodata', 'updateDeservedBiodata')->middleware('verified')->name('post.update_deserved_biodata');
             Route::post('/update_others_biodata', 'updateOthersBiodata')->middleware('verified')->name('post.update_others_biodata');
+
+            Route::post('/biodata_duplication', 'biodataDuplication')->middleware('verified')->name('post.biodata_duplication');
+            Route::post('/edit_request', 'onClickEditRequest')->middleware('verified')->name('post.edit_request');
+
+        });
+
+
+        // likes routes
+        Route::prefix('/likes')->controller(LikeController::class)->name('likes.')->group(function () {
+
+            Route::post('/single_like', 'singleLike')->middleware('verified')->name('single_like');
+            Route::post('/single_dislike', 'singleDisLike')->middleware('verified')->name('single_dislike');
+
+        });
+
+        // proposals routes
+        Route::prefix('/proposals')->controller(ProposalController::class)->name('proposals.')->group(function () {
+
+            Route::post('/single_propose', 'singlePropose')->middleware('verified')->name('single_propose');
+            Route::post('/single_oppose', 'singleOppose')->middleware('verified')->name('single_oppose');
+            Route::post('/single_accept', 'singleAccept')->middleware('verified')->name('single_accept');
+            Route::post('/single_cancel', 'singleCancel')->middleware('verified')->name('single_cancel');
+
         });
 
 
@@ -126,7 +126,7 @@ Route::middleware(Localization::class)->group(function(){
         Route::get('/', 'getDashboard')->middleware('is_admin')->name('dashboard');
         Route::get('/login', 'getLogin')->middleware('throttle:6,1')->name('login');
         Route::post('/login', 'postLogin')->middleware('throttle:6,1')->name('login.post');
-        Route::post('/logout', 'adminLogout')->name('logout');
+        Route::post('/logout', 'adminLogout')->middleware('is_admin')->name('logout');
 
         // Route::post('/get_user_data', 'getUserData')->middleware('is_admin')->name('get_user_data');
 
@@ -140,6 +140,10 @@ Route::middleware(Localization::class)->group(function(){
             Route::post('/onClickPermanentDelete', 'onClickPermanentDelete')->middleware('is_admin')->name('onClickPermanentDelete');
 
             Route::post('/take_action', 'takeAction')->middleware('is_admin')->name('take_action');
+
+            Route::post('/approve_edit_request', 'onClickApproveEditRequest')->middleware('is_admin')->name('approve_edit_request');
+            Route::post('/cancel_edit_request', 'onClickCancelEditRequest')->middleware('is_admin')->name('cancel_edit_request');
+
         });
 
         //biodata controllers
@@ -152,6 +156,23 @@ Route::middleware(Localization::class)->group(function(){
             Route::post('/update_family_biodata', 'updateFamilyBiodata')->middleware('is_admin')->name('post.update_family_biodata');
             Route::post('/update_deserved_biodata', 'updateDeservedBiodata')->middleware('is_admin')->name('post.update_deserved_biodata');
             Route::post('/update_others_biodata', 'updateOthersBiodata')->middleware('is_admin')->name('post.update_others_biodata');
+        });
+
+        // terms routes
+        Route::prefix('/terms')->controller(TermsController::class)->name('terms.')->group(function () {
+            Route::post('/store', 'store')->middleware('is_admin')->name('store');
+            Route::post('/destroy/{id}', 'destroy')->middleware('is_admin')->name('destroy');
+            Route::post('/update', 'update')->middleware('is_admin')->name('update');
+        });
+
+        // proposals routes
+        Route::prefix('/proposals')->controller(ProposalController::class)->name('proposals.')->group(function () {
+
+            Route::post('/single_propose', 'singlePropose')->middleware('is_admin')->name('single_propose');
+            Route::post('/single_oppose', 'singleOppose')->middleware('is_admin')->name('single_oppose');
+            Route::post('/single_accept', 'singleAccept')->middleware('is_admin')->name('single_accept');
+            Route::post('/single_cancel', 'singleCancel')->middleware('is_admin')->name('single_cancel');
+
         });
 
         Route::fallback('backEndFallBack')->name('fallback');

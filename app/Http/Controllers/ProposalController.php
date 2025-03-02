@@ -281,7 +281,7 @@ class ProposalController extends Controller
                 $user_id = Auth::guard('web')->user()->id;
                 return Proposal::where('receiver_user_id', $user_id)
                 ->where('in_trash', false)
-                ->paginate(10)->withQueryString();
+                ->get();
             }
         }
 

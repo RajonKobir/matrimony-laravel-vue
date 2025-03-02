@@ -48,7 +48,7 @@ const all_biodatas = ref({});
 const isPopupViewModalOpen = ref(false);
 const modalInner = ref({});
 const self_proposals = ref({});
-const proposalReceiverUserIds = ref([]);
+const proposalUserIds = ref([]);
 
 
 const closeModal = (value) => {
@@ -66,7 +66,7 @@ const onClickDisLikeBiodata = (single_biodata) => {
         isModalOpen.value = true;
         return;
     }
-    axios.post(route('likes.single_dislike', {
+    axios.post(route('user.likes.single_dislike', {
         csrf_token,
         sender_user_id : page.props.auth.user.id,
         sender_biodata_code : page.props.single_biodata.biodata_code,
@@ -97,7 +97,7 @@ const onClickDisLikeBiodata = (single_biodata) => {
 const onClickProposeBiodata = (single_biodata) => {
 
     if(confirm( page.props.translations.modal_messages.proposal_send_confirm )){
-        axios.post(route('proposals.single_propose', {
+        axios.post(route('user.proposals.single_propose', {
             csrf_token,
             sender_user_id : page.props.single_biodata.user_id,
             sender_biodata_code : page.props.single_biodata.biodata_code,
@@ -111,7 +111,7 @@ const onClickProposeBiodata = (single_biodata) => {
                 }
             }else{
                 if( response.data.message == true ){
-                    proposalReceiverUserIds.value.push( single_biodata.user_id );
+                    proposalUserIds.value.push( single_biodata.user_id );
                     modalMessage.value = {
                         modalHeading : page.props.translations.modal_messages.success_heading,
                         modalDescription : page.props.translations.modal_messages.success_propose_message,
@@ -132,15 +132,10 @@ const onClickProposeBiodata = (single_biodata) => {
 
 const onClickSingleViewDetails = (single_biodata, tab_index) => {
 
-    let proposed = false;
-    if( proposalReceiverUserIds.value.includes(single_biodata.user_id) ){
-        proposed = true;
-    }
-
     modalInner.value = {
         single_biodata,
         tab_index,
-        proposed
+        proposals : props.proposals,
     }
     isPopupViewModalOpen.value = true;
 }
@@ -160,27 +155,50 @@ function getAge(dateString) {
 
 const highestDegreeSelection = (single_biodata) => {
     let highestDegree = '';
-    if( single_biodata.study_others_selected ){
-        highestDegree = single_biodata.study_others_highest_degree;
+    if( single_biodata.medium_of_study ){
+        if( single_biodata.medium_of_study != '' ){
+            let educationMediumArray = single_biodata.medium_of_study.split(",").map(item => item.trim());
+            educationMediumArray.forEach(function(item, index, arr){
+                const wordBeforeBracket = item.split("(")[0].trim().toLowerCase();
+                if( index > 0 ){
+                    highestDegree += ', ';
+                }
+                switch(wordBeforeBracket) {
+                    case 'জেনারেল' || 'general':
+                        if( single_biodata.general_selected ){
+                            highestDegree += single_biodata.general_highest_degree;
+                        }
+                        break;
+                    case 'আলিয়া' || 'aliya':
+                        if( single_biodata.aliya_selected ){
+                            highestDegree += single_biodata.aliya_highest_degree;
+                        }
+                        break;
+                    case 'ক্বওমী' || 'kowmi':
+                        if( single_biodata.kowmi_selected ){
+                            highestDegree += single_biodata.kowmi_highest_degree;
+                        }
+                        break;
+                    case 'অন্যান্য' || 'others' || 'other':
+                        if( single_biodata.study_others_selected ){
+                            highestDegree += single_biodata.study_others_highest_degree;
+                        }
+                        break;
+                }
+
+                if( highestDegree != '' ){
+                    highestDegree += ' ';
+                    highestDegree += item.match(/\(.*?\)/)[0];
+                }
+
+            });
+        }
     }
 
-    if( single_biodata.kowmi_selected ){
-        highestDegree = single_biodata.kowmi_highest_degree;
-    }
-
-    if( single_biodata.aliya_selected ){
-        highestDegree = single_biodata.aliya_highest_degree;
-    }
-
-    if( single_biodata.general_selected ){
-        highestDegree = single_biodata.general_highest_degree;
-    }
-
-    if( highestDegree != '' ){
-        highestDegree += ' ';
-        highestDegree += single_biodata.medium_of_study.match(/\(.*?\)/)[0];
-    }else{
-        highestDegree = single_biodata.medium_of_study;
+    if( highestDegree == '' ){
+        if( single_biodata.medium_of_study ){
+            highestDegree = single_biodata.medium_of_study;
+        }
     }
 
     return highestDegree;
@@ -196,7 +214,11 @@ onMounted(() => {
         self_proposals.value = page.props.proposals;
         if( self_proposals.value.length > 0 ){
             self_proposals.value.forEach(function(item, index, arr){
-                proposalReceiverUserIds.value.push( item.receiver_user_id );
+                if( item.receiver_user_id == props.single_biodata.user_id ){
+                    proposalUserIds.value.push( item.sender_user_id );
+                }else{
+                    proposalUserIds.value.push( item.receiver_user_id );
+                }
             })
         }
 
@@ -210,6 +232,7 @@ document.body.classList.add("user.likes");
 </script>
 
 <template>
+
 
 
     <Head title="Likes" />
@@ -274,16 +297,16 @@ document.body.classList.add("user.likes");
                                                             <i class="fa-regular fa-message"></i> {{ translations.profile_page.message_title }} &nbsp;
                                                         </span>
 
-                                                        <span v-if="!proposalReceiverUserIds.includes(single_biodata.user_id)" @click="onClickProposeBiodata(single_biodata)" class="cursor-pointer">
+                                                        <span v-if="!proposalUserIds.includes(single_biodata.user_id)" @click="onClickProposeBiodata(single_biodata)" class="cursor-pointer">
                                                             <i class="fa fa-paper-plane"></i>
                                                             {{ translations.profile_page.interested_title }} &nbsp;
                                                         </span>
-                                                        <span v-if="proposalReceiverUserIds.includes(single_biodata.user_id)" @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
+                                                        <span v-if="proposalUserIds.includes(single_biodata.user_id)" @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
                                                             <i class="fa fa-paper-plane"></i>
                                                             {{ translations.profile_page.interested_done_title }} &nbsp;
                                                         </span>
 
-                                                        <span @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
+                                                        <span @click="onClickSingleViewDetails(single_biodata, 0)" class="cursor-pointer">
                                                             <i class="fa-regular fa-eye"></i>
                                                             {{ translations.profile_page.details_title }}
                                                         </span>

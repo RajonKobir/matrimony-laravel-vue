@@ -33,6 +33,9 @@ defineProps({
     single_biodata: {
         type: Object,
     },
+    editRequest: {
+        type: Boolean,
+    },
 });
 
 
@@ -192,35 +195,35 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <PersonalBiodata :translations :locale :locales :single_biodata="single_biodata_data" :districts @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender" @onUpdateDeservedJobTitles="onUpdateDeservedJobTitles" @onUpdateDeservedMaritialStatuses="onUpdateDeservedMaritialStatuses" />
+                    <PersonalBiodata :translations :locale :locales :single_biodata="single_biodata_data" :districts :editRequest @onCompleteTab="onCompleteTab" @onUpdateGender="onUpdateGender" @onUpdateDeservedJobTitles="onUpdateDeservedJobTitles" @onUpdateDeservedMaritialStatuses="onUpdateDeservedMaritialStatuses" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <ReligiousBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
+                    <ReligiousBiodata :translations :locale :locales :editRequest :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <FamilyBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
+                    <FamilyBiodata :translations :locale :locales :editRequest :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <DeservedBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender :districts @onCompleteTab="onCompleteTab" />
+                    <DeservedBiodata :translations :locale :locales :editRequest :single_biodata="single_biodata_data" :selectedGender :districts @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <OthersBiodata :translations :locale :locales :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
+                    <OthersBiodata :translations :locale :locales :editRequest :single_biodata="single_biodata_data" :selectedGender @onCompleteTab="onCompleteTab" />
 
                 </TabPanel>
 

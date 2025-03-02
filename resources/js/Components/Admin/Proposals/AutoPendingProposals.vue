@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue';
 import { usePage, Head } from '@inertiajs/vue3';
 import PopupMessage from './PopupMessage.vue';
-// import PopupView from './PopupView.vue';
 import axios from 'axios';
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net-dt';
@@ -142,7 +141,7 @@ const options = ref({
 const onClickInterested = (single_proposal) => {
 
     if(confirm("Are you sure?")){
-        axios.post(route('proposals.single_accept', {
+        axios.post(route('backend.proposals.single_accept', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -151,6 +150,10 @@ const onClickInterested = (single_proposal) => {
         .then((response) => {
             if( response.data ){
                 emits('onUpdateAllProposals', response.data);
+                // dt.rows( function ( idx, data, node ) {
+                //     return data[2] == user_id ? true : false;
+                // }).remove().draw();
+                dt.rows('.selected').remove().draw();
                 modalInner.value = {
                     modalHeading : 'Success!',
                     modalDescription : 'The proposal has been accepted successfully.',
@@ -174,7 +177,7 @@ const onClickInterested = (single_proposal) => {
 const onClickNotInterested = (single_proposal) => {
 
     if(confirm("Are you sure?")){
-        axios.post(route('proposals.single_accept', {
+        axios.post(route('backend.proposals.single_accept', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -183,6 +186,7 @@ const onClickNotInterested = (single_proposal) => {
         .then((response) => {
             if( response.data ){
                 emits('onUpdateAllProposals', response.data);
+                dt.rows('.selected').remove().draw();
                 modalInner.value = {
                     modalHeading : 'Success!',
                     modalDescription : 'The proposal has been rejected successfully.',
@@ -206,7 +210,7 @@ const onClickNotInterested = (single_proposal) => {
 const onClickCancel = (single_proposal) => {
 
     if(confirm("Are you sure?")){
-        axios.post(route('proposals.single_cancel', {
+        axios.post(route('backend.proposals.single_cancel', {
             csrf_token,
             sender_user_id : single_proposal.sender_user_id,
             receiver_user_id : single_proposal.receiver_user_id,
@@ -215,6 +219,7 @@ const onClickCancel = (single_proposal) => {
         .then((response) => {
             if( response.data ){
                 emits('onUpdateAllProposals', response.data);
+                dt.rows('.selected').remove().draw();
                 modalInner.value = {
                     modalHeading : 'Success!',
                     modalDescription : 'The proposal has been canceled successfully.',
@@ -288,7 +293,7 @@ const onClickMultipleUnApprove = (user_ids) => {
 const closeModal = (value) => {
     isPopupMessageModalOpen.value = value;
     isPopupViewModalOpen.value = value;
-    modalInner.value = [];
+    modalInner.value = {};
     page.props.flash = [];
 }
 
@@ -309,21 +314,26 @@ function calculateHoursSince(startTime) {
 
 onMounted(() => {
 
-    dt = table.value.dt;
-
-    // Handle the Select All checkbox functionality
-    document.getElementById('selectAll').addEventListener('change', function () {
-        if (this.checked) {
-            dt.rows().select();
-        } else {
-            dt.rows().deselect();
+    setTimeout(() => {
+        if( table.value ){
+            dt = table.value.dt;
         }
-    });
+        // Handle the Select All checkbox functionality
+        if( document.getElementById('selectAll') ){
+            document.getElementById('selectAll').addEventListener('change', function () {
+                if (this.checked) {
+                    dt.rows().select();
+                } else {
+                    dt.rows().deselect();
+                }
+            });
+        }
+
+    }, 1000);
 
     // document.addEventListener('DOMContentLoaded', function () {
 
     // });
-
 
 });
 
@@ -344,7 +354,7 @@ document.body.classList.add("backend.proposals.auto_pending");
 
     <div class="biodata_main w-full min-h-screen">
 
-        <DataTable ref="table" id="myTable" :options="options" class="display responsive  stripe row-border hover order-column nowrap" style="width:100%">
+        <DataTable v-if="all_proposals.length > 0" ref="table" id="myTable" :options="options" class="display responsive  stripe row-border hover order-column nowrap" style="width:100%">
             <caption>
                 <!-- Table Title -->
                 <h2 class="text-center text-xl font-bold text-gray-800 my-4">
@@ -371,7 +381,7 @@ document.body.classList.add("backend.proposals.auto_pending");
             <tbody>
                 <template v-for="single_proposal in all_proposals"
                 :key="single_proposal.id">
-                    <tr v-if="!single_proposal.in_trash && calculateHoursSince(single_proposal.proposal_sent_datetime) > 12">
+                    <tr v-if="!single_proposal.in_trash && calculateHoursSince(single_proposal.proposal_sent_datetime) > 12 && single_proposal.proposal_status == 'Pending'">
                         <td></td>
                         <!-- <td>{{ single_proposal.id }}</td> -->
                         <td>{{ single_proposal.sender_biodata_code }}</td>

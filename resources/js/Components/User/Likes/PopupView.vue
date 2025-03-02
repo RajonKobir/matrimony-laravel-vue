@@ -93,7 +93,7 @@ function closeModal() {
                 </DialogTitle>
 
                 <div class="mt-10 text-center">
-                    <ShowBiodata :translations :locale :locales  :single_biodata="modalInner.single_biodata" :tab_index="modalInner.tab_index" :proposed="modalInner.proposed" />
+                    <ShowBiodata :translations :locale :locales  :single_biodata="modalInner.single_biodata" :tab_index="modalInner.tab_index" :proposals="modalInner.proposals" />
                 </div>
 
               <div class="mt-4">

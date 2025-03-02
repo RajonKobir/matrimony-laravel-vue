@@ -79,7 +79,7 @@ onMounted(() => {
                     <ListboxOption @click="onClickEducationMediumItems" v-slot="{ active, selected }" v-for="(medium_of_study, medium_of_study_key) in translations.biodata_form.deserved_biodata.deserved_education_mediums_options" :key="medium_of_study_key" :value="medium_of_study" as="template" :disabled="medium_of_study.unavailable" >
                         <li :class="[
                             active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-4 md:pl-10 pr-4',
+                            'relative cursor-default select-none py-2 pl-10 pr-4',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',

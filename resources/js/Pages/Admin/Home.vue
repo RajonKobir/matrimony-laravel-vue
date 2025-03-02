@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { Link, usePage, Head } from '@inertiajs/vue3';
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from '@headlessui/vue';
 import Biodata from '../../Components/Admin/Biodatas/Biodata.vue';
@@ -7,7 +7,8 @@ import AdminLayout from '../../Layouts/AdminLayout.vue';
 import Header from '../../Components/Admin/Header.vue';
 import Content from '../../Components/Admin/Contents/Content.vue';
 import Proposals from '../../Components/Admin/Proposals/Proposal.vue';
-import Others from '../../Components/Admin/Others/Other.vue';
+import Others from '../../Components/Admin/Others/Others.vue';
+import Approved from '../../Components/Admin/Approved/Approved.vue';
 
 
 defineProps({
@@ -35,7 +36,13 @@ defineProps({
     all_biodatas: {
         type: Object,
     },
+    biodata_updates: {
+        type: Object,
+    },
     all_proposals: {
+        type: Object,
+    },
+    all_terms: {
         type: Object,
     },
 });
@@ -45,8 +52,10 @@ defineProps({
 const page = usePage();
 // const csrf_token = page.props.csrf_token;
 // const user_id = page.props.auth.user.id;
-// const single_biodata = ref([]);
 const selectedTab = ref(0);
+const allBiodatas = ref({});
+const allProposals = ref({});
+const allTerms = ref({});
 
 
 function changeTab(index) {
@@ -55,12 +64,27 @@ function changeTab(index) {
 
 
 const onUpdateAllBiodatas = (biodatas) => {
-    page.props.all_biodatas = biodatas;
+    allBiodatas.value = biodatas;
 }
 
 const onUpdateAllProposals = (proposals) => {
-    page.props.all_proposals = proposals;
+    allProposals.value = proposals;
 }
+
+const onUpdateAllTerms = (terms) => {
+    allTerms.value = terms;
+}
+
+
+onMounted(() => {
+
+    setTimeout(() => {
+        allBiodatas.value = page.props.all_biodatas;
+        allProposals.value = page.props.all_proposals;
+        allTerms.value = page.props.all_terms;
+    }, 500);
+
+});
 
 
 </script>
@@ -121,28 +145,28 @@ const onUpdateAllProposals = (proposals) => {
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                <Biodata :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                                <Biodata :translations :locale :locales :front_end_translations :all_biodatas="allBiodatas" :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                             </TabPanel>
 
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                <Proposals :translations :locale :locales :front_end_translations :all_biodatas :all_proposals :districts @onUpdateAllProposals="onUpdateAllProposals" />
+                                <Proposals :translations :locale :locales :front_end_translations :all_biodatas="allBiodatas" :all_proposals="allProposals" :districts @onUpdateAllProposals="onUpdateAllProposals" />
 
                             </TabPanel>
 
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                Content 3
+                                <Approved :translations :locale :locales :front_end_translations :all_biodatas="allBiodatas" :biodata_updates :all_proposals="allProposals" :districts  @onUpdateAllBiodatas="onUpdateAllBiodatas" />
 
                             </TabPanel>
 
                             <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                             ]">
 
-                                <Others :translations :locale :locales :front_end_translations :all_biodatas :districts @onUpdateAllBiodatas="onUpdateAllBiodatas" />
+                                <Others :translations :locale :locales :front_end_translations :all_biodatas="allBiodatas" :districts :all_terms="allTerms" @onUpdateAllTerms="onUpdateAllTerms" />
 
                             </TabPanel>
 
