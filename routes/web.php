@@ -144,6 +144,8 @@ Route::middleware(Localization::class)->group(function(){
             Route::post('/approve_edit_request', 'onClickApproveEditRequest')->middleware('is_admin')->name('approve_edit_request');
             Route::post('/cancel_edit_request', 'onClickCancelEditRequest')->middleware('is_admin')->name('cancel_edit_request');
 
+            Route::post('/check_unique_biodata_code', 'checkUniqueBiodataCode')->middleware('is_admin')->name('check_unique_biodata_code');
+
         });
 
         //biodata controllers

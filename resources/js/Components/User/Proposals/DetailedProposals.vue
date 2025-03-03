@@ -1,7 +1,7 @@
 <script setup>
 
 import { Head, usePage, Link } from '@inertiajs/vue3';
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import PopupMessage from './PopupMessage.vue';
 import PopupView from './PopupView.vue';
 
@@ -191,11 +191,34 @@ const onUpdateReceivedProposals = (proposals) => {
 }
 
 
+watch(props, async (newValue, oldValue) => {
+    if( newValue ){
+        if( proposalType.value == 1 ){
+            all_biodatas.value = props.received_biodatas;
+            all_proposals.value = props.received_proposals;
+        }
+        if( proposalType.value == 2 ){
+            all_biodatas.value = props.sent_biodatas;
+            all_proposals.value = props.sent_proposals;
+        }
+    }
+});
+
+
 onMounted(() => {
     setTimeout(() => {
         single_biodata_data.value = props.single_biodata;
-        all_biodatas.value = props.received_biodatas;
-        all_proposals.value = props.received_proposals;
+
+        if( proposalType.value == 1 ){
+            all_biodatas.value = props.received_biodatas;
+            all_proposals.value = props.received_proposals;
+            all_biodatas.value.data = props.received_biodatas.data;
+        }
+        if( proposalType.value == 2 ){
+            all_biodatas.value = props.sent_biodatas;
+            all_proposals.value = props.sent_proposals;
+            all_biodatas.value.data = props.sent_biodatas.data;
+        }
 
         self_likes.value = props.likes;
         if( self_likes.value.length > 0 ){
@@ -214,7 +237,6 @@ document.body.classList.add("user.proposals.detailed");
 </script>
 
 <template>
-
 
     <Head title="Detailed Proposals" />
 
@@ -255,7 +277,12 @@ document.body.classList.add("user.proposals.detailed");
 
                             </div>
 
-                            <table class="w-full table-fixed text-center text-gray-700 my-4">
+                            <table class="w-full table-fixed text-center text-gray-700 my-2">
+                                <caption>
+                                    <h2 class="text-center text-xl font-bold text-gray-800 my-2">
+                                        {{ proposalType == 1 ? translations.proposal_page.received_title : translations.proposal_page.sent_title }} - {{ freeOrPaidPrposal == 1 ? translations.proposal_page.free_text : translations.proposal_page.paid_text }}
+                                    </h2>
+                                </caption>
                                 <thead>
                                     <tr class="bg-[#ad277c] text-white">
                                         <th class="py-2 px-3 w-1/4 sm:w-auto text-sm md:text-base">

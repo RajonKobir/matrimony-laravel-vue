@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import { usePage, useForm } from '@inertiajs/vue3';
 import InputError from '../../InputError.vue';
 import MultipleCategoriesSelection from './MultipleCategoriesSelection.vue';
+import axios from 'axios';
 
 
 const props = defineProps({
@@ -18,9 +19,9 @@ const props = defineProps({
 // initializing
 const page = usePage();
 const csrf_token = page.props.csrf_token;
-const isModalOpen = ref(false);
 const createdAtTimeString = ref('');
 const updatedAtTimeString = ref('');
+const user_id = props.modalInner.viewBiodata.user_id;
 
 
 const form = useForm({
@@ -56,9 +57,27 @@ const onSelectCategories = (selectedCategoryArray) =>{
     form.biodata_categories = selectedCategoryArray.map((category) => category).join(', ');
 }
 
-const closeModal = (value) => {
-    isModalOpen.value = value;
-}
+const checkUniqueBiodataCode = async (biodata_code) => {
+    try {
+        const response = await axios.post(route('backend.biodata.check_unique_biodata_code'), {
+            csrf_token,
+            user_id,
+            biodata_code,
+        })
+        .then(function (response) {
+            if( response.data ){
+                form.errors.biodata_code = 'This Biodata Code is Available!';
+            }else{
+                form.errors.biodata_code = 'This Biodata Code is Taken!';
+            }
+        });
+
+    } catch (error) {
+        if( error.response ){
+            form.errors.biodata_code = error.response.data.message;
+        }
+    }
+};
 
 
 onMounted(() => {
@@ -101,7 +120,7 @@ onMounted(() => {
 
     <div class="form_item col-span-6 p-2">
         <label for="biodata_code" class="text-base">Biodata Code</label>
-        <input type="text" v-model="form.biodata_code" id="biodata_code" name="biodata_code" placeholder="Biodata Code" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
+        <input type="text" v-model="form.biodata_code" @input="(e) => { checkUniqueBiodataCode(e.target.value) }" id="biodata_code" name="biodata_code" placeholder="Biodata Code" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
         <InputError class="mt-2" :message="form.errors.biodata_code" />
     </div>
 

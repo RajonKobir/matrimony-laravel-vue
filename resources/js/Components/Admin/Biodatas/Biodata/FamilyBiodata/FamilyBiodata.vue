@@ -198,7 +198,7 @@ onMounted(() => {
             <div class="form_item col-span-12 md:col-span-6 p-2">
                 <select v-model="form.family_maritial_agreement" @change="(e) => { single_biodata.family_maritial_agreement = JSON.parse(e.target.value) }" id="family_maritial_agreement" name="family_maritial_agreement"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="null" disabled selected >{{ translations.biodata_form.family_biodata.family_maritial_agreement_title }}</option>
+                    <option value="null" disabled selected >{{ selectedGender == 'male' ? translations.biodata_form.family_biodata.family_maritial_agreement_title_male : translations.biodata_form.family_biodata.family_maritial_agreement_title_female }}</option>
                     <option v-for="(family_maritial_agreement, family_maritial_agreement_key) in translations.biodata_form.family_biodata.family_maritial_agreement_options" :key="family_maritial_agreement.id" :value="JSON.parse(family_maritial_agreement_key)">{{ family_maritial_agreement }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.family_maritial_agreement" />

@@ -179,7 +179,7 @@ onMounted(() => {
 
         <div class="main-container">
             <div class="grid grid-cols-12 gap-0 py-2 text-white text-base overflow-hidden ">
-                <div v-if="single_biodata.biodata_completion == 100" class="col-span-12 p-4">
+                <div v-if="single_biodata.is_approved || single_biodata.biodata_completion == 100" class="col-span-12 p-4">
                     <div class="flex justify-center items-center">
                         <div class="package_button_div">
                             <button @click="onClickEdit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">

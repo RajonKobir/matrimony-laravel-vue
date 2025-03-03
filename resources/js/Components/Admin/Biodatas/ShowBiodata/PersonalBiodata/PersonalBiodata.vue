@@ -136,7 +136,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.permanent_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district + ', ' + single_biodata.permanent_division }}
+                        {{ single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district }}
                     </span>
                 </p>
             </div>
@@ -147,7 +147,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.temporary_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district + ', ' + single_biodata.temporary_division }}
+                        {{ single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district }}
                     </span>
                 </p>
             </div>

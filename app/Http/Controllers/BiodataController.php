@@ -264,7 +264,7 @@ class BiodataController extends Controller
             'study_in_details' => 'required|string|min:10|max:500',
             'is_honorable_selected' => 'nullable|boolean',
             'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:500' : 'nullable|string|min:10|max:500',
-            'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:2|max:100' : 'nullable|string|min:2|max:100',
+            'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:2|max:200' : 'nullable|string|min:2|max:200',
             'editRequest' => 'nullable|boolean',
         ]);
 
@@ -801,6 +801,20 @@ class BiodataController extends Controller
 
         return redirect()->back()->with('error', 'Something Went Wrong!');
 
+    }
+
+
+    public function checkUniqueBiodataCode(Request $request){
+
+        $exists = Biodata::where('biodata_code', $request->biodata_code)
+        ->where('user_id', '!=', $request->user_id)
+        ->exists();
+
+        if( $exists ){
+            return false;
+        }
+
+        return true;
     }
     // backend ends here
 

@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): Response
+    public function create()
     {
         if (Auth::guard('web')->user()) {
             return redirect()->intended(route('user.profile', absolute: false));

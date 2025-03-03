@@ -185,11 +185,11 @@ class FrontEndController extends Controller
 
         $biodatas_array['sent_biodatas'] = Biodata::whereIn( 'user_id', $sentProposalIds )
         ->orderBy('created_at', 'desc')
-        ->paginate(30)->withQueryString();
+        ->paginate(10)->withQueryString();
 
         $biodatas_array['received_biodatas'] = Biodata::whereIn( 'user_id', $receivedProposalIds )
         ->orderBy('created_at', 'desc')
-        ->paginate(30)->withQueryString();
+        ->paginate(10)->withQueryString();
 
         $pageProps = $biodatas_array + $this->pageProps;
 

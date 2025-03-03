@@ -8,6 +8,7 @@ import PermanentDynamicAddress from './PermanentDynamicAddress.vue';
 import TemporaryDynamicAddress from './TemporaryDynamicAddress.vue';
 import MultipleJobSelection from './MultipleJobSelection.vue';
 import MultipleEducationMediumSelection from './MultipleEducationMediumSelection.vue';
+import MultipleHonorableDegreePlaceSelection from './MultipleHonorableDegreePlaceSelection.vue';
 import axios from 'axios';
 
 
@@ -222,6 +223,12 @@ const onSelectJobs = (selectedJobsArray) =>{
     }else{
         isJobSelected.value = true;
     }
+}
+
+
+const onSelectHonorableDegreePlaces = (selectedHonorableDegreePlaceArray) =>{
+    form.honorable_degree_place = selectedHonorableDegreePlaceArray.map((single_place) => single_place).join(', ');
+    props.single_biodata.honorable_degree_place = form.honorable_degree_place;
 }
 
 
@@ -661,11 +668,7 @@ onMounted(() => {
             </div>
 
             <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
-                <select v-model="form.honorable_degree_place" @change="(e) => { single_biodata.honorable_degree_place = e.target.value }" id="honorable_degree_place" name="honorable_degree_place"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                    <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.honorable_degree_place_title }}</option>
-                    <option v-for="(honorable_degree_place, honorable_degree_place_key) in translations.biodata_form.personal_biodata.honorable_degree_place_options" :key="honorable_degree_place_key" :value="honorable_degree_place">{{ honorable_degree_place }}</option>
-                </select>
+                <MultipleHonorableDegreePlaceSelection :translations :honorableDegreePlaces="single_biodata.honorable_degree_place"  @onSelectHonorableDegreePlaces="onSelectHonorableDegreePlaces"/>
                 <InputError class="mt-2" :message="form.errors.honorable_degree_place" />
             </div>
 
