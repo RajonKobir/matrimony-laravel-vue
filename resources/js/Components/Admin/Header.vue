@@ -31,10 +31,12 @@ onMounted(() => {
 
     window.addEventListener("scroll", function (e) {
         e.preventDefault();
-        if (window.scrollY > 200 && !isPositionSticky) {
+        if (window.scrollY > 0 && !isPositionSticky) {
             element.classList.add("amimate_header");
+            element.classList.remove("header_backgound");
             element2.classList.add("header_transparent_background");
         } else {
+            element.classList.add("header_backgound");
             element.classList.remove("amimate_header");
             element2.classList.remove("header_transparent_background");
         }
@@ -53,7 +55,7 @@ onMounted(() => {
 <template>
 
 
-    <header id="main_header">
+    <header id="main_header" class="header_backgound">
         <div id="od_header">
             <div id="main_header_inner" class="od-w-100">
                 <div class="main-container">
@@ -172,4 +174,28 @@ onMounted(() => {
     object-fit: contain;
     object-position: center;
 }
+.header_backgound{
+    background-color: #FBD5B1;
+}
+.amimate_header{
+    position: sticky !important;
+    top: 0;
+    z-index: 999 !important;
+    /* animation-name: raj_the_dev;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out; */
+}
+@keyframes raj_the_dev {
+    0% {
+        top: -100px;
+    }
+    100% {
+        top: 0;
+    }
+}
+/* @media screen and (min-width: 768px) {
+    .free_registration{
+        display: none !important;
+    }
+} */
 </style>

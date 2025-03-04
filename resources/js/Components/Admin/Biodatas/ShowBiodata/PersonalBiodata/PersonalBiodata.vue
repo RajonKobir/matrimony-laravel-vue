@@ -163,7 +163,7 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.job_title && single_biodata.job_title.trim() != '' && !single_biodata.job_title.includes('নাই') && !single_biodata.job_title.includes('None')" class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.job_details_title_2 }}
@@ -174,7 +174,7 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.job_title && single_biodata.job_title.trim() != '' && !single_biodata.job_title.includes('নাই') && !single_biodata.job_title.includes('None')" class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.job_location_title_2 }}
@@ -185,7 +185,7 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.job_title && single_biodata.job_title.trim() != '' && !single_biodata.job_title.includes('নাই') && !single_biodata.job_title.includes('None')" class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.monthly_income_title }}
@@ -279,7 +279,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.honorable_degree_place_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.honorable_degree_place }}
+                        {{ single_biodata.honorable_degree_places }}
                     </span>
                 </p>
             </div>

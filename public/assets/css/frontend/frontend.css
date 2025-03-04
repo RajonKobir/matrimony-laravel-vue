@@ -5,14 +5,6 @@ html{
 header{
   overflow: visible;
 }
-.amimate_header{
-  position: sticky !important;
-  top: 0;
-  z-index: 999 !important;
-  animation-name: raj_the_dev;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-in-out;
-}
 .header_transparent_background{
   position: relative;
 }
@@ -30,14 +22,6 @@ header{
   background-position: center center;
   opacity: .4;
   z-index: -999;
-}
-@keyframes raj_the_dev {
-  0% {
-    top: -100px;
-  }
-  100% {
-    top: 0;
-  }
 }
 
 .od-search-fields .od-location-dropdown-trigger {

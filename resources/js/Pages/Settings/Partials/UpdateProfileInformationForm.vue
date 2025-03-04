@@ -68,6 +68,7 @@ const form = useForm({
                     v-model="form.mobile"
                     required
                     autocomplete="username"
+                    placeholder="Example: 01234567890"
                 />
 
                 <InputError class="mt-2" :message="form.errors.mobile" />
@@ -83,6 +84,7 @@ const form = useForm({
                     v-model="form.email"
                     required
                     autocomplete="username"
+                    placeholder="Example: shadibari@gmail.com"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />

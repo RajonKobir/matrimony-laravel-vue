@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Support\Facades\Route;
+use App\Models\Biodata;
 
 class SettingsController extends Controller
 {
@@ -53,7 +54,20 @@ class SettingsController extends Controller
             $request->user()->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $is_user_saved = $request->user()->save();
+
+        if( $is_user_saved ){
+            if (Auth::guard('web')->user()) {
+                $user_id = Auth::guard('web')->user()->id;
+                $biodata = Biodata::where('user_id', $user_id)->get();
+                if( count($biodata) == 1 ){
+                    $biodata = Biodata::where('user_id', $user_id)->update([
+                        'user_mobile' => $request->mobile,
+                        'user_email' => $request->email,
+                    ]);
+                }
+            }
+        }
 
         // return Redirect::route('user.settings.edit', $this->pageProps);
         return redirect()->back()->with('success');

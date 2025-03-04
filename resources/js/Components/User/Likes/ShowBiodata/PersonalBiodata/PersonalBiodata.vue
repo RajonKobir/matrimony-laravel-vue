@@ -267,7 +267,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.honorable_degree_place_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.honorable_degree_place }}
+                        {{ single_biodata.honorable_degree_places }}
                     </span>
                 </p>
             </div>

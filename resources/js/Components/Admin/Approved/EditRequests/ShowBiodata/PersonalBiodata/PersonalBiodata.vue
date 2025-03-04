@@ -466,14 +466,14 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div v-if="single_biodata.honorable_degree_place != biodata_update.honorable_degree_place" class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.honorable_degree_places != biodata_update.honorable_degree_places" class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     Before:
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.honorable_degree_place_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.honorable_degree_place }}
+                        {{ single_biodata.honorable_degree_places }}
                     </span>
                 </p>
                 <p class="text-base text-left">
@@ -482,7 +482,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.honorable_degree_place_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ biodata_update.honorable_degree_place }}
+                        {{ biodata_update.honorable_degree_places }}
                     </span>
                 </p>
             </div>

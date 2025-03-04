@@ -70,7 +70,7 @@ document.body.classList.add("frontend.register");
                     <div>
                         <InputLabel for="mobile" :value="translations.register.mobile_title" />
 
-                        <TextInput id="mobile" type="tel" class="mt-1 block w-full" v-model="form.mobile" autofocus autocomplete="mobile" />
+                        <TextInput id="mobile" type="tel" class="mt-1 block w-full" v-model="form.mobile" autofocus autocomplete="mobile" placeholder="Example: 01234567890" />
 
                         <InputError class="mt-2" :message="form.errors.mobile" />
                     </div>
@@ -78,7 +78,7 @@ document.body.classList.add("frontend.register");
                     <div class="mt-4">
                         <InputLabel for="email" :value="translations.register.email_title" />
 
-                        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" autocomplete="username" />
+                        <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" autocomplete="username" placeholder="Example: shadibari@gmail.com" />
 
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
@@ -87,8 +87,8 @@ document.body.classList.add("frontend.register");
                         <InputLabel for="password" :value="translations.register.password_title" />
 
                         <div class="flex items-center">
-                            <TextInput v-if="showPassword" id="password" type="text" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
-                            <TextInput v-else id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
+                            <TextInput v-if="showPassword" id="password" type="text" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" placeholder="Example: 123456" />
+                            <TextInput v-else id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" placeholder="Example: 123456" />
                             <span class="button cursor-pointer focus:outline-none absolute right-2" @click="showPassword=!showPassword">
                                 <span class="icon is-small is-right">
                                     <i class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }"></i>

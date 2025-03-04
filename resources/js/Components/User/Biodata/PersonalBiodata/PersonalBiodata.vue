@@ -101,7 +101,7 @@ const form = useForm({
     study_in_details: '',
     is_honorable_selected: null,
     honorable_degree_details: null,
-    honorable_degree_place: null,
+    honorable_degree_places: null,
 });
 const submit = (e) => {
     e.preventDefault();
@@ -282,8 +282,8 @@ const onSelectJobs = (selectedJobsArray) =>{
 
 
 const onSelectHonorableDegreePlaces = (selectedHonorableDegreePlaceArray) =>{
-    form.honorable_degree_place = selectedHonorableDegreePlaceArray.map((single_place) => single_place).join(', ');
-    props.single_biodata.honorable_degree_place = form.honorable_degree_place;
+    form.honorable_degree_places = selectedHonorableDegreePlaceArray.map((single_place) => single_place).join(', ');
+    props.single_biodata.honorable_degree_places = form.honorable_degree_places;
 }
 
 
@@ -537,8 +537,8 @@ onMounted(() => {
             case 'honorable_degree_details':
                 form.honorable_degree_details = props.single_biodata[item];
                 break;
-            case 'honorable_degree_place':
-                form.honorable_degree_place = props.single_biodata[item];
+            case 'honorable_degree_places':
+                form.honorable_degree_places = props.single_biodata[item];
                 break;
             }
         });
@@ -727,8 +727,8 @@ onMounted(() => {
             </div>
 
             <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
-                <MultipleHonorableDegreePlaceSelection :translations :honorableDegreePlaces="single_biodata.honorable_degree_place"  @onSelectHonorableDegreePlaces="onSelectHonorableDegreePlaces"/>
-                <InputError class="mt-2" :message="form.errors.honorable_degree_place" />
+                <MultipleHonorableDegreePlaceSelection :translations :honorableDegreePlaces="single_biodata.honorable_degree_places"  @onSelectHonorableDegreePlaces="onSelectHonorableDegreePlaces"/>
+                <InputError class="mt-2" :message="form.errors.honorable_degree_places" />
             </div>
 
             <div class="form_item col-span-12 p-2">

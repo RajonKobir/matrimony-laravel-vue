@@ -60,7 +60,7 @@ const onClickLikeBiodata = (single_biodata) => {
         receiver_biodata_code : single_biodata.biodata_code,
     }))
     .then((response) => {
-        if( response.data ){
+        if( response.data == true ){
             likeReceiverUserIds.value.push( single_biodata.user_id );
             modalMessage.value = {
                 modalHeading : page.props.translations.modal_messages.success_heading,

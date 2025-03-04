@@ -264,7 +264,7 @@ class BiodataController extends Controller
             'study_in_details' => 'required|string|min:10|max:500',
             'is_honorable_selected' => 'nullable|boolean',
             'honorable_degree_details' => $request->is_honorable_selected ? 'required|string|min:10|max:500' : 'nullable|string|min:10|max:500',
-            'honorable_degree_place' => $request->is_honorable_selected ? 'required|string|min:2|max:200' : 'nullable|string|min:2|max:200',
+            'honorable_degree_places' => $request->is_honorable_selected ? 'required|string|min:2|max:100' : 'nullable|string|min:2|max:100',
             'editRequest' => 'nullable|boolean',
         ]);
 
@@ -316,7 +316,7 @@ class BiodataController extends Controller
                 'study_in_details' => $request->study_in_details,
                 'is_honorable_selected' => $request->is_honorable_selected,
                 'honorable_degree_details' => $request->honorable_degree_details,
-                'honorable_degree_place' => $request->honorable_degree_place,
+                'honorable_degree_places' => $request->honorable_degree_places,
             ]);
             if($biodata_update){
                 $retrieved_biodata = $retrieved_biodata[0];

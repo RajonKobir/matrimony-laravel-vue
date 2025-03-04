@@ -52,41 +52,6 @@ const proposalUserIds = ref([]);
 
 const onClickLikeBiodata = (single_biodata) => {
 
-    if( props.single_biodata.user_id ==  single_biodata.user_id ){
-        modalMessage.value = {
-            modalHeading : page.props.translations.modal_messages.error_heading,
-            modalDescription : page.props.translations.modal_messages.self_like_error,
-        }
-        isModalOpen.value = true;
-        return;
-    }
-
-    if( !page.props.single_biodata.is_approved ){
-        modalMessage.value = {
-            modalHeading : page.props.translations.modal_messages.error_heading,
-            modalDescription : page.props.translations.modal_messages.like_unapproved,
-        }
-        isModalOpen.value = true;
-        return;
-    }
-
-    if( single_biodata.gender == props.single_biodata.gender ){
-        if( single_biodata.gender == 'male' ){
-            modalMessage.value = {
-                modalHeading : page.props.translations.modal_messages.error_heading,
-                modalDescription : page.props.translations.modal_messages.same_gender_like_male,
-            }
-            isModalOpen.value = true;
-        }else{
-            modalMessage.value = {
-                modalHeading : page.props.translations.modal_messages.error_heading,
-                modalDescription : page.props.translations.modal_messages.same_gender_like_female,
-            }
-            isModalOpen.value = true;
-        }
-        return;
-    }
-
     axios.post(route('user.likes.single_like', {
         csrf_token,
         sender_user_id : props.single_biodata.user_id,
@@ -95,7 +60,7 @@ const onClickLikeBiodata = (single_biodata) => {
         receiver_biodata_code : single_biodata.biodata_code,
     }))
     .then((response) => {
-        if( response.data ){
+        if( response.data == true ){
             likeReceiverUserIds.value.push( single_biodata.user_id );
             modalMessage.value = {
                 modalHeading : page.props.translations.modal_messages.success_heading,

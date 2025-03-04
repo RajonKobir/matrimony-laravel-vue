@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Biodata;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,9 +47,20 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        if( $user ){
+            $biodata = new Biodata();
+            $biodata->user_id = $user->id;
+            $biodata->biodata_code = mt_rand(100000,999999) . '-' . uniqid();
+            $biodata->user_mobile = $request->mobile;
+            $biodata->user_email = $request->email;
+            $biodata->save();
 
-        Auth::login($user);
+            if( $biodata ){
+                event(new Registered($user));
+                Auth::login($user);
+            }
+
+        }
 
         return redirect(route('user.profile', absolute: false));
     }

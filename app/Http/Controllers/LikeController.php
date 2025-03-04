@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\Biodata;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
@@ -75,6 +76,37 @@ class LikeController extends Controller
         if( $request->sender_user_id == $request->receiver_user_id ){
             return __('frontend.modal_messages.self_like_error');
         }
+
+        // sender approval
+        $like_sender_biodata = Biodata::where('user_id', $request->sender_user_id)->get();
+        if( $like_sender_biodata ){
+            if( count( $like_sender_biodata ) == 1 ){
+                if( !$like_sender_biodata[0]->is_approved ){
+                    return  __('frontend.modal_messages.like_unapproved');
+                }
+            }
+        }
+
+        // receiver approval
+        $like_receiver_biodata = Biodata::where('user_id', $request->receiver_user_id)->get();
+        if( $like_receiver_biodata ){
+            if( count( $like_receiver_biodata ) == 1 ){
+                if( !$like_receiver_biodata[0]->is_approved ){
+                    return  __('frontend.modal_messages.receiver_like_unapproved');
+                }
+            }
+        }
+
+        // both male
+        if( $like_sender_biodata[0]->gender == 'male' && $like_receiver_biodata[0]->gender == 'male' ){
+            return  __('frontend.modal_messages.same_gender_like_male');
+        }
+
+        // both female
+        if( $like_sender_biodata[0]->gender == 'female' && $like_receiver_biodata[0]->gender == 'female' ){
+            return  __('frontend.modal_messages.same_gender_like_female');
+        }
+
 
         $single_like = Like::where('sender_user_id', $request->sender_user_id)
         ->where('receiver_user_id', $request->receiver_user_id)

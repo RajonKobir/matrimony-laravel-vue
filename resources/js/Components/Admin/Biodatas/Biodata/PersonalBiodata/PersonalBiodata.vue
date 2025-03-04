@@ -10,6 +10,7 @@ import MultipleJobSelection from './MultipleJobSelection.vue';
 import MultipleEducationMediumSelection from './MultipleEducationMediumSelection.vue';
 import MultipleHonorableDegreePlaceSelection from './MultipleHonorableDegreePlaceSelection.vue';
 import axios from 'axios';
+import { Link } from '@inertiajs/vue3';
 
 
 const emits = defineEmits([
@@ -43,6 +44,7 @@ const props = defineProps({
 const page = usePage();
 const csrf_token = page.props.csrf_token;
 const user_id = ref(null);
+const media_agreement = ref(false);
 const gender = ref(null);
 const modalMessage = ref({});
 const isModalOpen = ref(false);
@@ -95,7 +97,7 @@ const form = useForm({
     study_in_details: '',
     is_honorable_selected: null,
     honorable_degree_details: null,
-    honorable_degree_place: null,
+    honorable_degree_places: null,
 });
 const submit = (e) => {
     e.preventDefault();
@@ -127,6 +129,55 @@ const onUpdateDate = (date) => {
     form.birth_date = date;
     props.single_biodata.birth_date = date;
 }
+
+
+const mediaAgreement = (e) => {
+    e.preventDefault();
+    let mediaAgreement = e.target.value;
+
+    if( mediaAgreement == 'null' || mediaAgreement == false){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.error_description,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+    if (mediaAgreement == true) {
+        axios.post(route('backend.biodata.post.update_media_agreement', {
+            csrf_token,
+            user_id: user_id.value,
+            media_agreement: mediaAgreement,
+            user_mobile : page.props.auth.user.mobile,
+            user_email : page.props.auth.user.email,
+        } ))
+        .then(function (response) {
+            if( response.data ){
+                media_agreement.value = mediaAgreement;
+                props.single_biodata.media_agreement = true;
+                modalMessage.value = {
+                    modalHeading : page.props.translations.modal_messages.success_heading,
+                    modalDescription : page.props.translations.modal_messages.success_description,
+                }
+                isModalOpen.value = true;
+            }else{
+                modalMessage.value = {
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.error_description,
+                }
+                isModalOpen.value = true;
+            }
+        })
+        .catch(function (error) {
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        });
+    }
+}
+// media agreement ends
 
 
 const genderUpdate = (e) => {
@@ -227,8 +278,8 @@ const onSelectJobs = (selectedJobsArray) =>{
 
 
 const onSelectHonorableDegreePlaces = (selectedHonorableDegreePlaceArray) =>{
-    form.honorable_degree_place = selectedHonorableDegreePlaceArray.map((single_place) => single_place).join(', ');
-    props.single_biodata.honorable_degree_place = form.honorable_degree_place;
+    form.honorable_degree_places = selectedHonorableDegreePlaceArray.map((single_place) => single_place).join(', ');
+    props.single_biodata.honorable_degree_places = form.honorable_degree_places;
 }
 
 
@@ -363,6 +414,9 @@ onMounted(() => {
             case 'user_id':
                 user_id.value = form.user_id = props.single_biodata[item];
                 break;
+            case 'media_agreement':
+                media_agreement.value = props.single_biodata[item];
+                break;
             case 'gender':
                 gender.value = props.single_biodata[item];
                 break;
@@ -493,8 +547,8 @@ onMounted(() => {
             case 'honorable_degree_details':
                 form.honorable_degree_details = props.single_biodata[item];
                 break;
-            case 'honorable_degree_place':
-                form.honorable_degree_place = props.single_biodata[item];
+            case 'honorable_degree_places':
+                form.honorable_degree_places = props.single_biodata[item];
                 break;
             }
         });
@@ -514,7 +568,23 @@ onMounted(() => {
 
     <div class="container">
 
-        <div class="grid grid-cols-12 gap-0">
+        <div v-if="!media_agreement" class="grid grid-cols-12 gap-0">
+            <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
+                <label for="media_agreement" class="text-base">
+                    {{ translations.biodata_form.personal_biodata.media_agreement }}
+                    <Link :href="route('frontend.terms')" class="text-lg text-blue-500 font-bold justify-center" >{{ translations.biodata_form.personal_biodata.media_agreement_1 }}</Link>
+                    {{ translations.biodata_form.personal_biodata.media_agreement_2 }}
+                </label>
+                <select @change="mediaAgreement" id="media_agreement" name="media_agreement"
+                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="null" disabled selected>{{ translations.form_basics.select_text }}</option>
+                    <option value="1">{{ translations.form_basics.inshallah_yes }}</option>
+                    <option value="0">{{ translations.form_basics.no }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div v-if="media_agreement" class="grid grid-cols-12 gap-0">
             <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
                 <label for="gender" class="text-base">{{ translations.biodata_form.personal_biodata.gender_title }}</label>
                 <select @change="genderUpdate" id="gender" name="gender"
@@ -668,8 +738,8 @@ onMounted(() => {
             </div>
 
             <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
-                <MultipleHonorableDegreePlaceSelection :translations :honorableDegreePlaces="single_biodata.honorable_degree_place"  @onSelectHonorableDegreePlaces="onSelectHonorableDegreePlaces"/>
-                <InputError class="mt-2" :message="form.errors.honorable_degree_place" />
+                <MultipleHonorableDegreePlaceSelection :translations :honorableDegreePlaces="single_biodata.honorable_degree_places"  @onSelectHonorableDegreePlaces="onSelectHonorableDegreePlaces"/>
+                <InputError class="mt-2" :message="form.errors.honorable_degree_places" />
             </div>
 
             <div class="form_item col-span-12 p-2">

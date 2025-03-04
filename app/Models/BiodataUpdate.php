@@ -79,7 +79,7 @@ class BiodataUpdate extends Model
         'study_in_details',
         'is_honorable_selected',
         'honorable_degree_details',
-        'honorable_degree_place',
+        'honorable_degree_places',
         'five_waqt_salat',
         'beard_quantity',
         'pants_worn_style',
