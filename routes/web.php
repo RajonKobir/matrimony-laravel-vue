@@ -33,13 +33,11 @@ Route::middleware(Localization::class)->group(function(){
 
         Route::get('/', 'homePage')->name('home');
 
-        Route::get('/about', 'aboutPage')->name('about');
-
         Route::get('/terms', 'termsPage')->name('terms');
 
         Route::get('/opinions', 'opinionsPage')->name('opinions');
 
-        Route::get('/contact', 'contactPage')->name('contact');
+        // Route::get('/contact', 'contactPage')->name('contact');
 
         Route::get('/biodata_search', 'biodataSearch')->name('biodata_search');
 
@@ -69,6 +67,9 @@ Route::middleware(Localization::class)->group(function(){
             Route::post('/onClickPermanentDelete', 'onClickPermanentDeleteUser')->middleware('verified')->name('post.onClickPermanentDelete');
             Route::post('/update_media_agreement', 'updateMediaAgreement')->middleware('verified')->name('post.update_media_agreement');
             Route::post('/update_gender', 'updateGender')->middleware('verified')->name('post.update_gender');
+
+            Route::post('/update_single_items', 'updateSingleItems')->middleware('verified')->name('post.update_single_items');
+
             Route::post('/update_personal_biodata', 'updatePersonalBiodata')->middleware('verified')->name('post.update_personal_biodata');
             Route::post('/update_religious_biodata', 'updateReligiousBiodata')->middleware('verified')->name('post.update_religious_biodata');
             Route::post('/update_family_biodata', 'updateFamilyBiodata')->middleware('verified')->name('post.update_family_biodata');
@@ -116,9 +117,9 @@ Route::middleware(Localization::class)->group(function(){
 
     // Mail Controllers
     Route::prefix('/mails')->controller(MailController::class)->name('mails.')->group(function () {
-        Route::post('/contact', 'sendMail')->name('frontend.contact.post');
+        // Route::post('/contact', 'contactUs')->name('frontend.contact.post');
+        Route::post('/proposals', 'proposalNotifications')->middleware(['auth', 'verified'])->name('backend.proposals.post');
     });
-
 
 
     // backend routes

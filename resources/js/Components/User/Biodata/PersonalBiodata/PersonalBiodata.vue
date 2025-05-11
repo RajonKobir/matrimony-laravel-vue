@@ -129,9 +129,160 @@ const closeModal = (value) => {
     isModalOpen.value = value;
 }
 
-const onUpdateDate = (date) => {
-    form.birth_date = date;
-    props.single_biodata.birth_date = date;
+const onUpdateDate = (birth_date, e) => {
+    form.birth_date = birth_date;
+    props.single_biodata.birth_date = birth_date;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        birth_date,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('birthday updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+const onChangeSkinColor = (skin_color) => {
+
+    props.single_biodata.skin_color = skin_color;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        skin_color,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('skin color updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+const onChangeHeight = (height) => {
+
+    props.single_biodata.height = height;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        height,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('height updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+const onChangeWeight = (weight) => {
+
+    props.single_biodata.weight = weight;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        weight,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('weight updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+const onChangeBloodGroup = (blood_group) => {
+
+    props.single_biodata.blood_group = blood_group;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        blood_group,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('blood_group updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+const onChangeMaritialStatus = (maritial_status) => {
+
+    props.single_biodata.maritial_status = maritial_status;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        maritial_status,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('maritial_status updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 
@@ -234,6 +385,32 @@ const onUpdatePermanentAddress = (address) => {
     props.single_biodata.permanent_district = form.permanent_district = address.selectedDistrict;
     props.single_biodata.permanent_upazila = form.permanent_upazila = address.selectedUpazila;
     props.single_biodata.permanent_union_parishad = form.permanent_union_parishad = address.selectedUnionParishad;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        permanent_country: form.permanent_country,
+        permanent_division: form.permanent_division,
+        permanent_district: form.permanent_district,
+        permanent_upazila: form.permanent_upazila,
+        permanent_union_parishad: form.permanent_union_parishad,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('permanent address updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
 }
 
 
@@ -243,6 +420,32 @@ const onUpdateTemporaryAddress = (address) => {
     props.single_biodata.temporary_district = form.temporary_district = address.selectedDistrict;
     props.single_biodata.temporary_upazila = form.temporary_upazila = address.selectedUpazila;
     props.single_biodata.temporary_union_parishad = form.temporary_union_parishad = address.selectedUnionParishad;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        temporary_country: form.temporary_country,
+        temporary_division: form.temporary_division,
+        temporary_district: form.temporary_district,
+        temporary_upazila: form.temporary_upazila,
+        temporary_union_parishad: form.temporary_union_parishad,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('temporary address updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
 }
 
 
@@ -266,6 +469,31 @@ const addressAreSame = (true_or_false) => {
         temporaryAddress.value.selectedUpazila = props.single_biodata.temporary_upazila = form.temporary_upazila = form.permanent_upazila;
         temporaryAddress.value.selectedUnionParishad = props.single_biodata.temporary_union_parishad = form.temporary_union_parishad = form.permanent_union_parishad;
 
+        axios.post(route('user.biodata.post.update_single_items', {
+            csrf_token,
+            user_id,
+            temporary_country: form.permanent_country,
+            temporary_division: form.permanent_division,
+            temporary_district: form.permanent_district,
+            temporary_upazila: form.permanent_upazila,
+            temporary_union_parishad: form.permanent_union_parishad,
+            editRequest : props.editRequest
+        } ))
+        .then(function (response) {
+            if( response.data ){
+                // console.log('temporary address updated');
+            }else{
+                modalMessage.value = {
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.error_description,
+                }
+                isModalOpen.value = true;
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
     }
 }
 
@@ -278,6 +506,109 @@ const onSelectJobs = (selectedJobsArray) =>{
     }else{
         isJobSelected.value = true;
     }
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        job_title: form.job_title,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('job_title updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
+}
+
+
+const onChangeJobDetails = (job_details) => {
+
+    props.single_biodata.job_details = job_details;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        job_details,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('job_details updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+
+const onChangeJobLocation = (job_location) => {
+
+    props.single_biodata.job_location = job_location;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        job_location,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('job_location updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+
+const onChangeMonthlyIncome = (monthly_income) => {
+
+    props.single_biodata.monthly_income = monthly_income;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        monthly_income,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('monthly_income updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 
@@ -315,6 +646,27 @@ const onSelectEducationMedium = (selectedEducationMediumArray) =>{
         form.study_others_selected = false;
     }
 
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        medium_of_study: form.medium_of_study,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('medium_of_study updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
 }
 
 
@@ -343,6 +695,27 @@ const onChangeGeneralItem = (e) => {
         }
     }
 
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        general_highest_degree: form.general_highest_degree,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('general_highest_degree updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
 }
 
 
@@ -370,6 +743,28 @@ const onChangeAliyaItem = (e) => {
             props.single_biodata.is_honorable_selected = false;
         }
     }
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        aliya_highest_degree: form.aliya_highest_degree,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('aliya_highest_degree updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
 }
 
 
@@ -397,6 +792,82 @@ const onChangeKowmiItem = (e) => {
             props.single_biodata.is_honorable_selected = false;
         }
     }
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        kowmi_highest_degree: form.kowmi_highest_degree,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('kowmi_highest_degree updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
+}
+
+
+const onChangeStudyOthersHighestDegree = (study_others_highest_degree) => {
+
+    props.single_biodata.study_others_highest_degree = study_others_highest_degree;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        study_others_highest_degree,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('study_others_highest_degree updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+
+const onChangeStudyInDetails = (study_in_details) => {
+
+    props.single_biodata.study_in_details = study_in_details;
+
+    axios.post(route('user.biodata.post.update_single_items', {
+        csrf_token,
+        user_id,
+        study_in_details,
+        editRequest : props.editRequest
+    } ))
+    .then(function (response) {
+        if( response.data ){
+            // console.log('study_in_details updated');
+        }else{
+            modalMessage.value = {
+                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalDescription : page.props.translations.modal_messages.error_description,
+            }
+            isModalOpen.value = true;
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 
@@ -573,7 +1044,7 @@ onMounted(() => {
             </div>
         </div>
 
-        <div v-if="media_agreement" class="grid grid-cols-12 gap-0">
+        <div v-if="media_agreement && !single_biodata.is_approved" class="grid grid-cols-12 gap-0">
             <div class="form_item col-span-12 md:col-start-4 md:col-span-6 p-2">
                 <label for="gender" class="text-base">{{ translations.biodata_form.personal_biodata.gender_title }}</label>
                 <select @change="genderUpdate" id="gender" name="gender"
@@ -593,32 +1064,40 @@ onMounted(() => {
                 <DatePicker :translations :birth_date="form.birth_date" @onUpdateDate="onUpdateDate" />
                 <InputError class="mt-2" :message="form.errors.birth_date" />
             </div>
+
+
             <div class="form_item col-span-6 p-2">
-                <select v-model="form.skin_color" @change="(e) => { single_biodata.skin_color = e.target.value }" id="skin_color" name="skin_color"
+                <select v-model="form.skin_color" @change="(e) => onChangeSkinColor(e.target.value)" id="skin_color" name="skin_color"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.skin_color_title }}</option>
                     <option v-for="skin_color in translations.biodata_form.personal_biodata.skin_color_options" :key="skin_color.id" :value="skin_color">{{ skin_color }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.skin_color" />
             </div>
+
+
             <div class="form_item col-span-6 p-2">
-                <select v-model="form.height" @change="(e) => { single_biodata.height = e.target.value }" id="height" name="height"
+                <select v-model="form.height" @change="(e) => onChangeHeight(e.target.value)" id="height" name="height"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.height_title }}</option>
                     <option v-for="height in translations.biodata_form.personal_biodata.height_options" :key="height.id" :value="height">{{ height }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.height" />
             </div>
+
+
             <div class="form_item col-span-6 p-2">
-                <select v-model="form.weight" @change="(e) => { single_biodata.weight = e.target.value }" id="weight" name="weight"
+                <select v-model="form.weight" @change="(e) => onChangeWeight(e.target.value)" id="weight" name="weight"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.weight_title }}</option>
                     <option v-for="weight in translations.biodata_form.personal_biodata.weight_options" :key="weight.id" :value="weight">{{ weight }}</option>
                 </select>
                 <InputError class="mt-2" :message="form.errors.weight" />
             </div>
+
+
             <div class="form_item col-span-6 p-2">
-                <select v-model="form.blood_group" @change="(e) => { single_biodata.blood_group = e.target.value }" id="blood_group" name="blood_group"
+                <select v-model="form.blood_group" @change="(e) => onChangeBloodGroup(e.target.value)" id="blood_group" name="blood_group"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.blood_group_title }}</option>
                     <option v-for="blood_group in translations.biodata_form.personal_biodata.blood_group_options" :key="blood_group.id" :value="blood_group">{{ blood_group }}</option>
@@ -627,7 +1106,7 @@ onMounted(() => {
             </div>
 
             <div class="form_item col-span-6 p-2">
-                <select v-model="form.maritial_status" @change="(e) => { single_biodata.maritial_status = e.target.value }" id="maritial_status" name="maritial_status"
+                <select v-model="form.maritial_status" @change="(e) => onChangeMaritialStatus(e.target.value)" id="maritial_status" name="maritial_status"
                     class="maritial_status block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" >
                     <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.maritial_status_title }}</option>
                     <template v-for="(maritial_status, maritial_status_key) in translations.biodata_form.personal_biodata.maritial_status_options" :key="maritial_status.id">
@@ -654,12 +1133,12 @@ onMounted(() => {
             </div>
 
             <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
-                <textarea v-model="form.job_details" @input="(e) => { single_biodata.job_details = e.target.value }" name="job_details" rows="1" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.job_details_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <textarea v-model="form.job_details" @blur="(e) => onChangeJobDetails(e.target.value)" name="job_details" rows="1" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.job_details_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 <InputError class="mt-2" :message="form.errors.job_details" />
             </div>
 
             <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
-                <input type="text" v-model="form.job_location" @input="(e) => { single_biodata.job_location = e.target.value }" name="job_location" maxlength="100" list="job_location_lists" :placeholder="translations.biodata_form.personal_biodata.job_location_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
+                <input type="text" v-model="form.job_location" @blur="(e) => onChangeJobLocation(e.target.value)" name="job_location" maxlength="100" list="job_location_lists" :placeholder="translations.biodata_form.personal_biodata.job_location_title" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" />
                 <datalist id="job_location_lists">
                     <option v-for="single_district in districts" :key="single_district.id">{{ locale == 'en' ? single_district.district_name : single_district.district_bn_name }}</option>
                 </datalist>
@@ -667,7 +1146,7 @@ onMounted(() => {
             </div>
 
             <div v-if="isJobSelected" class="form_item col-span-12 md:col-span-6 p-2">
-                <select v-model="form.monthly_income" @change="(e) => { single_biodata.monthly_income = e.target.value }" id="monthly_income" name="monthly_income"
+                <select v-model="form.monthly_income" @change="(e) => onChangeMonthlyIncome(e.target.value)" id="monthly_income" name="monthly_income"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.monthly_income_title }}</option>
                     <option v-for="monthly_income in translations.biodata_form.personal_biodata.monthly_income_options" :key="monthly_income.id" :value="monthly_income">{{ monthly_income }}</option>
@@ -708,7 +1187,7 @@ onMounted(() => {
             </div>
 
             <div v-if="form.study_others_selected" class="form_item col-span-12 md:col-span-6 p-2">
-                <select v-model="form.study_others_highest_degree" @change="(e) => { single_biodata.study_others_highest_degree = e.target.value }" id="study_others_highest_degree" name="study_others_highest_degree"
+                <select v-model="form.study_others_highest_degree" @change="(e) => onChangeStudyOthersHighestDegree(e.target.value)" id="study_others_highest_degree" name="study_others_highest_degree"
                     class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected >{{ translations.biodata_form.personal_biodata.study_others_highest_degree_title }}</option>
                     <option v-for="(study_others_highest_degree, study_others_highest_degree_key) in translations.biodata_form.personal_biodata.study_others_highest_degree_options" :key="study_others_highest_degree_key" :item_key="study_others_highest_degree_key" :value="study_others_highest_degree">{{ study_others_highest_degree }}</option>
@@ -717,12 +1196,12 @@ onMounted(() => {
             </div>
 
             <div class="form_item col-span-12 md:col-span-6 p-2">
-                <textarea v-model="form.study_in_details" @input="(e) => { single_biodata.study_in_details = e.target.value }" name="study_in_details" rows="3" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.study_in_details_watermark" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <textarea v-model="form.study_in_details" @blur="(e) => onChangeStudyInDetails(e.target.value)" name="study_in_details" rows="3" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.study_in_details_watermark" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 <InputError class="mt-2" :message="form.errors.study_in_details" />
             </div>
 
             <div v-if="form.is_honorable_selected" class="form_item col-span-12 md:col-span-6 p-2">
-                <textarea v-model="form.honorable_degree_details" @input="(e) => { single_biodata.honorable_degree_details = e.target.value }" name="honorable_degree_details" rows="2" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.honorable_degree_details_placeholder" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                <textarea v-model="form.honorable_degree_details" @blur="(e) => { single_biodata.honorable_degree_details = e.target.value }" name="honorable_degree_details" rows="2" maxlength="500" :placeholder="translations.biodata_form.personal_biodata.honorable_degree_details_placeholder" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 <InputError class="mt-2" :message="form.errors.honorable_degree_details" />
             </div>
 

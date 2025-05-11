@@ -154,19 +154,23 @@ const onClickInterested = (single_proposal) => {
                 //     return data[2] == user_id ? true : false;
                 // }).remove().draw();
                 dt.rows('.selected').remove().draw();
+
                 modalInner.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been accepted successfully.',
+                    modalHeading : page.props.front_end_translations.modal_messages.success_heading,
+                    modalDescription : page.props.front_end_translations.modal_messages.success_accept,
                     showButtons : false
                 }
                 isPopupMessageModalOpen.value = true;
+
             }else{
+
                 modalInner.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
+                    modalHeading : page.props.front_end_translations.modal_messages.error_heading,
+                    modalDescription : page.props.front_end_translations.modal_messages.success_accept_error,
                     showButtons : false
                 }
                 isPopupMessageModalOpen.value = true;
+
             }
 
         });
@@ -187,19 +191,23 @@ const onClickNotInterested = (single_proposal) => {
             if( response.data ){
                 emits('onUpdateAllProposals', response.data);
                 dt.rows('.selected').remove().draw();
+
                 modalInner.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been rejected successfully.',
+                    modalHeading : page.props.front_end_translations.modal_messages.success_heading,
+                    modalDescription : page.props.front_end_translations.modal_messages.success_reject,
                     showButtons : false
                 }
                 isPopupMessageModalOpen.value = true;
+
             }else{
+
                 modalInner.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
+                    modalHeading : page.props.front_end_translations.modal_messages.error_heading,
+                    modalDescription : page.props.front_end_translations.modal_messages.success_reject_error,
                     showButtons : false
                 }
                 isPopupMessageModalOpen.value = true;
+
             }
 
         });

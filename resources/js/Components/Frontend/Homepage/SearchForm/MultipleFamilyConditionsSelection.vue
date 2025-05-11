@@ -17,6 +17,9 @@ const props = defineProps({
     translations: {
         type: Object,
     },
+    familyConditions: {
+        type: String,
+    },
 });
 
 const selectedFamilyConditions = ref([]);
@@ -34,7 +37,12 @@ const onClickFamilyConditionsItems = (e) => {
 
 
 onMounted(() => {
-
+    if( props.familyConditions != null ){
+        if( props.familyConditions != '' ){
+            selectedFamilyConditions.value = props.familyConditions.split(",");
+            emits('onSelectFamilyConditions', selectedFamilyConditions.value);
+        }
+    }
 });
 
 
@@ -47,7 +55,7 @@ onMounted(() => {
             class="relative appearance-none w-full text-left bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <span class="block truncate leading-tight">
                 <ListboxLabel>{{ translations.biodata_form.deserved_biodata.deserved_family_conditions_title }}:</ListboxLabel>
-                {{ selectedFamilyConditions.map((family_condition) => family_condition).join(', ') }}
+                {{ selectedFamilyConditions.map((family_condition) => family_condition).join(',') }}
             </span>
             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />

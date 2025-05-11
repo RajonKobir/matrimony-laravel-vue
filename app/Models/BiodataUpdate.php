@@ -26,7 +26,7 @@ class BiodataUpdate extends Model
         'similar_biodata',
         'similar_biodata_ids',
         'biodata_categories',
-        'biodata_restriction',
+        'biodata_restrictions',
         'daily_free',
         'special_package',
         'biodata_package',

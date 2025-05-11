@@ -29,7 +29,7 @@ const form = useForm({
     biodata_code: props.modalInner.viewBiodata.biodata_code,
     free_biodata: props.modalInner.viewBiodata.free_biodata ? props.modalInner.viewBiodata.free_biodata : 0,
     biodata_categories: props.modalInner.viewBiodata.biodata_categories,
-    biodata_restriction: props.modalInner.viewBiodata.biodata_restriction,
+    biodata_restrictions: props.modalInner.viewBiodata.biodata_restrictions,
     daily_free: props.modalInner.viewBiodata.daily_free,
     biodata_package: props.modalInner.viewBiodata.biodata_package,
     username: props.modalInner.viewBiodata.user_email ? props.modalInner.viewBiodata.user_email : props.modalInner.viewBiodata.user_mobile,

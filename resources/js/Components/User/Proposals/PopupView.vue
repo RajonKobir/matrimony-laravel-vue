@@ -99,7 +99,7 @@ const onUpdateReceivedProposals = (proposals) => {
                 </DialogTitle>
 
                 <div class="mt-10 text-center">
-                    <ShowBiodata :translations :locale :locales  :single_biodata="modalInner.single_biodata" :tab_index="modalInner.tab_index" :proposals="modalInner.proposals" @onUpdateReceivedProposals="onUpdateReceivedProposals" />
+                    <ShowBiodata :translations :locale :locales  :single_biodata="modalInner.single_biodata" :self_biodata="modalInner.self_biodata" :tab_index="modalInner.tab_index" :proposals="modalInner.proposals" @onUpdateReceivedProposals="onUpdateReceivedProposals" />
                 </div>
 
               <div class="mt-4">

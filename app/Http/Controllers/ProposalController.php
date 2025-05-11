@@ -7,6 +7,8 @@ use App\Models\Biodata;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\MailController;
+
 
 class ProposalController extends Controller
 {
@@ -164,7 +166,34 @@ class ProposalController extends Controller
             $single_proposal->save();
 
             if( $single_proposal ){
-                return response()->json(['message' => true]);
+
+                $self_proposals = [];
+                $proposals = Proposal::where('sender_user_id', $request->sender_user_id)
+                ->orWhere('receiver_user_id', $request->receiver_user_id)
+                ->where('in_trash', false)
+                ->get();
+                if( $proposals ){
+                    if( count( $proposals ) > 0 ){
+                        $self_proposals = $proposals;
+                    }
+                }
+
+                // sending email notification
+                if( $proposal_receiver_biodata[0]->user_email ){
+                    $request = new Request([
+                        'name' => $proposal_sender_biodata[0]->biodata_code,
+                        'email' => $proposal_receiver_biodata[0]->user_email,
+                        'subject' => str_replace(':biodata_code', $proposal_sender_biodata[0]->biodata_code, __('frontend.email_notifications.propose_receiver_subject')),
+                        'message' => str_replace(':biodata_code', $proposal_sender_biodata[0]->biodata_code, __('frontend.email_notifications.propose_receiver_body')),
+                    ]);
+                    $mailController = new MailController();
+                    $mailController->proposalNotifications($request);
+                }
+
+                return response()->json([
+                    'message' => true,
+                    'self_proposals' => $self_proposals,
+                ]);
             }
 
         }else{
@@ -193,7 +222,35 @@ class ProposalController extends Controller
                                 'biodata_package' => $updated_package,
                             ]);
                             if( $update_biodata ){
-                                return response()->json(['message' => true]);
+
+                                $self_proposals = [];
+                                $proposals = Proposal::where('sender_user_id', $request->sender_user_id)
+                                ->orWhere('receiver_user_id', $request->receiver_user_id)
+                                ->where('in_trash', false)
+                                ->get();
+                                if( $proposals ){
+                                    if( count( $proposals ) > 0 ){
+                                        $self_proposals = $proposals;
+                                    }
+                                }
+
+                                // sending email notification
+                                if( $proposal_receiver_biodata[0]->user_email ){
+                                    $request = new Request([
+                                        'name' => $proposal_sender_biodata[0]->biodata_code,
+                                        'email' => $proposal_receiver_biodata[0]->user_email,
+                                        'subject' => str_replace(':biodata_code', $proposal_sender_biodata[0]->biodata_code, __('frontend.email_notifications.propose_receiver_subject')),
+                                        'message' => str_replace(':biodata_code', $proposal_sender_biodata[0]->biodata_code, __('frontend.email_notifications.propose_receiver_body')),
+                                    ]);
+                                    $mailController = new MailController();
+                                    $mailController->proposalNotifications($request);
+                                }
+
+                                return response()->json([
+                                    'message' => true,
+                                    'self_proposals' => $self_proposals,
+                                ]);
+
                             }
                         }
 
@@ -276,6 +333,33 @@ class ProposalController extends Controller
 
         }
 
+        // get their biodatas
+        $proposal_receiver_biodata = Biodata::where('user_id', $request->receiver_user_id)->get();
+        $proposal_sender_biodata = Biodata::where('user_id', $request->sender_user_id)->get();
+
+        // sending email notification
+        if( $proposal_sender_biodata[0]->user_email ){
+
+            if( $request->proposal_accepted ){
+                $request = new Request([
+                    'name' => $proposal_receiver_biodata[0]->biodata_code,
+                    'email' => $proposal_sender_biodata[0]->user_email,
+                    'subject' => str_replace(':biodata_code', $proposal_receiver_biodata[0]->biodata_code, __('frontend.email_notifications.propose_accept_sender_subject')),
+                    'message' => str_replace(':biodata_code', $proposal_receiver_biodata[0]->biodata_code, __('frontend.email_notifications.propose_accept_sender_body')),
+                ]);
+            }else{
+                $request = new Request([
+                    'name' => $proposal_receiver_biodata[0]->biodata_code,
+                    'email' => $proposal_sender_biodata[0]->user_email,
+                    'subject' => str_replace(':biodata_code', $proposal_receiver_biodata[0]->biodata_code, __('frontend.email_notifications.propose_reject_sender_subject')),
+                    'message' => str_replace(':biodata_code', $proposal_receiver_biodata[0]->biodata_code, __('frontend.email_notifications.propose_reject_sender_body')),
+                ]);
+            }
+
+            $mailController = new MailController();
+            $mailController->proposalNotifications($request);
+        }
+
         if( $request->user_page ){
             if (Auth::guard('web')->user()) {
                 $user_id = Auth::guard('web')->user()->id;
@@ -318,6 +402,32 @@ class ProposalController extends Controller
                         ]);
                     }
                 }
+            }
+        }
+
+
+        // get their biodatas
+        $proposal_receiver_biodata = Biodata::where('user_id', $request->receiver_user_id)->get();
+        $proposal_sender_biodata = Biodata::where('user_id', $request->sender_user_id)->get();
+
+        // sending email notification
+        if( $proposal_sender_biodata[0]->user_email ){
+            $request = new Request([
+                'name' => $proposal_receiver_biodata[0]->biodata_code,
+                'email' => $proposal_sender_biodata[0]->user_email,
+                'subject' => str_replace(':biodata_code', $proposal_receiver_biodata[0]->biodata_code, __('frontend.email_notifications.propose_reject_sender_subject')),
+                'message' => str_replace(':biodata_code', $proposal_receiver_biodata[0]->biodata_code, __('frontend.email_notifications.propose_reject_sender_body')),
+            ]);
+            $mailController = new MailController();
+            $mailController->proposalNotifications($request);
+        }
+
+        if( $request->user_page ){
+            if (Auth::guard('web')->user()) {
+                $user_id = Auth::guard('web')->user()->id;
+                return Proposal::where('receiver_user_id', $user_id)
+                ->where('in_trash', false)
+                ->get();
             }
         }
 

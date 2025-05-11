@@ -27,7 +27,19 @@ class SettingsController extends Controller
             'locales' => config('localization.locales'),
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
+            'single_biodata' => [],
         ];
+
+        if (Auth::guard('web')->user()) {
+            $user_id = Auth::guard('web')->user()->id;
+            $single_biodata = Biodata::where('user_id', $user_id)->get();
+            if( $single_biodata ){
+                if( count( $single_biodata ) == 1 ){
+                    $this->pageProps['single_biodata'] = $single_biodata[0];
+                }
+            }
+        }
+
     }
 
     /**

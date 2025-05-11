@@ -144,7 +144,13 @@ document.body.classList.add("frontend.terms");
                                     <div class="od-group">
                                         <a class="od-accordion-link" href="#">{{ translations.terms_page.terms_12_title }}</a>
                                         <div v-html="`${ translations.terms_page.terms_12_desc }`" class="od-body-part">
-
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="od-accordion">
+                                    <div class="od-group">
+                                        <a class="od-accordion-link" href="#">{{ translations.terms_page.terms_13_title }}</a>
+                                        <div v-html="`${ translations.terms_page.terms_13_desc }`" class="od-body-part">
                                         </div>
                                     </div>
                                 </div>

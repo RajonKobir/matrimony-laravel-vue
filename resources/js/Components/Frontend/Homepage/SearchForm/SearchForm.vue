@@ -1,7 +1,7 @@
 <script setup>
 
-import { onMounted, watch } from 'vue';
-import { usePage, useForm, Link } from '@inertiajs/vue3';
+import { onMounted, watch, computed } from 'vue';
+import { usePage, useForm, router } from '@inertiajs/vue3';
 import InputError from '../../../InputError.vue';
 import AgeSlider from './AgeSlider.vue';
 import HeightSlider from './HeightSlider.vue';
@@ -32,29 +32,44 @@ const page = usePage();
 const csrf_token = page.props.csrf_token;
 
 
+const queryParams = computed(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let params = {};
+    urlParams.forEach((value, key) => {
+        params[key] = value;
+    });
+    return params;
+});
+
+
 const form = useForm({
     // csrf_token: csrf_token,
-    searchNumber: 1,
-    selectedGender: null,
-    selectedDistricts: null,
-    ageRange: '16-65',
-    maritialStatuses: null,
-    selectedCategory: null,
-    codeNumber: null,
-    heightRange: '৪\'৮" এর কম-৭\' এর বেশি',
-    skinColors: null,
-    akidaMajhabs: null,
-    familyConditions: null,
-    selectedJobs: null,
-    educationMediums: null,
-    specialCategory: null,
+    searchNumber: queryParams.value.searchNumber || 1,
+    selectedGender: queryParams.value.selectedGender || null,
+    selectedDistricts: queryParams.value.selectedDistricts || null,
+    ageRange: queryParams.value.ageRange || null,
+    maritialStatuses: queryParams.value.maritialStatuses || null,
+    selectedCategory: queryParams.value.selectedCategory || null,
+    codeNumber: queryParams.value.codeNumber || null,
+    heightRange: queryParams.value.heightRange || null,
+    skinColors: queryParams.value.skinColors || null,
+    akidaMajhabs: queryParams.value.akidaMajhabs || null,
+    familyConditions: queryParams.value.familyConditions || null,
+    selectedJobs: queryParams.value.selectedJobs || null,
+    educationMediums: queryParams.value.educationMediums || null,
+    specialCategory: queryParams.value.specialCategory || null,
 });
 
 
 const submit = (e) => {
     e.preventDefault();
     page.props.flash = [];
-    form.get(route('frontend.biodata_search'), {
+
+    form.transform((data) => {
+        return Object.fromEntries(
+            Object.entries(data).filter(([_, value]) => value !== null && value !== "")
+        );
+    }).get(route('frontend.biodata_search'), {
         preserveState: true,
         preserveScroll: true,
         // onFinish: () => form.reset('password'),
@@ -105,15 +120,36 @@ const onSelectSkinColors = (selectedSkinColorsArray) =>{
     form.skinColors = selectedSkinColorsArray.map((skin_color) => skin_color).join(',');
 }
 
+const onChangeSearchNumber = () =>{
+    form.selectedGender = null;
+    form.selectedDistricts = null;
+    form.ageRange = null;
+    form.maritialStatuses = null;
+    form.selectedCategory = null;
+    form.codeNumber = null;
+    form.heightRange = null;
+    form.skinColors = null;
+    form.akidaMajhabs = null;
+    form.familyConditions = null;
+    form.selectedJobs = null;
+    form.educationMediums = null;
+    form.specialCategory = null;
+}
+
 
 // watch(form, async (newValue, oldValue) => {
 //     if( newValue.searchNumber ){
-//         form.reset();
+//         form.reset('selectedGender', 'selectedDistricts', 'ageRange', 'maritialStatuses', 'selectedCategory', 'codeNumber', 'heightRange', 'skinColors', 'akidaMajhabs', 'familyConditions', 'selectedJobs', 'educationMediums', 'specialCategory');
 //     }
 // });
 
 
+
 onMounted(() => {
+
+    if (Object.keys(queryParams.value).length > 0) {
+        router.visit(window.location.pathname, { preserveState: true });
+    }
 
     page.props.flash = [];
 
@@ -130,8 +166,7 @@ onMounted(() => {
         <form @submit.prevent="submit" class="grid grid-cols-12 gap-0 text-gray-950 text-base">
 
             <div class="form_item col-start-4 col-span-6 md:col-start-5 md:col-span-4 p-2 pb-8">
-                <select id="main_search_choice" v-model="form.searchNumber" name="main_search_choice"
-                    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                <select id="main_search_choice" v-model="form.searchNumber"  @change="onChangeSearchNumber" name="main_search_choice" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                     <option value="null" disabled selected>{{ props.translations.searchForm.search_initiate_title }}</option>
                     <option v-for="(search_initiate, search_initiate_key) in props.translations.searchForm.search_initiate_options" :key="search_initiate.id" :value="search_initiate_key" >{{ search_initiate }}</option>
                 </select>
@@ -149,17 +184,17 @@ onMounted(() => {
                     </div>
 
                     <div class="form_item col-span-6 lg:col-span-4 p-2">
-                        <MultipleDistrictsSelection :translations :locale  :districts="districts" @onSelectDistricts="onSelectDistricts" />
+                        <MultipleDistrictsSelection :translations :locale  :districts="districts" :Districts="form.selectedDistricts" @onSelectDistricts="onSelectDistricts" />
                         <InputError class="mt-2" :message="page.props.errors.selectedDistricts" />
                     </div>
 
                     <div class="form_item col-span-12 md:col-start-4 md:col-span-6 lg:col-start-5 lg:col-span-4 p-2 px-8 md:px-4 pb-4">
-                        <AgeSlider :translations @onUpdateAgeSlider="onUpdateAgeSlider"/>
+                        <AgeSlider :translations :ageRange="form.ageRange" @onUpdateAgeSlider="onUpdateAgeSlider"/>
                         <InputError class="mt-2" :message="page.props.errors.ageRange" />
                     </div>
 
                     <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
-                        <MultipleMaritialStatusSelection :translations :gender="form.selectedGender" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
+                        <MultipleMaritialStatusSelection :translations :gender="form.selectedGender" :maritialStatuses="form.maritialStatuses" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
                         <InputError class="mt-2" :message="page.props.errors.maritialStatuses" />
                     </div>
 
@@ -195,47 +230,47 @@ onMounted(() => {
                 </div>
 
                 <div class="form_item col-span-6 lg:col-span-4 p-2">
-                    <MultipleDistrictsSelection :translations :locale  :districts="districts" @onSelectDistricts="onSelectDistricts" />
+                    <MultipleDistrictsSelection :translations :locale  :districts="districts" :Districts="form.selectedDistricts" @onSelectDistricts="onSelectDistricts" />
                     <InputError class="mt-2" :message="page.props.errors.selectedDistricts" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
-                    <MultipleMaritialStatusSelection :translations :gender="form.selectedGender" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
+                    <MultipleMaritialStatusSelection :translations :gender="form.selectedGender" :maritialStatuses="form.maritialStatuses" @onSelectMaritialStatuses="onSelectMaritialStatuses" />
                     <InputError class="mt-2" :message="page.props.errors.maritialStatuses" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-span-4 p-2">
-                    <MultipleAkidaMajhabSelection :translations @onSelectAkidaMajhabs="onSelectAkidaMajhabs" />
+                    <MultipleAkidaMajhabSelection :translations :akidaMajhabs="form.akidaMajhabs" @onSelectAkidaMajhabs="onSelectAkidaMajhabs" />
                     <InputError class="mt-2" :message="page.props.errors.akidaMajhabs" />
                 </div>
 
                 <div class="form_item col-span-12 md:col-span-6 lg:col-start-3 lg:col-span-4 p-2 px-8 pb-4">
-                    <AgeSlider :translations @onUpdateAgeSlider="onUpdateAgeSlider"/>
+                    <AgeSlider :translations :ageRange="form.ageRange" @onUpdateAgeSlider="onUpdateAgeSlider"/>
                     <InputError class="mt-2" :message="page.props.errors.ageRange" />
                 </div>
 
                 <div class="form_item col-span-12 md:col-span-6 lg:col-span-4 p-2 px-8 pb-4">
-                    <HeightSlider :translations @onUpdateHeightSlider="onUpdateHeightSlider"/>
+                    <HeightSlider :translations :heightRange="form.heightRange" @onUpdateHeightSlider="onUpdateHeightSlider"/>
                     <InputError class="mt-2" :message="page.props.errors.heightRange" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
-                    <MultipleJobsSelection :translations :gender="form.selectedGender" @onSelectJobs="onSelectJobs" />
+                    <MultipleJobsSelection :translations :gender="form.selectedGender" :JobTitles="form.selectedJobs" @onSelectJobs="onSelectJobs" />
                     <InputError class="mt-2" :message="page.props.errors.selectedJobs" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-span-4 p-2">
-                    <MultipleSkinColorsSelection :translations  @onSelectSkinColors="onSelectSkinColors" />
+                    <MultipleSkinColorsSelection :translations :skinColors="form.skinColors" @onSelectSkinColors="onSelectSkinColors" />
                     <InputError class="mt-2" :message="page.props.errors.skinColors" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-start-3 lg:col-span-4 p-2">
-                    <MultipleEducationMediumSelection :translations  @onSelectEducationMedium="onSelectEducationMedium"/>
+                    <MultipleEducationMediumSelection :translations :educationMediums="form.educationMediums"  @onSelectEducationMedium="onSelectEducationMedium"/>
                     <InputError class="mt-2" :message="page.props.errors.educationMediums" />
                 </div>
 
                 <div class="form_item col-span-6 lg:col-span-4 p-2">
-                    <MultipleFamilyConditionsSelection :translations  @onSelectFamilyConditions="onSelectFamilyConditions" />
+                    <MultipleFamilyConditionsSelection :translations :familyConditions="form.familyConditions" @onSelectFamilyConditions="onSelectFamilyConditions" />
                     <InputError class="mt-2" :message="page.props.errors.familyConditions" />
                 </div>
 
@@ -253,7 +288,7 @@ onMounted(() => {
                 </div>
 
                 <div class="form_item col-span-6 lg:col-span-4 p-2">
-                    <MultipleDistrictsSelection :translations :locale  :districts="districts" @onSelectDistricts="onSelectDistricts" />
+                    <MultipleDistrictsSelection :translations :locale  :districts="districts" :Districts="form.selectedDistricts" @onSelectDistricts="onSelectDistricts" />
                     <InputError class="mt-2" :message="page.props.errors.selectedDistricts" />
                 </div>
 

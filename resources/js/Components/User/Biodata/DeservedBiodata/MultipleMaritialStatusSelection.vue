@@ -30,9 +30,9 @@ const showPopup = ref(false);
 
 
 const onClickMaritialStatusesItems = (e) => {
-    if( selectedMaritialStatuses.value.includes("যেকোনো") || selectedMaritialStatuses.value.includes("Any") ){
+    if( selectedMaritialStatuses.value.includes("যেকোনো") || selectedMaritialStatuses.value.includes("any") ){
         selectedMaritialStatuses.value = selectedMaritialStatuses.value.filter(function(item) {
-            return item === "যেকোনো" || item === "Any";
+            return item === "যেকোনো" || item === "any";
         })
     }
     emits('onSelectMaritialStatuses', selectedMaritialStatuses.value);

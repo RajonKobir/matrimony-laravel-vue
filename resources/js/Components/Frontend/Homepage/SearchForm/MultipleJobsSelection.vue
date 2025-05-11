@@ -20,6 +20,9 @@ const props = defineProps({
     locale: {
         type: String,
     },
+    JobTitles: {
+        type: String,
+    },
     gender: {
         type: String,
     },
@@ -40,7 +43,12 @@ const onClickJobTitlesItems = (e) => {
 
 
 onMounted(() => {
-
+    if( props.JobTitles != null ){
+        if( props.JobTitles != '' ){
+            selectedJobTitles.value = props.JobTitles.split(",");
+            emits('onSelectJobs', selectedJobTitles.value);
+        }
+    }
 });
 
 
@@ -54,7 +62,7 @@ onMounted(() => {
             class="relative appearance-none w-full text-left bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <span class="block truncate leading-tight">
                 <ListboxLabel>{{ translations.biodata_form.deserved_biodata.deserved_job_titles_title }}:</ListboxLabel>
-                {{ selectedJobTitles.map((job_title) => job_title).join(', ') }}
+                {{ selectedJobTitles.map((job_title) => job_title).join(',') }}
             </span>
             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />

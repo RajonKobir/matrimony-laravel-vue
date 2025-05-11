@@ -17,6 +17,9 @@ const props = defineProps({
     translations: {
         type: Object,
     },
+    MultipleCategories: {
+        type: Object,
+    },
 });
 
 const selectedMultipleCategories = ref([]);
@@ -35,7 +38,12 @@ const onClickMultipleCategoriesItems = (e) => {
 
 
 onMounted(() => {
-
+    if( props.MultipleCategories != null ){
+        if( props.MultipleCategories != '' ){
+            selectedMultipleCategories.value = props.MultipleCategories.split(",");
+            emits('onSelectAkidaMajhabs', selectedMultipleCategories.value);
+        }
+    }
 });
 
 

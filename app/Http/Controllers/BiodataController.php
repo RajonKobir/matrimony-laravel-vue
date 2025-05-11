@@ -10,6 +10,8 @@ use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Http\Controllers\MailController;
+
 
 class BiodataController extends Controller
 {
@@ -220,6 +222,90 @@ class BiodataController extends Controller
         }
         return false;
     }
+
+
+
+
+    public function updateSingleItems(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|int',
+            'birth_date' => 'nullable|date',
+            'skin_color' => 'nullable|string|max:20',
+            'height' => 'nullable|string|max:20',
+            'weight' => 'nullable|string|max:20',
+            'blood_group' => 'nullable|string|max:10',
+            'maritial_status' => 'nullable|string|max:20',
+            'permanent_country' => 'nullable|string|max:20',
+            'permanent_division' => 'nullable|string|max:20',
+            'permanent_district' => 'nullable|string|max:20',
+            'permanent_upazila' => 'nullable|string|max:30',
+            'permanent_union_parishad' => 'nullable|string|max:40',
+            'temporary_country' => 'nullable|string|max:20',
+            'temporary_division' => 'nullable|string|max:20',
+            'temporary_district' => 'nullable|string|max:20',
+            'temporary_upazila' => 'nullable|string|max:30',
+            'temporary_union_parishad' => 'nullable|string|max:40',
+            'job_title' => 'nullable|min:2|max:100',
+            'job_details' => 'nullable|string|max:500',
+            'job_location' => 'nullable|string|max:100',
+            'monthly_income' => 'nullable|string|max:20',
+            'medium_of_study' => 'nullable|string|max:100',
+            'general_highest_degree' => 'nullable|string|max:50',
+            'aliya_highest_degree' => 'nullable|string|max:50',
+            'kowmi_highest_degree' => 'nullable|string|max:50',
+            'study_others_highest_degree' => 'nullable|string|max:50',
+            'study_in_details' => 'nullable|string|max:500',
+            'editRequest' => 'nullable|boolean',
+        ]);
+
+        // initializing
+        $biodata_class = \App\Models\Biodata::class;
+
+        if( $request->editRequest ){
+            $biodata_class = \App\Models\BiodataUpdate::class;
+        }
+
+        $retrieved_biodata = $biodata_class::where('user_id', $request->user_id)->get();
+
+        if( count($retrieved_biodata) == 1 ){
+            $biodata = $biodata_class::where('user_id', $request->user_id)->update([
+                'birth_date' => $request->birth_date ? $request->birth_date : $retrieved_biodata[0]->birth_date,
+                'skin_color' => $request->skin_color ? $request->skin_color : $retrieved_biodata[0]->skin_color,
+                'height' => $request->height ? $request->height : $retrieved_biodata[0]->height,
+                'weight' => $request->weight ? $request->weight : $retrieved_biodata[0]->weight,
+                'blood_group' => $request->blood_group ? $request->blood_group : $retrieved_biodata[0]->blood_group,
+                'maritial_status' => $request->maritial_status ? $request->maritial_status : $retrieved_biodata[0]->maritial_status,
+                'permanent_country' => $request->permanent_country ? $request->permanent_country : $retrieved_biodata[0]->permanent_country,
+                'permanent_division' => $request->permanent_division ? $request->permanent_division : $retrieved_biodata[0]->permanent_division,
+                'permanent_district' => $request->permanent_district ? $request->permanent_district : $retrieved_biodata[0]->permanent_district,
+                'permanent_upazila' => $request->permanent_upazila ? $request->permanent_upazila : $retrieved_biodata[0]->permanent_upazila,
+                'permanent_union_parishad' => $request->permanent_union_parishad ? $request->permanent_union_parishad : $retrieved_biodata[0]->permanent_union_parishad,
+                'temporary_country' => $request->temporary_country ? $request->temporary_country : $retrieved_biodata[0]->temporary_country,
+                'temporary_division' => $request->temporary_division ? $request->temporary_division : $retrieved_biodata[0]->temporary_division,
+                'temporary_district' => $request->temporary_district ? $request->temporary_district : $retrieved_biodata[0]->temporary_district,
+                'temporary_upazila' => $request->temporary_upazila ? $request->temporary_upazila : $retrieved_biodata[0]->temporary_upazila,
+                'temporary_union_parishad' => $request->temporary_union_parishad ? $request->temporary_union_parishad : $retrieved_biodata[0]->temporary_union_parishad,
+                'job_title' => $request->job_title ? $request->job_title : $retrieved_biodata[0]->job_title,
+                'job_details' => $request->job_details ? $request->job_details : $retrieved_biodata[0]->job_details,
+                'job_location' => $request->job_location ? $request->job_location : $retrieved_biodata[0]->job_location,
+                'monthly_income' => $request->monthly_income ? $request->monthly_income : $retrieved_biodata[0]->monthly_income,
+                'medium_of_study' => $request->medium_of_study ? $request->medium_of_study : $retrieved_biodata[0]->medium_of_study,
+                'general_highest_degree' => $request->general_highest_degree ? $request->general_highest_degree : $retrieved_biodata[0]->general_highest_degree,
+                'aliya_highest_degree' => $request->aliya_highest_degree ? $request->aliya_highest_degree : $retrieved_biodata[0]->aliya_highest_degree,
+                'kowmi_highest_degree' => $request->kowmi_highest_degree ? $request->kowmi_highest_degree : $retrieved_biodata[0]->kowmi_highest_degree,
+                'study_others_highest_degree' => $request->study_others_highest_degree ? $request->study_others_highest_degree : $retrieved_biodata[0]->study_others_highest_degree,
+                'study_in_details' => $request->study_in_details ? $request->study_in_details : $retrieved_biodata[0]->study_in_details,
+            ]);
+            return true;
+        }
+        elseif( count($retrieved_biodata) > 1 ){
+            return false;
+        }
+        return false;
+    }
+
+
 
 
     public function updatePersonalBiodata(Request $request){
@@ -555,7 +641,7 @@ class BiodataController extends Controller
             'form_holder_desc' => 'required|string|min:10|max:500',
             'male_guardian_desc' => 'required|string|min:10|max:500',
             'male_guardian_agreement' => 'accepted',
-            'deserved_money_pay' => 'required|string|min:2|max:20',
+            'deserved_money_pay' => 'required|string|min:2|max:50',
             'media_terms_one_agreement' => 'accepted',
             'hundred_money_pay' => 'accepted',
             'three_hundred_money_pay' => 'accepted',
@@ -636,6 +722,19 @@ class BiodataController extends Controller
                 'approved_date' => $request->is_approved && !$biodata[0]->approved_date ? Carbon::now()->format('Y-m-d') : $biodata[0]->approved_date,
                 'in_admin_trash' => $request->is_approved && $biodata[0]->in_admin_trash ? false : $biodata[0]->in_admin_trash,
             ]);
+
+            // sending email notification
+            if( $biodata[0]->user_email ){
+                $request = new Request([
+                    'name' => $biodata[0]->biodata_code,
+                    'email' => $biodata[0]->user_email,
+                    'subject' => str_replace(':biodata_code', $biodata[0]->biodata_code, __('frontend.email_notifications.biodata_approve_subject')),
+                    'message' => str_replace(':biodata_code', $biodata[0]->biodata_code, __('frontend.email_notifications.biodata_approve_body')),
+                ]);
+                $mailController = new MailController();
+                $mailController->generalNotifications($request);
+            }
+
         }
 
         return Biodata::all();
@@ -660,6 +759,19 @@ class BiodataController extends Controller
                     'is_approved' => $request->is_approved,
                     'approved_date' => $request->is_approved && !$biodata[0]->approved_date ? Carbon::now()->format('Y-m-d') : $biodata[0]->approved_date,
                 ]);
+
+                // sending email notification
+                if( $biodata[0]->user_email ){
+                    $request = new Request([
+                        'name' => $biodata[0]->biodata_code,
+                        'email' => $biodata[0]->user_email,
+                        'subject' => str_replace(':biodata_code', $biodata[0]->biodata_code, __('frontend.email_notifications.biodata_approve_subject')),
+                        'message' => str_replace(':biodata_code', $biodata[0]->biodata_code, __('frontend.email_notifications.biodata_approve_body')),
+                    ]);
+                    $mailController = new MailController();
+                    $mailController->generalNotifications($request);
+                }
+
             }
 
         }
@@ -744,7 +856,7 @@ class BiodataController extends Controller
             ],
             'free_biodata' => 'required|boolean',
             'biodata_categories' => 'nullable|string|min:4|max:100',
-            'biodata_restriction' => 'nullable|string|min:4|max:200',
+            'biodata_restrictions' => 'nullable|string|min:4|max:200',
             'daily_free' => 'required|int|min:0|max:127',
             'biodata_package' => 'required|int|min:0|max:32767',
             'username' => [
@@ -766,7 +878,7 @@ class BiodataController extends Controller
         $biodata = Biodata::where('user_id', trim($request->user_id))->get();
 
         if( count($biodata) == 1 ){
-            $biodata = Biodata::where('user_id', trim($request->user_id))->update([
+            $biodata_update = Biodata::where('user_id', trim($request->user_id))->update([
                 'user_id' => $request->user_id,
                 'is_approved' => $request->is_approved,
                 'approved_date' => $request->is_approved && !$biodata[0]->approved_date ? Carbon::now()->format('Y-m-d') : $biodata[0]->approved_date,
@@ -774,14 +886,14 @@ class BiodataController extends Controller
                 'user_email' => filter_var($request->username, FILTER_VALIDATE_EMAIL) ? $request->username : $biodata[0]->user_email,
                 'biodata_package' => $request->biodata_package,
                 'daily_free' => $request->daily_free,
-                'biodata_restriction' => $request->biodata_restriction,
+                'biodata_restrictions' => $request->biodata_restrictions,
                 'biodata_categories' => $request->biodata_categories,
                 'free_biodata' => $request->free_biodata,
                 'biodata_code' => $request->biodata_code,
                 'admin_comment' => $request->admin_comment,
             ]);
 
-            if( $biodata ){
+            if( $biodata_update ){
 
                 $user = User::where('id', trim($request->user_id))->get();
 
@@ -793,6 +905,21 @@ class BiodataController extends Controller
                         'password' => !$request->password || $request->password == '' ? $user[0]->password : Hash::make($request->password),
                     ]);
                     if( $user ){
+
+                        // sending email notification
+                        if( $request->is_approved && !$biodata[0]->is_approved ){
+                            if( $biodata[0]->user_email ){
+                                $request = new Request([
+                                    'name' => $biodata[0]->biodata_code,
+                                    'email' => $biodata[0]->user_email,
+                                    'subject' => str_replace(':biodata_code', $biodata[0]->biodata_code, __('frontend.email_notifications.biodata_approve_subject')),
+                                    'message' => str_replace(':biodata_code', $biodata[0]->biodata_code, __('frontend.email_notifications.biodata_approve_body')),
+                                ]);
+                                $mailController = new MailController();
+                                $mailController->generalNotifications($request);
+                            }
+                        }
+
                         return redirect()->back()->with('success', 'Action Taken Successfully!');
                     }
                 }

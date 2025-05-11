@@ -17,6 +17,9 @@ const props = defineProps({
     translations: {
         type: Object,
     },
+    maritialStatuses: {
+        type: String,
+    },
     gender: {
         type: String,
     },
@@ -27,9 +30,9 @@ const showPopup = ref(false);
 
 
 const onClickMaritialStatusesItems = (e) => {
-    if( selectedMaritialStatuses.value.includes("যেকোনো") || selectedMaritialStatuses.value.includes("Any") ){
+    if( selectedMaritialStatuses.value.includes("যেকোনো") || selectedMaritialStatuses.value.includes("any") ){
         selectedMaritialStatuses.value = selectedMaritialStatuses.value.filter(function(item) {
-            return item === "যেকোনো" || item === "Any";
+            return item === "যেকোনো" || item === "any";
         })
     }
     emits('onSelectMaritialStatuses', selectedMaritialStatuses.value);
@@ -37,12 +40,24 @@ const onClickMaritialStatusesItems = (e) => {
 
 
 onMounted(() => {
-
+    if( props.maritialStatuses != null ){
+        if( props.maritialStatuses != '' ){
+            selectedMaritialStatuses.value = props.maritialStatuses.split(",");
+            emits('onSelectMaritialStatuses', selectedMaritialStatuses.value);
+        }
+    }
 });
 
 
 watch(props, async (newValue, oldValue) => {
-
+    if( newValue ){
+        if( newValue.maritialStatuses ){
+            selectedMaritialStatuses.value = newValue.maritialStatuses.split(",");
+        }
+        else if( newValue.maritialStatuses == null ){
+            selectedMaritialStatuses.value = [];
+        }
+    }
 });
 
 
@@ -50,12 +65,14 @@ watch(props, async (newValue, oldValue) => {
 
 
 <template>
+
+
     <Listbox v-model="selectedMaritialStatuses" multiple>
         <ListboxButton @click="showPopup = !showPopup"
             class="relative appearance-none w-full text-left bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
             <span class="block truncate leading-tight">
                 <ListboxLabel>{{ translations.biodata_form.deserved_biodata.deserved_maritial_statuses_title }}:</ListboxLabel>
-                {{ selectedMaritialStatuses.map((maritial_status) => translations.biodata_form.deserved_biodata.deserved_maritial_statuses_options[maritial_status]).join(', ') }}
+                {{ selectedMaritialStatuses.map((maritial_status) => translations.biodata_form.deserved_biodata.deserved_maritial_statuses_options[maritial_status]).join(',') }}
             </span>
             <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />

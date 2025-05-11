@@ -109,6 +109,16 @@ const onClickDisLikeBiodata = (single_biodata) => {
 
 
 const onClickSingleViewDetails = (single_biodata, tab_index) => {
+
+    if( !props.single_biodata.is_approved ){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.view_unapproved,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
     modalInner.value = {
         single_biodata,
         tab_index,

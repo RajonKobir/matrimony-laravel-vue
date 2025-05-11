@@ -28,11 +28,14 @@ defineProps({
     canRegister: {
         type: Boolean,
     },
+    single_biodata: {
+        type: Object,
+    },
 });
 
 
 // initializing
-const single_biodata = ref([]);
+// const single_biodata = ref([]);
 
 document.body.classList.remove(...document.body.classList);
 document.body.classList.add("frontend.edit_profile");

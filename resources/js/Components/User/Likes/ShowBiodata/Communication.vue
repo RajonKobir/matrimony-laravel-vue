@@ -23,6 +23,9 @@ const props = defineProps({
     single_biodata: {
         type: Object,
     },
+    self_biodata: {
+        type: Object,
+    },
     proposal: {
         type: Object,
     },
@@ -55,16 +58,18 @@ const onClickInterested = (single_proposal) => {
             if( response.data ){
                 emits('onUpdateReceivedProposals', response.data);
                 updatedProposal.value.proposal_accepted = true;
+
                 modalMessage.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been accepted successfully.',
+                    modalHeading : page.props.translations.modal_messages.success_heading,
+                    modalDescription : page.props.translations.modal_messages.success_accept,
                     showButtons : false
                 }
                 isModalOpen.value = true;
+
             }else{
                 modalMessage.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.success_accept_error,
                     showButtons : false
                 }
                 isModalOpen.value = true;
@@ -105,16 +110,18 @@ const onClickNotInterested = (single_proposal) => {
                 updatedProposal.value.proposal_accepted = false;
                 updatedProposal.value.rejected_by_sender = rejected_by_sender;
                 updatedProposal.value.rejected_by_receiver = rejected_by_receiver;
+
                 modalMessage.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been rejected successfully.',
+                    modalHeading : page.props.translations.modal_messages.success_heading,
+                    modalDescription : page.props.translations.modal_messages.success_reject,
                     showButtons : false
                 }
                 isModalOpen.value = true;
+
             }else{
                 modalMessage.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.success_reject_error,
                     showButtons : false
                 }
                 isModalOpen.value = true;

@@ -193,14 +193,14 @@ onMounted(() => {
                 </p>
             </div>
 
-            <div v-if="single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district != biodata_update.permanent_upazila + ', ' + biodata_update.permanent_district" class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.permanent_union_parishad + ', ' + single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district != biodata_update.permanent_union_parishad + ', ' + biodata_update.permanent_upazila + ', ' + biodata_update.permanent_district" class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     Before:
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.permanent_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district }}
+                        {{ single_biodata.permanent_union_parishad + ', ' + single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district }}
                     </span>
                 </p>
                 <p class="text-base text-left">
@@ -209,19 +209,19 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.permanent_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ biodata_update.permanent_upazila + ', ' + biodata_update.permanent_district }}
+                        {{ biodata_update.permanent_union_parishad + ', ' + biodata_update.permanent_upazila + ', ' + biodata_update.permanent_district }}
                     </span>
                 </p>
             </div>
 
-            <div v-if="single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district != biodata_update.temporary_upazila + ', ' + biodata_update.temporary_district" class="form_item col-span-12 md:col-span-6 p-2">
+            <div v-if="single_biodata.temporary_union_parishad + ', ' + single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district != biodata_update.temporary_union_parishad + ', ' + biodata_update.temporary_upazila + ', ' + biodata_update.temporary_district" class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     Before:
                     <span class="text-lg text-left font-bold">
                         {{ translations.biodata_form.personal_biodata.temporary_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district }}
+                        {{ single_biodata.temporary_union_parishad + ', ' + single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district }}
                     </span>
                 </p>
                 <p class="text-base text-left">
@@ -230,7 +230,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.temporary_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ biodata_update.temporary_upazila + ', ' + biodata_update.temporary_district }}
+                        {{ biodata_update.temporary_union_parishad + ', ' + biodata_update.temporary_upazila + ', ' + biodata_update.temporary_district }}
                     </span>
                 </p>
             </div>

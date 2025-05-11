@@ -148,7 +148,7 @@ const options = ref({
 
 const onClickView = (single_biodata) => {
 
-    let username = single_biodata.user_email ? single_biodata.user_email : single_biodata.user_mobile;
+    let username = single_biodata.user_email ? '<a class="text-lg underline" href="mailto:' + single_biodata.user_email + '">' + single_biodata.user_email + '</a>' : '<a class="text-lg underline" href="callto:' + single_biodata.user_mobile + '">' + single_biodata.user_mobile + '</a>';
 
     viewBiodata.value = single_biodata;
 
@@ -158,7 +158,6 @@ const onClickView = (single_biodata) => {
 
     modalInner.value = {
         modalHeading : 'The Biodata of username: ' + username,
-        modalDescription : 'The Biodata of username: ' + username + ' has been unapproved Successfully.',
         viewBiodata : viewBiodata.value,
         biodata_update : biodata_update[0],
         showTakeAction: false,
@@ -282,7 +281,6 @@ const onClickMultipleUnApprove = (user_ids) => {
 const closeModal = (value) => {
     isPopupMessageModalOpen.value = value;
     isPopupViewModalOpen.value = value;
-    // modalInner.value = {};
     page.props.flash = [];
 }
 

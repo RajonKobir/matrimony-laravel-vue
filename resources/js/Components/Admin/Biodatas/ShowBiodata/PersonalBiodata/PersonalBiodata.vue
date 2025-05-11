@@ -60,10 +60,6 @@ onMounted(() => {
 
         <div class="grid grid-cols-12 gap-0">
 
-            <div class="form_item col-span-12 p-2">
-                <h1 class="text-lg text-left">{{ single_biodata.gender == 'male' ?  translations.biodata_form.personal_biodata.gender_options.male : translations.biodata_form.personal_biodata.gender_options.female }}</h1>
-            </div>
-
             <div class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
                     <span class="text-lg text-left font-bold">
@@ -136,7 +132,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.permanent_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district }}
+                        {{ single_biodata.permanent_union_parishad + ', ' + single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district }}
                     </span>
                 </p>
             </div>
@@ -147,7 +143,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.temporary_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district }}
+                        {{ single_biodata.temporary_union_parishad + ', ' + single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district }}
                     </span>
                 </p>
             </div>

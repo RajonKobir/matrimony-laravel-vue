@@ -31,13 +31,25 @@ const props = defineProps({
     sent_biodatas: {
         type: Object,
     },
+    all_sent_biodatas: {
+        type: Object,
+    },
     received_biodatas: {
+        type: Object,
+    },
+    all_received_biodatas: {
         type: Object,
     },
     sent_proposals: {
         type: Object,
     },
+    all_sent_proposals: {
+        type: Object,
+    },
     received_proposals: {
+        type: Object,
+    },
+    all_received_proposals: {
         type: Object,
     },
     likes: {
@@ -51,6 +63,7 @@ const csrf_token = page.props.csrf_token;
 const single_biodata_data = ref([]);
 const selectedTab = ref(0);
 const receivedProposals = ref({});
+const sentProposals = ref({});
 
 const tabMapping = {
   1: 'received',
@@ -66,6 +79,7 @@ function changeTab(index) {
 
 const onUpdateReceivedProposals = (proposals) => {
     receivedProposals.value = proposals;
+    receivedProposals.value = receivedProposals.value.filter((value, index, self) => value.proposal_rejected !== false);
 }
 
 
@@ -81,6 +95,12 @@ onMounted(() => {
         single_biodata_data.value = page.props.single_biodata;
 
         receivedProposals.value = props.received_proposals;
+
+        sentProposals.value = props.sent_proposals;
+
+        receivedProposals.value = receivedProposals.value.filter((value, index, self) => value.proposal_rejected !== false);
+
+        sentProposals.value = sentProposals.value.filter((value, index, self) => value.proposal_rejected !== false);
 
     }, 500);
 })
@@ -135,14 +155,14 @@ onMounted(() => {
                     <TabPanel :class="['rounded-xl bg-white', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                     ]">
 
-                        <SentProposals :translations :locale :locales  :single_biodata="single_biodata_data" :biodatas="sent_biodatas" :proposals="sent_proposals" :likes />
+                        <SentProposals :translations :locale :locales  :single_biodata="single_biodata_data" :biodatas="sent_biodatas" :proposals="sentProposals" :likes />
 
                     </TabPanel>
 
                     <TabPanel :class="['rounded-xl bg-white', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                     ]">
 
-                        <DetailedProposals :translations :locale :locales  :single_biodata="single_biodata_data" :sent_biodatas :received_biodatas :sent_proposals :received_proposals="receivedProposals" :likes @onUpdateReceivedProposals="onUpdateReceivedProposals" />
+                        <DetailedProposals :translations :locale :locales  :single_biodata="single_biodata_data" :sent_biodatas="all_sent_biodatas" :received_biodatas="all_received_biodatas" :sent_proposals="all_sent_proposals" :received_proposals="all_received_proposals" :likes @onUpdateReceivedProposals="onUpdateReceivedProposals" />
 
                     </TabPanel>
 

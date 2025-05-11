@@ -42,6 +42,7 @@ class BackEndController extends Controller
             'districts' => District::all(),
         ];
         $pageProps = $all_biodatas_array + $this->pageProps;
+        ini_set('memory_limit', '2048M');
         return Inertia::render('Admin/Home', $pageProps);
     }
 

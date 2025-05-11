@@ -96,7 +96,7 @@ document.body.classList.add("frontend.contact");
                                                 <label>নাম</label>
                                             </div>
                                             <div class="od-form-group-input">
-                                                <input v-model="form.name" type="text" name="name" required>
+                                                <input v-model="form.name" type="text" maxlength="50" name="name" required>
                                             </div>
                                             <div v-if="form.errors.name">{{ form.errors.name }}</div>
                                         </div>
@@ -105,7 +105,7 @@ document.body.classList.add("frontend.contact");
                                                 <label>ইমেইল</label>
                                             </div>
                                             <div class="od-form-group-input">
-                                                <input v-model="form.email" type="email" name="email" required>
+                                                <input v-model="form.email" type="email" maxlength="50" name="email" required>
                                             </div>
                                             <div v-if="form.errors.email">{{ form.errors.name }}</div>
                                         </div>
@@ -114,7 +114,7 @@ document.body.classList.add("frontend.contact");
                                                 <label>বিষয়</label>
                                             </div>
                                             <div class="od-form-group-input">
-                                                <input v-model="form.subject" type="text" name="subject" required>
+                                                <input v-model="form.subject" type="text" maxlength="50" name="subject" required>
                                             </div>
                                             <div v-if="form.errors.subject">{{ form.errors.subject }}</div>
                                         </div>
@@ -123,7 +123,7 @@ document.body.classList.add("frontend.contact");
                                                 <label>আপনার বার্তা</label>
                                             </div>
                                             <div class="od-form-group-input">
-                                                <textarea v-model="form.message" name="message" required></textarea>
+                                                <textarea v-model="form.message" name="message" maxlength="300" required></textarea>
                                             </div>
                                             <div v-if="form.errors.message">{{ form.errors.message }}</div>
                                         </div>

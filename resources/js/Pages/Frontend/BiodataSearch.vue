@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { Head, Link, usePage, router } from '@inertiajs/vue3';
 import GuestLayout from '../../Layouts/GuestLayout.vue';
 import PopupView from '../../Components/Frontend/Searchpage/ViewDetails/PopupView.vue';
@@ -55,7 +55,7 @@ const onClickLikeBiodata = (single_biodata) => {
     axios.post(route('user.likes.single_like', {
         csrf_token,
         sender_user_id : props.single_biodata.user_id,
-        sender_biodata_code : page.props.single_biodata.biodata_code,
+        sender_biodata_code : props.single_biodata.biodata_code,
         receiver_user_id : single_biodata.user_id,
         receiver_biodata_code : single_biodata.biodata_code,
     }))
@@ -63,13 +63,13 @@ const onClickLikeBiodata = (single_biodata) => {
         if( response.data == true ){
             likeReceiverUserIds.value.push( single_biodata.user_id );
             modalMessage.value = {
-                modalHeading : page.props.translations.modal_messages.success_heading,
-                modalDescription : page.props.translations.modal_messages.success_like_message,
+                modalHeading : props.translations.modal_messages.success_heading,
+                modalDescription : props.translations.modal_messages.success_like_message,
             }
             isModalOpen.value = true;
         }else{
             modalMessage.value = {
-                modalHeading : page.props.translations.modal_messages.error_heading,
+                modalHeading : props.translations.modal_messages.error_heading,
                 modalDescription : response.data,
             }
             isModalOpen.value = true;
@@ -81,8 +81,8 @@ const onClickLikeBiodata = (single_biodata) => {
 const onClickDisLikeBiodata = (single_biodata) => {
     if( single_biodata.user_id == props.single_biodata.user_id){
         modalMessage.value = {
-            modalHeading : page.props.translations.modal_messages.error_heading,
-            modalDescription : page.props.translations.modal_messages.self_like_error,
+            modalHeading : props.translations.modal_messages.error_heading,
+            modalDescription : props.translations.modal_messages.self_like_error,
         }
         isModalOpen.value = true;
         return;
@@ -90,7 +90,7 @@ const onClickDisLikeBiodata = (single_biodata) => {
     axios.post(route('user.likes.single_dislike', {
         csrf_token,
         sender_user_id : props.single_biodata.user_id,
-        sender_biodata_code : page.props.single_biodata.biodata_code,
+        sender_biodata_code : props.single_biodata.biodata_code,
         receiver_user_id : single_biodata.user_id,
         receiver_biodata_code : single_biodata.biodata_code,
     }))
@@ -100,8 +100,8 @@ const onClickDisLikeBiodata = (single_biodata) => {
                 return item != single_biodata.user_id;
             });
             modalMessage.value = {
-                modalHeading : page.props.translations.modal_messages.success_heading,
-                modalDescription : page.props.translations.modal_messages.remove_like_message,
+                modalHeading : props.translations.modal_messages.success_heading,
+                modalDescription : props.translations.modal_messages.remove_like_message,
             }
             isModalOpen.value = true;
         }else{
@@ -115,30 +115,35 @@ const onClickDisLikeBiodata = (single_biodata) => {
 
 const onClickProposeBiodata = (single_biodata) => {
 
-    if(confirm( page.props.translations.modal_messages.proposal_send_confirm )){
+    if(confirm( props.translations.modal_messages.proposal_send_confirm )){
         axios.post(route('user.proposals.single_propose', {
             csrf_token,
             sender_user_id : props.single_biodata.user_id,
-            sender_biodata_code : page.props.single_biodata.biodata_code,
+            sender_biodata_code : props.single_biodata.biodata_code,
             receiver_user_id : single_biodata.user_id,
             receiver_biodata_code : single_biodata.biodata_code,
         }))
         .then((response) => {
             if( typeof response.data.message == 'undefined' ){
                 if( response.request.responseURL ){
-                    return router.visit(response.request.responseURL);
+                    return router.visit(response.request.responseURL, { preserveState: true });
                 }
             }else{
                 if( response.data.message == true ){
                     proposalUserIds.value.push( single_biodata.user_id );
+                    if( response.data.self_proposals ){
+                        self_proposals.value = response.data.self_proposals;
+                    }
+
                     modalMessage.value = {
-                        modalHeading : page.props.translations.modal_messages.success_heading,
-                        modalDescription : page.props.translations.modal_messages.success_propose_message,
+                        modalHeading : props.translations.modal_messages.success_heading,
+                        modalDescription : props.translations.modal_messages.success_propose_message,
                     }
                     isModalOpen.value = true;
+
                 }else{
                     modalMessage.value = {
-                        modalHeading : page.props.translations.modal_messages.error_heading,
+                        modalHeading : props.translations.modal_messages.error_heading,
                         modalDescription : response.data.message,
                     }
                     isModalOpen.value = true;
@@ -151,10 +156,20 @@ const onClickProposeBiodata = (single_biodata) => {
 
 const onClickSingleViewDetails = (single_biodata, tab_index) => {
 
+    if( !props.single_biodata.is_approved ){
+        modalMessage.value = {
+            modalHeading : props.translations.modal_messages.error_heading,
+            modalDescription : props.translations.modal_messages.view_unapproved,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
     modalInner.value = {
         single_biodata,
         tab_index,
-        self_proposals
+        self_proposals : self_proposals.value,
+        self_biodata : props.single_biodata,
     }
     isPopupViewModalOpen.value = true;
 }
@@ -229,16 +244,26 @@ const highestDegreeSelection = (single_biodata) => {
 }
 
 
+const queryParams = computed(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let params = {};
+    urlParams.forEach((value, key) => {
+        params[key] = value;
+    });
+    return params;
+});
+
+
 onMounted(() => {
 
     setTimeout(() => {
-        self_likes.value = page.props.likes;
+        self_likes.value = props.likes;
         if( self_likes.value.length > 0 ){
             self_likes.value.forEach(function(item, index, arr){
                 likeReceiverUserIds.value.push( item.receiver_user_id );
             })
         }
-        self_proposals.value = page.props.proposals;
+        self_proposals.value = props.proposals;
         if( self_proposals.value.length > 0 ){
             self_proposals.value.forEach(function(item, index, arr){
                 if( item.receiver_user_id == props.single_biodata.user_id ){
@@ -336,12 +361,6 @@ document.body.classList.add("frontend.search");
                                                     <i class="fa fa-paper-plane"></i>
                                                     {{ translations.profile_page.interested_title }} &nbsp;
                                                 </span>
-                                                <!-- <span v-if="$page.props.auth.user && $page.props.single_biodata.free_biodata && !single_biodata.free_biodata && !proposalUserIds.includes(single_biodata.user_id)" class="cursor-pointer">
-                                                    <Link :href="route('user.packages')" method="get" >
-                                                        <i class="fa fa-paper-plane"></i>
-                                                        {{ translations.profile_page.interested_title }} &nbsp;
-                                                    </Link>
-                                                </span> -->
                                                 <span v-if="$page.props.auth.user &&proposalUserIds.includes(single_biodata.user_id)" @click="onClickSingleViewDetails(single_biodata, 4)" class="cursor-pointer">
                                                     <i class="fa fa-paper-plane"></i>
                                                     {{ translations.profile_page.interested_done_title }} &nbsp;
@@ -392,7 +411,7 @@ document.body.classList.add("frontend.search");
                                 </div>
 
                                 <div class="px-1 pt-10 col-span-12 flex justify-center items-center">
-                                    <Link :href="route('frontend.home')" method="get"  as="button" class="bg-green-700 p-2 rounded-lg !text-white hover:!text-black hover:bg-green-100 transition-all font-bold" >
+                                    <Link :href="route('frontend.home', queryParams)" method="get"  as="button" class="bg-green-700 p-2 rounded-lg !text-white hover:!text-black hover:bg-green-100 transition-all font-bold" >
                                         BackToHome
                                     </Link>
                                 </div>

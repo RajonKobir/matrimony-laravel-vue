@@ -108,7 +108,12 @@ onMounted(() => {
 
             <div class="grid grid-cols-12 gap-0 py-2 text-white text-base overflow-hidden">
 
-                <div class="col-span-12 md:col-start-4 md:col-span-6 p-2">
+                <div class="col-span-12 md:col-start-4 md:col-span-6 p-2 relative">
+
+                    <div class="text-center">
+                        <img v-if="single_biodata.free_biodata" class="absolute top-4 right-4 animate__animated animate__heartBeat animate__delay-2s animate__infinite infinite" src="/assets/images/free.png" alt="free" width="30">
+                    </div>
+
                     <div class="biodata_single_box_upper col-span-12 p-2 pr-0 text-left md:text-center">
                         <div class="text-center">
                             <h3 class=" text-xl">

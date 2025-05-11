@@ -23,6 +23,9 @@ const props = defineProps({
     single_biodata: {
         type: Object,
     },
+    self_biodata: {
+        type: Object,
+    },
     tab_index: {
         type: Number,
     },
@@ -120,7 +123,7 @@ onMounted(() => {
                 <TabPanel :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <PersonalBiodata :translations :locale :locales :single_biodata="single_biodata" />
+                    <PersonalBiodata :translations :locale :locales :single_biodata="single_biodata" :proposal="singleProposal" />
 
                 </TabPanel>
 
@@ -148,7 +151,7 @@ onMounted(() => {
                 <TabPanel v-if="proposed" :class="['rounded-xl bg-white p-3', 'ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2',
                 ]">
 
-                    <Communication :translations :locale :locales :single_biodata :proposal="singleProposal"  />
+                    <Communication :translations :locale :locales :single_biodata :self_biodata :proposal="singleProposal"  />
 
                 </TabPanel>
 

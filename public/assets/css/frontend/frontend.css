@@ -2,27 +2,6 @@
 html{
   scroll-behavior: smooth;
 }
-header{
-  overflow: visible;
-}
-.header_transparent_background{
-  position: relative;
-}
-.header_transparent_background::before{
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* background-image: url(../images/bg.svg); */
-  background-color: #FBD5B1;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  opacity: .4;
-  z-index: -999;
-}
 
 .od-search-fields .od-location-dropdown-trigger {
     transition: .2s;

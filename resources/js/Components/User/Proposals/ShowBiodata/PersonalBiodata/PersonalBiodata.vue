@@ -1,6 +1,7 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 
 
 const props = defineProps({
@@ -16,7 +17,16 @@ const props = defineProps({
     single_biodata: {
         type: Object,
     },
+    proposal: {
+        type: Object,
+    },
 });
+
+
+// initializing
+const page = usePage();
+const csrf_token = page.props.csrf_token;
+const proposalAccepted = ref(false);
 
 
 function getAge(dateString) {
@@ -44,7 +54,13 @@ const birthDayString = (birth_date) => {
 onMounted(() => {
 
     setTimeout(() => {
-
+        if( props.proposal ){
+            if( !props.proposal.in_trash && !props.proposal.in_admin_trash ){
+                if( props.proposal.proposal_accepted || props.proposal.auto_received ){
+                    proposalAccepted.value = true;
+                }
+            }
+        }
     }, 500);
 
 });
@@ -59,10 +75,6 @@ onMounted(() => {
     <div class="container">
 
         <div class="grid grid-cols-12 gap-0">
-
-            <div class="form_item col-span-12 p-2">
-                <h1 class="text-lg text-left">{{ single_biodata.gender == 'male' ?  translations.biodata_form.personal_biodata.gender_options.male : translations.biodata_form.personal_biodata.gender_options.female }}</h1>
-            </div>
 
             <div class="form_item col-span-12 md:col-span-6 p-2">
                 <p class="text-base text-left">
@@ -136,7 +148,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.permanent_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district }}
+                        {{ proposalAccepted ? single_biodata.permanent_union_parishad + ', ' + single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district : single_biodata.permanent_upazila + ', ' + single_biodata.permanent_district }}
                     </span>
                 </p>
             </div>
@@ -147,7 +159,7 @@ onMounted(() => {
                         {{ translations.biodata_form.personal_biodata.temporary_address_title }}
                     </span>
                     <span class="text-base text-left pl-2">
-                        {{ single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district }}
+                        {{ proposalAccepted ? single_biodata.temporary_union_parishad + ', ' + single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district : single_biodata.temporary_upazila + ', ' + single_biodata.temporary_district }}
                     </span>
                 </p>
             </div>

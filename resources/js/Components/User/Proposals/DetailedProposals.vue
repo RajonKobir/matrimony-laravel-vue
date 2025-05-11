@@ -63,7 +63,7 @@ const closeModal = (value) => {
 }
 
 
-const onClickInterested = (single_proposal) => {
+const onClickInterested = (single_proposal, single_biodata) => {
     if( confirm( props.translations.proposal_page.confirm_accept ) ){
         axios.post(route('user.proposals.single_accept', {
             csrf_token,
@@ -76,16 +76,18 @@ const onClickInterested = (single_proposal) => {
             if( response.data ){
                 emits('onUpdateReceivedProposals', response.data);
                 all_proposals.value = response.data;
+
                 modalMessage.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been accepted successfully.',
+                    modalHeading : page.props.translations.modal_messages.success_heading,
+                    modalDescription : page.props.translations.modal_messages.success_accept,
                     showButtons : false
                 }
                 isModalOpen.value = true;
+
             }else{
                 modalMessage.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.success_accept_error,
                     showButtons : false
                 }
                 isModalOpen.value = true;
@@ -96,7 +98,7 @@ const onClickInterested = (single_proposal) => {
 }
 
 
-const onClickNotInterested = (single_proposal) => {
+const onClickNotInterested = (single_proposal, single_biodata) => {
     if(confirm( props.translations.proposal_page.confirm_reject )){
         axios.post(route('user.proposals.single_accept', {
             csrf_token,
@@ -109,16 +111,18 @@ const onClickNotInterested = (single_proposal) => {
             if( response.data ){
                 emits('onUpdateReceivedProposals', response.data);
                 all_proposals.value = response.data;
+
                 modalMessage.value = {
-                    modalHeading : 'Success!',
-                    modalDescription : 'The proposal has been rejected successfully.',
+                    modalHeading : page.props.translations.modal_messages.success_heading,
+                    modalDescription : page.props.translations.modal_messages.success_reject,
                     showButtons : false
                 }
                 isModalOpen.value = true;
+
             }else{
                 modalMessage.value = {
-                    modalHeading : 'Error!',
-                    modalDescription : 'Something went wrong.',
+                    modalHeading : page.props.translations.modal_messages.error_heading,
+                    modalDescription : page.props.translations.modal_messages.success_reject_error,
                     showButtons : false
                 }
                 isModalOpen.value = true;
@@ -130,6 +134,16 @@ const onClickNotInterested = (single_proposal) => {
 
 
 const onClickSingleViewDetails = (single_biodata, tab_index) => {
+
+    if( !props.single_biodata.is_approved ){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.view_unapproved,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
     modalInner.value = {
         single_biodata,
         tab_index,
@@ -314,10 +328,10 @@ document.body.classList.add("user.proposals.detailed");
                                         <td class="py-2 px-3 text-[#ad277c] break-words text-sm sm:text-base">
                                             <template v-if="proposalType == 1 && !all_proposals[single_biodata_key].proposal_rejected && !all_proposals[single_biodata_key].proposal_accepted">
                                                 <div class="flex flex-col sm:flex-row justify-center items-center gap-1">
-                                                    <button type="button" @click="onClickInterested(all_proposals[single_biodata_key])" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">
+                                                    <button type="button" @click="onClickInterested(all_proposals[single_biodata_key], single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">
                                                         {{ translations.proposal_page.interested }}
                                                     </button>
-                                                    <button type="button" @click="onClickNotInterested(all_proposals[single_biodata_key])" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">
+                                                    <button type="button" @click="onClickNotInterested(all_proposals[single_biodata_key], single_biodata)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">
                                                         {{ translations.proposal_page.not_interested }}
                                                     </button>
                                                     <button type="button" @click="onClickSingleViewDetails(single_biodata, 0)" class="action_button text-xs bg-blue-500 hover:bg-blue-700 !text-white font-bold py-1 px-2 sm:py-2 sm:px-4 rounded-full">

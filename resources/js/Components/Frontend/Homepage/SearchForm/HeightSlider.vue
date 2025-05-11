@@ -13,6 +13,9 @@ const props = defineProps({
     translations: {
         type: Object,
     },
+    heightRange: {
+        type: String,
+    },
 });
 
 
@@ -22,7 +25,7 @@ const getKeyByValue = (object, value) => {
 }
 
 
-const height_state = ref([1, 31]);
+const height_state = ref( props.heightRange == null ? [1, 31] : [ parseInt( getKeyByValue(props.translations.biodata_form.deserved_biodata.deserved_height_range_options, props.heightRange.split("-")[0].trim()) ), parseInt( getKeyByValue(props.translations.biodata_form.deserved_biodata.deserved_height_range_options, props.heightRange.split("-")[1].trim()) ) ]);
 
 
 const onChangeSlider = (height_state) => {
@@ -46,7 +49,7 @@ const diplayHeightItem = (data) => {
 <template>
 
     <div class="mb-6" >
-        <label for="height_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_height_range_title }}-</label>
+        <label for="height_slider" class="text-base" >{{ props.translations.biodata_form.deserved_biodata.deserved_height_range_title }}</label>
     </div>
     <Range
         @update:model-value="onChangeSlider"

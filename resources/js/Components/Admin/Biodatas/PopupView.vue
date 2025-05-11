@@ -113,7 +113,9 @@ watch(props, async (newValue, oldValue) => {
                     as="h3"
                     class="text-lg font-medium leading-6 text-gray-900 xl:text-center"
                 >
-                    {{ modalInner.modalHeading }}
+                    <div v-if="modalInner.modalHeading" v-html="modalInner.modalHeading">
+
+                    </div>
                     <div class="absolute right-4 top-4">
                         <button
                         type="button"

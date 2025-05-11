@@ -59,7 +59,7 @@ onMounted(() => {
 
         <div class="grid grid-cols-12 gap-0">
 
-            <div class="form_item col-span-12 p-2">
+            <div v-if="!single_biodata.is_approved" class="form_item col-span-12 p-2">
                 <h1 class="text-lg text-left">{{ single_biodata.gender == 'male' ?  translations.biodata_form.personal_biodata.gender_options.male : translations.biodata_form.personal_biodata.gender_options.female }}</h1>
             </div>
 

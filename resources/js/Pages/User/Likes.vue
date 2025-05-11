@@ -112,6 +112,10 @@ const onClickProposeBiodata = (single_biodata) => {
             }else{
                 if( response.data.message == true ){
                     proposalUserIds.value.push( single_biodata.user_id );
+                    if( response.data.self_proposals ){
+                        self_proposals.value = response.data.self_proposals;
+                    }
+
                     modalMessage.value = {
                         modalHeading : page.props.translations.modal_messages.success_heading,
                         modalDescription : page.props.translations.modal_messages.success_propose_message,
@@ -132,10 +136,20 @@ const onClickProposeBiodata = (single_biodata) => {
 
 const onClickSingleViewDetails = (single_biodata, tab_index) => {
 
+    if( !props.single_biodata.is_approved ){
+        modalMessage.value = {
+            modalHeading : page.props.translations.modal_messages.error_heading,
+            modalDescription : page.props.translations.modal_messages.view_unapproved,
+        }
+        isModalOpen.value = true;
+        return;
+    }
+
     modalInner.value = {
         single_biodata,
         tab_index,
-        proposals : props.proposals,
+        self_proposals : self_proposals.value,
+        self_biodata : props.single_biodata,
     }
     isPopupViewModalOpen.value = true;
 }
@@ -221,7 +235,7 @@ onMounted(() => {
                 }
             })
         }
-
+        proposalUserIds.value = proposalUserIds.value.filter((value, index, self) => self.indexOf(value) === index);
     }, 500);
 })
 
@@ -232,7 +246,6 @@ document.body.classList.add("user.likes");
 </script>
 
 <template>
-
 
 
     <Head title="Likes" />

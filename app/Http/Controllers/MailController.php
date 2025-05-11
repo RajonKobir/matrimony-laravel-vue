@@ -2,104 +2,129 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\CampaignEmail;
+use App\Mail\ProposalNotificationEmail;
+use App\Mail\GeneralNotificationEmail;
+use App\Mail\ContactUsEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Config;
 use Inertia\Inertia;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use App\Models\Emailserver;
+
 
 class MailController extends Controller
 {
+
+    public function __construct(){
+        // updating mail server on the fly
+        $emailservers = Emailserver::all();
+        if( $emailservers !== null ){
+            if( count($emailservers) > 0 ){
+                $emailserver = $emailservers[array_rand([0, 4])];
+                // $emailserver = $emailservers[4];
+                if( $emailserver ){
+                    Config::set('mail.default', 'smtp'); // <-- VERY IMPORTANT
+
+                    Config::set('mail.mailers.smtp', [
+                        'transport' => 'smtp',
+                        'url' => null,
+                        'host' => $emailserver->MAIL_HOST,
+                        'port' => $emailserver->MAIL_PORT,
+                        'encryption' => $emailserver->MAIL_ENCRYPTION,
+                        'username' => $emailserver->MAIL_USERNAME,
+                        'password' => $emailserver->MAIL_PASSWORD,
+                        'timeout' => null,
+                        'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+                    ]);
+
+                    Config::set('mail.from', [
+                        'address' => $emailserver->MAIL_FROM_ADDRESS,
+                        'name' => $emailserver->MAIL_FROM_NAME,
+                    ]);
+                }
+            }
+        }
+    }
+
+
     public function index()
     {
         return view('backend.mails.index');
     }
 
-    public function sendMail(Request $request)
+
+    public function proposalNotifications(Request $request)
     {
+
         $mailData = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'subject' => 'required|string',
-            'message' => 'required|string',
+            'name' => 'required|string|min:2|max:200',
+            'email' => 'required|email|min:2|max:500',
+            'subject' => 'required|string|min:2|max:1000',
+            'message' => 'required|string|min:2|max:3000',
         ]);
 
-        return redirect()->back()->with('error', 'tdgddbd');
 
-        // $subscribers = Subscriber::all();
-        // foreach ($subscribers as $subscriber) {
-        //     Mail::to($subscriber->email)->send(new CampaignEmail($mailData));
-        // }
+        Mail::to($mailData['email'])->send(new ProposalNotificationEmail($mailData));
+        return $mailData;
+        // return redirect()->back()->with('success', 'A confirmation email has been sent to ' . $mailData['email']);
 
 
-        Mail::to($request->email)->send(new CampaignEmail($mailData));
-
-        return redirect()->back()->with('success', 'A confirmation email has been sent to ' . $mailData['email']);
-
+        try {
+            Mail::to($mailData['email'])->send(new ProposalNotificationEmail($mailData));
+            return true;
+            // return redirect()->back()->with('success', 'A confirmation email has been sent to ' . $mailData['email']);
+        } catch (Exception $e) {
+            Log::error('Email sending failed for '. $mailData['email'] .': ' . $e->getMessage()); // Log the error
+            return 'Email sending failed for '. $mailData['email'] .': ' . $e->getMessage();
+            // return redirect()->back()->with('error', 'Something went wrong while sending the email.');
+        }
     }
 
-    // public function selectedMail(){
-    //     $emailservers = Emailserver::all();
-    //     return view('backend.mails.selectedMail', compact('emailservers'));
-    // }
 
-    // public function sendSelectedMail(Request $request){
+    public function generalNotifications(Request $request)
+    {
 
-    //     // var_dump(config('mail.mailers.smtp'));
-    //     // var_dump(config('mail.from'));
-    //     // return;
+        $mailData = $request->validate([
+            'name' => 'required|string|min:2|max:200',
+            'email' => 'required|email|min:2|max:500',
+            'subject' => 'required|string|min:2|max:1000',
+            'message' => 'required|string|min:2|max:3000',
+        ]);
 
-    //     $emailservers = $request->emailservers;
 
-    //     $mailData = $request->validate([
-    //         'emails' => "required|string",
-    //         'subject' => "required|string",
-    //         'body' => "required|string",
-    //     ]);
+        Mail::to($mailData['email'])->send(new GeneralNotificationEmail($mailData));
+        return $mailData;
+        // return redirect()->back()->with('success', 'A confirmation email has been sent to ' . $mailData['email']);
 
-    //     $emails = $this->removeSpaces($request->emails);
-    //     // Get emails from request and split them into an array
-    //     // $emails = explode(',', $emails);
-    //     $emails = preg_split('/[\s,;]+/', $emails);
 
-    //     $emails = $this->filterValidEmails($emails);
+        try {
+            Mail::to($mailData['email'])->send(new GeneralNotificationEmail($mailData));
+            return true;
+            // return redirect()->back()->with('success', 'A confirmation email has been sent to ' . $mailData['email']);
+        } catch (Exception $e) {
+            Log::error('Email sending failed for '. $mailData['email'] .': ' . $e->getMessage()); // Log the error
+            return 'Email sending failed for '. $mailData['email'] .': ' . $e->getMessage();
+            // return redirect()->back()->with('error', 'Something went wrong while sending the email.');
+        }
+    }
 
-    //     // var_dump($emails);
-    //     // return;
 
-    //     if (count($emails) > 0) {
-    //         foreach($emails as $email) {
-    //             if( $emailservers !== null ){
-    //                 if( count($emailservers) > 0 ){
-    //                     $emailserver = Emailserver::findOrFail($emailservers[array_rand($emailservers)]);
-    //                     if( $emailserver ){
-    //                         Config::set('mail.mailers.smtp', [
-    //                             'transport' => $emailserver->MAIL_MAILER,
-    //                             'url' => env('MAIL_URL'),
-    //                             'host' => $emailserver->MAIL_HOST,
-    //                             'port' => $emailserver->MAIL_PORT,
-    //                             'encryption' => $emailserver->MAIL_ENCRYPTION,
-    //                             'username' => $emailserver->MAIL_USERNAME,
-    //                             'password' => $emailserver->MAIL_PASSWORD,
-    //                             'timeout' => null,
-    //                             'local_domain' => env('MAIL_EHLO_DOMAIN'),
-    //                         ]);
-    //                         Config::set('mail.from', [
-    //                             'address' => $emailserver->MAIL_FROM_ADDRESS,
-    //                             'name' => $emailserver->MAIL_FROM_NAME,
-    //                         ]);
-    //                     }
-    //                 }
-    //             }
+    public function contactUs(Request $request)
+    {
 
-    //             Mail::to($email)->send(new CampaignEmail($mailData));
-    //         }
-    //     }else {
-    //         return redirect()->route('admin.mails.selectedMail')->with('error', 'No valid email addresses were provided.');
-    //     }
+        $mailData = $request->validate([
+            'name' => 'required|string|min:2|max:50',
+            'email' => 'required|email|min:2|max:50',
+            'subject' => 'required|string|min:2|max:50',
+            'message' => 'required|string|min:2|max:300',
+        ]);
 
-    //     return redirect()->route('admin.mails.selectedMail')->with('success', 'Emails has been sent successfully!');
-    // }
+        Mail::to($request->email)->send(new ContactUsEmail($mailData));
+
+        return redirect()->back()->with('success', 'A confirmation email has been sent to ' . $mailData['email']);
+    }
 
 
     public function filterValidEmails($emails) {

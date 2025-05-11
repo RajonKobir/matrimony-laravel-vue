@@ -3,8 +3,8 @@
 
 {!! $mailData['message'] !!}
 
-<x-mail::button :url=".config('app.url').">
-Go To Our Site
+<x-mail::button :url="config('app.url') . '/login'">
+    Login To Shadibari
 </x-mail::button>
 
 Thanks,<br>
